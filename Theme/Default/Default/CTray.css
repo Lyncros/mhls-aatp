@@ -1,0 +1,55 @@
+/*===========================================================================*/
+.CTray {
+	position:			absolute;
+
+	right:				0px;
+	top:				0px;
+
+	width:				100%;
+	height:				28px;
+
+	background-image:	url("CTray.jpg");
+}
+
+.CTray_Loading {
+	width:				81px;
+}
+
+.CTray_Item {
+	float:				right;
+
+	margin-top:			3px;
+
+	cursor:				pointer;
+}
+
+.CTray_MinimizedWindowArea {
+	height:				28px;
+	overflow:			hidden;
+}
+
+.CTray_MinimizedWindow {
+	height:				20px;
+	line-height:		20px;
+
+	background:			-moz-linear-gradient(-90deg, white, #DEDEDE) repeat scroll 0 0 transparent;
+
+	float:				left;
+
+	margin-top:			3px;
+	margin-left:		6px;
+
+	border:				1px solid white;
+	outline:			1px solid #BCBCBC;
+
+	padding-left:		6px;
+	padding-right:		6px;
+
+	color:				#333333;
+	font-weight:		bold;
+	font-size:			10px;
+
+	cursor:				pointer;
+}
+
+/*===========================================================================*/

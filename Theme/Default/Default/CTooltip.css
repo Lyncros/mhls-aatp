@@ -1,0 +1,23 @@
+/*===========================================================================*/
+.CTooltip {
+	position:			absolute;
+
+	left:				0px;
+	top:				0px;
+
+	border:				1px #444444 solid;
+
+	background-color:	white;
+
+	color:				#666666;
+
+	font-size:			8pt;
+
+	padding:			5px;
+
+	z-index:			100000;
+
+	max-width:			300px;
+}
+
+/*===========================================================================*/

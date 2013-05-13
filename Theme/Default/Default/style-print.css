@@ -1,0 +1,87 @@
+body {
+	background-color:	white;
+
+	font-family:		Arial;
+
+	width:				auto;
+}
+
+a {
+	color:				black;
+}
+
+#CLoading {
+	display:			none;
+}
+
+.PageTitle {
+	color:				#333333;
+	border-bottom:		1px #333333 solid;
+
+	width:				100%;
+}
+
+.Header {
+	display:			none;
+}
+
+.HeaderWrapper {
+	display:			none;
+}
+
+.Sidebar {
+	display:			none;
+}
+
+.Body {
+	width:				100%;
+	max-width:			100%;
+
+	background-image:	none;
+}
+
+.Content {
+	margin:				0 auto;
+
+	display:			block;
+
+	width:				100%;
+	max-width:			100%;
+
+	padding:			0px;
+	margin:				0px;
+
+	float:				none;
+}
+
+.TopBar {
+	display:			none;
+}
+
+.PageNotice {
+	display:			none;
+}
+
+.PrintHidden {
+	display:			none;
+}
+
+.PageBreak {
+	page-break-after:	always;
+
+	height:				0px;
+	margin:				0;
+
+	border:				none;
+}
+
+.PrintTitle {
+	font-size:			20px;
+	font-weight:		bold;
+
+	text-align:			center;
+
+	margin-bottom:		20px;
+
+	display:			block;
+}

@@ -1,0 +1,308 @@
+/*===========================================================================*/
+.ui-datepicker-trigger {
+	display:			block;
+	float:				left;
+	
+	width:				16px;
+	height:				16px;
+	
+	background-image:	url("calendar.png");
+	
+	margin-left:		2px;
+}
+
+#ui-datepicker-div {
+	z-index:			9999;
+	border:				1px solid #2865B7;
+}
+
+.ui-datepicker-header {
+	height:				19px !important;
+}
+
+.CForm_Datepicker {
+	border-top:			1px #C2C2C2 solid;
+	border-left:		1px #C2C2C2 solid;
+
+	border-right:		1px #EEEEEE solid;
+	border-bottom:		1px #EEEEEE solid;
+
+	height: 			20px;
+	line-height: 		20px;
+}
+
+.CForm_Table {
+	width:				100%;
+
+	padding:			15px;
+}
+
+.CForm_Header {
+	font-size:			8pt;
+
+	color:				#2865B7;
+
+	border-bottom:		1px #2865B7 dotted;
+}
+
+.CForm_Name {
+	font-size:			12px;
+
+	color:				#6D6D6D;
+
+	width:				35%;
+
+	text-align:			left;
+
+	line-height:		18px;
+
+	border:				none;
+}
+
+.CForm_Value {
+	font-size:			12px;
+
+	color:				#6D6D6D;
+
+	width:				65%;
+	
+	border:				none;
+}
+
+.CForm_Error {
+	outline:			2px #E02424 solid;
+}
+
+.CForm_Textbox {
+	border-top:			1px #C2C2C2 solid;
+	border-left:		1px #C2C2C2 solid;
+
+	border-right:		1px #EEEEEE solid;
+	border-bottom:		1px #EEEEEE solid;
+
+	width:				100%;
+	height: 			20px;
+	line-height: 		20px;	
+}
+
+.CForm_Textarea {
+	border-top:			1px #C2C2C2 solid;
+	border-left:		1px #C2C2C2 solid;
+
+	border-right:		1px #EEEEEE solid;
+	border-bottom:		1px #EEEEEE solid;
+
+	width:				100%; 
+	height:				100px;
+}
+
+.CForm_Dropdown {
+	border-top:			1px #C2C2C2 solid;
+	border-left:		1px #C2C2C2 solid;
+
+	border-right:		1px #EEEEEE solid;
+	border-bottom:		1px #EEEEEE solid;
+}
+
+.CForm_Dropdown_Timestamp {
+	border-top:			1px #C2C2C2 solid;
+	border-left:		1px #C2C2C2 solid;
+
+	border-right:		1px #EEEEEE solid;
+	border-bottom:		1px #EEEEEE solid;
+}
+
+.CForm_Listbox {
+	height:				100px;
+}
+
+.CForm_Button {
+	height:				26px;
+
+	cursor:				pointer;
+
+	margin-left:		2px;
+	margin-right:		2px;
+}
+
+.CForm_Button_Left {
+	width:				6px;
+	height:				26px;
+
+	background-image:	url("cform_button.png");
+
+	float:				left;
+}
+
+.CForm_Button_Right {
+	width:				6px;
+	height:				26px;
+
+	background-image:		url("cform_button.png");
+	background-position:	-6px 0px;
+
+	float:				left;
+}
+
+.CForm_Button_Content {
+	height:				26px;
+	line-height:		26px;
+
+	background-image:		url("cform_button.png");
+	background-repeat:		repeat-x;
+	background-position:	0px -26px;
+
+	text-align:			center;
+
+	color:				#7C7C7C;
+
+	float:				left;
+}
+
+/*===========================================================================*/
+.CForm_Upload_Preview {
+	width:				75px;
+	height:				75px;
+
+	border:				1px #DDDDDD solid;
+
+	margin:				1px;
+
+	background-repeat:	no-repeat;
+}
+
+.CForm_Upload_Button {
+	float:				left;
+}
+
+.CForm_Upload_Icon {
+	display:			none;
+}
+
+.CForm_Upload_Icon_Progress {
+	float:				right;
+
+	width:				90px;
+	height:				26px;
+
+	font-size:			10px;
+
+	line-height:		26px;
+
+	background-image:	url("cform_upload_icon_progress.gif");
+	background-repeat:	no-repeat;
+	background-position: right center;
+
+	overflow:			auto;
+
+	text-align:			right;
+
+	padding-right:		20px;
+}
+
+.CForm_Upload_Icon_Done {
+	float:				right;
+
+	width:				16px;
+	height:				16px;
+
+	margin-top:			7px;
+
+	background-image:	url("cform_upload_icon_done.png");
+	background-image:	no-repeat;
+}
+
+.CForm_Upload_Icon_Error {
+	float:				right;
+
+	width:				16px;
+	height:				16px;
+
+	margin-top:			7px;
+
+	background-image:	url("cform_upload_icon_error.png");
+	background-image:	no-repeat;
+}
+
+/*===========================================================================*/
+.CForm_OnOff {
+	width:				65px;
+	height:				20px;
+
+	background-image:	url("ToggleOnOff.png");
+	background-image:	no-repeat;
+
+	cursor:				pointer;
+}
+
+.CForm_YesNo {
+	width:				65px;
+	height:				20px;
+
+	background-image:	url("ToggleYesNo.png");
+	background-image:	no-repeat;
+
+	cursor:				pointer;
+}
+
+/*===========================================================================*/
+.CForm_Autocomplete_Search {
+	background-image:	url("cform_autocomplete_search.png");
+	background-repeat:	no-repeat;
+	background-position: right 1px;
+
+	border-top:			1px #C2C2C2 solid;
+	border-left:		1px #C2C2C2 solid;
+
+	border-right:		1px #EEEEEE solid;
+	border-bottom:		1px #EEEEEE solid;
+
+	height:				16px;
+}
+
+.CForm_Autocomplete_Text {
+	width:				100%;
+
+	border:				none;
+	background-color:	transparent !important;
+
+	color:				black;
+}
+
+/*===========================================================================*/
+.CForm_DualListbox_Table {
+	width:				100%;
+}
+
+.CForm_DualListbox_Title {
+	font-size:			10px;
+
+	font-weight:		bold;
+
+	text-align:			center;
+
+	color:				white;
+	background-color:	#8D8D8D;
+
+	display:			block;
+
+	line-height:		16px;
+}
+
+.CForm_DualListbox {
+	width:				100%;
+	height:				100px;
+
+	border-top:			1px #C2C2C2 solid;
+	border-left:		1px #C2C2C2 solid;
+
+	border-right:		1px #EEEEEE solid;
+	border-bottom:		1px #EEEEEE solid;
+}
+
+/*===========================================================================*/
+.CForm_CC {
+	width:				32px;
+}
+
+/*===========================================================================*/

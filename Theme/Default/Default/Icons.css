@@ -1,0 +1,627 @@
+/*===========================================================================*/
+.Icon_None {
+	width:				22px;
+	height:				16px;
+}
+
+.Icon_View {
+	width:				22px;
+	height:				16px;
+
+	background-image:		url("./Icons/view.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Add {
+	width:				22px;
+	height:				16px;
+
+	background-image:		url("./Icons/add.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Edit {
+	width:				22px;
+	height:				16px;
+
+	background-image:		url("./Icons/edit.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Delete {
+	width:				22px;
+	height:				16px;
+
+	background-image:		url("./Icons/delete.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Lock {
+	width:				22px;
+	height:				16px;
+
+	background-image:		url("./Icons/lock.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_ProgressReport {
+	width:				22px;
+	height:				16px;
+
+	background-image:		url("./Icons/ProgressReport.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Attention {
+	width:				22px;
+	height:				16px;
+
+	background-image:		url("./Icons/attention.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_MoveUp {
+	width:				22px;
+	height:				16px;
+
+	background-image:		url("./Icons/moveup.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_MoveDown {
+	width:				22px;
+	height:				16px;
+
+	background-image:		url("./Icons/movedown.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_ColorSwatch {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/colorswatch.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_ColorWheel {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/colorwheel.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Calculator {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/calculator.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_CreditCards {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/creditcards.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_History {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/history.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Banana {
+	width:				33px;
+	height:				35px;
+
+	background-image:		url("./Icons/banana.gif");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Print {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/print.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Globe {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/globe.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Wizard {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/wizard.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Popup {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/popup.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Refresh {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/refresh.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Folder {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/folder.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Table {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/table.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Approve {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/approve.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Reorganize {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/reorganize.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_vCard {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/vcard.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Error {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/error.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Attachment {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/attachment.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Proof {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/proof.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Dashboard {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/dashboard.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Business {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/business.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Help {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/help.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Information {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/information.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_NewTicket {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/newticket.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Ticket {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/ticket.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Support {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/support.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Duplicates {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/duplicates.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_BulkUpdate {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/bulkupdate.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_SpellChecker {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/spellchecker.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Car {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/car.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_User {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/user.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Users {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/users.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Script {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/script.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Flag {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/flag.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Arrow_Turn_Left {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/arrow-turn-000-left.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Ship {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/ship.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Run {
+	width:				16px;
+	height:				16px;
+
+	background-image:		url("./Icons/run.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+.Icon_Email {
+	width:				22px;
+	height:				16px;
+
+	background-image:		url("./Icons/email.png");
+	background-repeat:		no-repeat;
+	background-position:	center center;
+
+	display:			block;
+
+	cursor:				pointer;
+}
+
+/*===========================================================================*/
+.Icon_Indent_1 {
+	margin-left:		24px;
+}
+
+.Icon_Indent_2 {
+	margin-left:		48px;
+}
+
+/*===========================================================================*/

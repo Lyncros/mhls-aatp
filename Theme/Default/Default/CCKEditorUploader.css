@@ -1,0 +1,23 @@
+.CCKEditorUploaderTable {
+}
+
+.CCKEditorUploaderSidebar {
+	width:	200px;
+}
+
+.CCKEditorUploaderFiles {
+	width:	100%;
+}
+
+.CCKEditorUploaderLoading {
+}
+
+.CCKEditorUploaderUploadArea {
+	width:	200px;
+	height:	100px;
+}
+
+.CForm_Upload_Button {
+	width:	61px;
+	height: 22px;
+}

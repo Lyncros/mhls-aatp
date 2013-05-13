@@ -1,0 +1,9 @@
+/* Tabs
+----------------------------------*/
+.ui-tabs { float: left; height: 100%; }	/* background-image: url('./images/ui-tabs.png'); background-position: top left; background-repeat: repeat-y; */
+.ui-tabs .ui-tabs-nav { position: absolute; width: 180px; float: left; height: 100%; background-image: url('./images/ui-tabs.png'); background-position: top left; background-repeat: repeat-y; }
+.ui-tabs .ui-tabs-nav li { list-style: none; width: 170px; height: 20px; color: #5D5D5D; line-height: 20px; margin-left: 6px; margin-top: 4px; }
+.ui-tabs .ui-tabs-nav li a { text-decoration: none; padding: .5em 1em; color: #5D5D5D; font-size: 9px; }
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected {  list-style: none; background-color: white; }
+.ui-tabs .ui-tabs-panel { margin-left: 180px; width: auto;}
+.ui-tabs .ui-tabs-hide { display: none !important; }

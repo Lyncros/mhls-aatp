@@ -1,0 +1,28 @@
+body {
+	font-family:		Trebuchet MS;
+
+	font-size:			10pt;
+
+	background-image:	url("./bg.jpg");
+	background-color:	#8C8C8C;
+	background-repeat:	repeat-y;
+	background-position: top center;
+
+	margin:				0;
+}
+
+a {
+	color:				#6C6C6C;
+
+	border-bottom:		1px #0000B0 dotted;
+
+	text-decoration:	none;
+}
+
+.Content {
+	width:				853px;
+
+	text-align:			left;
+
+	color:				#6C6C6C;
+}

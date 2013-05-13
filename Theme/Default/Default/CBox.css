@@ -1,0 +1,265 @@
+/*===========================================================================*/
+.CBox_Alert {
+	background:			-moz-linear-gradient(-90deg, white, #FFECEC);
+	background:			-webkit-gradient(linear, 0% 0%, 0% 100%, from(white), to(#FFECEC));
+
+	color:				#CA0000;
+
+	border:				1px #CA0000 solid;
+
+	text-align:			left;
+
+	-moz-border-radius: 4px;
+	border-radius:		4px;
+
+	padding:			0 .7em; 
+	margin:				4px;
+
+	-moz-box-shadow:	1px 1px 1px #880000;
+	box-shadow:			1px 1px 1px #880000;
+}
+
+.CBox_Notice {
+	background:			-moz-linear-gradient(-90deg, white, #F6F6F6);
+	background:			-webkit-gradient(linear, 0% 0%, 0% 100%, from(white), to(#F6F6F6));
+
+	color:				#565656;
+
+	border:				1px #CCCCCC solid;
+
+	text-align:			left;
+
+	-moz-border-radius: 4px;
+	border-radius:		4px;
+
+	padding:			0 .7em; 
+	margin:				4px;
+
+	-moz-box-shadow:	1px 1px 1px #EEEEEE;
+	box-shadow:			1px 1px 1px #880000;
+}
+
+.CBox_Bar {
+	background:			-moz-linear-gradient(-90deg, white, #F6F6F6);
+	background:			-webkit-gradient(linear, 0% 0%, 0% 100%, from(white), to(#F6F6F6));
+
+	color:				#565656;
+
+	border:				1px #CCCCCC solid;
+
+	text-align:			left;
+
+	-moz-border-radius: 4px;
+	border-radius:		4px;
+
+	padding:			0 .7em; 
+	margin:				4px;
+
+	-moz-box-shadow:	1px 1px 1px #EEEEEE;
+	box-shadow:			1px 1px 1px #880000;
+}
+
+/*===========================================================================*/
+.CBox {
+	width:				auto;
+
+	border:				1px #AAAAAA solid;
+
+	margin-bottom:		5px;
+
+	-moz-boz-shadow:	0 0 4px #CCCCCC;
+}
+
+.CBox_Header {
+	width:				100%;
+	height:				32px;
+
+	background:			-moz-linear-gradient(-90deg, white, #F5F5F5) repeat scroll 0 0 transparent;
+	background:			-webkit-gradient(linear, 0% 0%, 0% 100%, from(white), to(#F5F5F5));
+
+	text-align:			center;
+
+	color:				white;
+
+	font-size:			8pt;
+
+	line-height:		32px;
+
+	position:			relative;
+
+	border-bottom:		1px #AAAAAA solid;
+}
+
+.CBox_Header a {
+	color:				#555555;
+
+	text-shadow:		1px 1px 1px #DDDDDD;
+}
+
+.CBox_Title {
+	text-decoration:	none;
+
+	font-weight:		bold;
+
+	cursor:				pointer;
+
+	color:				white;
+}
+
+.CBox_Content {
+	color:				#6D6D6D;
+
+	font-size:			8pt;
+
+	overflow:			auto;
+
+	text-align:			left;
+}
+
+.CBox_Remove {
+	width:				17px;
+	height:				17px;
+
+	position:			absolute;
+
+	right:				5px;
+	top:				5px;
+
+	cursor:				pointer;
+
+	background-image:	url("./cbox_remove.png");
+}
+
+.CBox_Expand {
+	width:				17px;
+	height:				17px;
+
+	position:			absolute;
+
+	right:				27px;
+	top:				5px;
+
+	cursor:				pointer;
+
+	background-image:	url("./cbox_expand.png");
+}
+
+.CBox_Collapse {
+	width:				17px;
+	height:				17px;
+
+	position:			absolute;
+
+	right:				27px;
+	top:				5px;
+
+	cursor:				pointer;
+
+	background-image:	url("./cbox_collapse.png");
+}
+
+.CBox_Icon {
+	width:				30px;
+	height:				30px;
+
+	background-position: center center;
+}
+
+/*===========================================================================*/
+.CBox_Default {}
+
+.CBox_Default_Header {}
+
+.CBox_Default_Header a {}
+
+.CBox_Default_Title {}
+
+.CBox_Default_Content {}
+
+/*===========================================================================*/
+.CBox_Orange {
+	border:				1px #C96F0C solid;
+}
+
+.CBox_Orange_Header {
+	background:			-moz-linear-gradient(-90deg, #F38C1B, #C26A0A) repeat scroll 0 0 transparent;
+	background:			-webkit-gradient(linear, 0% 0%, 0% 100%, from(#F38C1B), to(#C26A0A));
+
+	text-align:			center;
+
+	border-bottom:		1px solid #C96F0C;
+}
+
+.CBox_Orange_Header a {
+	color:				white;
+
+	text-shadow:		1px 1px 1px #673805;
+}
+
+/*===========================================================================*/
+.CBox_Gray {
+	border:				1px #9A9A9A solid;
+}
+
+.CBox_Gray_Header {
+	background:			-moz-linear-gradient(-90deg, #999999, #666666) repeat scroll 0 0 transparent;
+	background:			-webkit-gradient(linear, 0% 0%, 0% 100%, from(#999999), to(#666666));
+
+	text-align:			center;
+
+	color:				white;
+
+	border-bottom:		1px solid #AAAAAA;
+}
+
+.CBox_Gray_Header a {
+	color:				white;
+
+	text-shadow:		1px 1px 1px #333333;
+}
+
+/*===========================================================================*/
+.CBox_Blue {
+	border:				1px #0078BF solid;
+}
+
+.CBox_Blue_Header {
+	background:			-moz-linear-gradient(-90deg, #59A9E3, #207BBF) repeat scroll 0 0 transparent;
+	background:			-webkit-gradient(linear, 0% 0%, 0% 100%, from(#59A9E3), to(#207BBF));
+
+	text-align:			center;
+
+	color:				white;
+
+	border-bottom:		1px solid #005384;
+}
+
+.CBox_Blue_Header a {
+	color:				white;
+
+	text-shadow:		1px 1px 1px #00314F;
+}
+
+/*===========================================================================*/
+.CBox_Green {
+	border:				1px #5EA318 solid;
+}
+
+.CBox_Green_Header {
+	background:			-moz-linear-gradient(-90deg, #87E22C, #66B31A) repeat scroll 0 0 transparent;
+	background:			-webkit-gradient(linear, 0% 0%, 0% 100%, from(#87E22C), to(#66B31A));
+
+	text-align:			center;
+
+	color:				white;
+
+	border-bottom:		1px solid #427311;
+}
+
+.CBox_Green_Header a {
+	color:				white;
+
+	text-shadow:		1px 1px 1px #29480B;
+}
+
+/*===========================================================================*/

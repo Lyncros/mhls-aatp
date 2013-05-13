@@ -1,0 +1,348 @@
+/*===========================================================================*/
+.CSearch_Results {
+	position:			relative;
+	margin-top:			50px;
+	border:				1px solid #e1e1e1 !important;
+	
+	width:				100%;
+}
+
+.CSearch_NoResults {
+	background-color:	#ffffff;
+	font-size:			12px;
+	font-weight:		bold;
+
+	height:				30px;
+
+	color:				#333333;
+
+	padding:			10px;
+
+	text-align:			center;
+}
+
+.CSearch_Header {
+}
+
+.CSearch_Header_Cell {
+	background: 	-moz-linear-gradient(top, white 0%, #F1F1F1 100%);
+	background: 	-webkit-gradient(linear, left top, left bottom, color-stop(0%,white), color-stop(100%,#F1F1F1));
+	background: 	-webkit-linear-gradient(top, white 0%,#F1F1F1 100%);
+	background: 	-o-linear-gradient(top, white 0%,#F1F1F1 100%);
+	background: 	-ms-linear-gradient(top, white 0%,#F1F1F1 100%);
+	background: 	linear-gradient(top, white 0%,#F1F1F1 100%);
+	filter: 		progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f1f1f1',GradientType=0 );
+	
+	height: 		29px;
+	line-height: 	29px;
+	
+	font-family: 	myriad-pro;
+	font-size: 		12px;
+	
+	color: 			#212121;
+	
+	font-weight: 	100;
+	
+	padding-left: 	8px;
+	padding-right:	8px;
+	
+	border-left:	1px solid #E1E1E1;
+	border-right:	1px solid white;
+}
+
+.CSearch_Header_Cell_First {
+	border-left:	none;
+}
+
+.CSearch_Header_Cell a { 
+	border:				none;
+
+	text-decoration:	none;
+
+	color:				#212121;
+
+	font-size:			12px;
+}
+
+.CSearch_Header_Cell_First a {
+	font-size:			12px;
+	border:				none;
+
+	text-decoration:	none;
+}
+
+.CSearch_Results tr td {
+	padding-left:			16px;
+	border-top:				1px solid #e1e1e1;
+	height:					18px;
+	line-height:			18px;
+	color:					#4e5260;
+	font-size:				12px;
+}
+
+.CSearch_Sort_Up {
+	width:					10px;
+	height:					5px;
+
+	background-image:		url("./csearch_sort_up.png");
+	background-repeat:		no-repeat;
+
+	display:				inline-block;
+
+	margin-right:			4px;
+}
+
+.CSearch_Sort_Down {
+	width:					10px;
+	height:					5px;
+
+	background-image:		url("./csearch_sort_down.png");
+	background-repeat:		no-repeat;
+
+	display:				inline-block;
+
+	margin-right:			4px;
+}
+
+.CSearch_Spacer_Left {
+	float:					left;
+}
+
+.CSearch_Spacer_Right {
+	float:					right;
+}
+
+.CSearch_Header_Checkbox {
+	width:				14px;
+	height:				14px;
+
+	background-color:	white;
+
+	border:				#9f9f9f;
+}
+
+.CSearch_Row {
+}
+
+.CSearch_Row td {
+	background-color:	#ffffff;
+}
+
+.CSearch_Row2 {
+	
+}
+
+.CSearch_Row2 td {
+	background-color:	#f7f7f8;
+}
+
+.CSearch_Row_Over {
+}
+
+.CSearch_Cell_First {
+	font-size:		11px;
+
+	color:			#444444;
+
+	/*border:			1px #DBDBDB solid;
+	border-top:		none;*/
+
+	padding:		10px;
+
+	line-height:	14px;
+
+	position:		relative;
+}
+
+.CSearch_Cell_First h1 {
+	position:		relative !important;
+	margin:			0;
+	padding:		0;
+
+	color:			#4880C5;
+
+	font-size:		16px;
+	font-weight:	normal;
+
+	margin-bottom:	10px;
+}
+
+.CSearch_Cell_First h2 {
+	margin:			0;
+	padding:		0;
+
+	color:			#2E598D;
+
+	font-size:		12px;
+	font-weight:	normal;
+	font-style:		italic;
+
+	margin-bottom:	10px;
+}
+
+.CSearch_Cell { 
+	/*border:			1px #DBDBDB solid;
+	border-top:			none;
+	border-left:		none;*/
+
+	padding:			10px;
+
+	position:			relative;
+
+	text-align:			left;
+	vertical-align:		top;
+}
+
+.CSearch_Cell_Checkbox {
+	width:				18px;
+	height:				14px;
+
+	background-color:	white;
+
+	border:				#B3B3B3;
+}
+
+.CSearch_Pages {
+	position:			relative;
+
+	font-size:			10px;
+
+	color:				#6D6D6D;
+
+	/*
+	border:				1px #DBDBDB solid;
+	border-top:			none;
+	*/
+
+	height:				26px;
+
+	/* background-color:	#EEEEEE; */
+}
+
+.CSearch_Pages_Number {
+	float:				left;
+
+	margin-left:		5px;
+
+	font-size:			8pt;
+
+	color:				#2865B7;
+
+	cursor:				pointer;
+}
+
+.CSearch_Pages_Number_Active {
+	float:				left;
+
+	margin-left:		5px;
+
+	font-size:			8pt;
+
+	color:				#2865B7;
+
+	cursor:				pointer;
+
+	text-decoration:	underline;
+}
+
+.CSearch_Pages_Textbox {
+	float:				left;
+
+	width:				38px;
+	height:				14px;
+
+	text-align:			center;
+
+	color:				#6D6D6D;
+
+	font-size:			10px;
+	
+	font-family:		myriad-pro;
+	line-height: 		14px;	
+}
+
+.CSearch_Pages_NumPages {
+	float:				left;
+
+	height:				16px;
+	line-height:		16px;
+
+	margin:				5px;
+}
+
+.CSearch_Pages_Previous {
+	float:				left;
+
+	width:				16px;
+	height:				16px;
+
+	background:			url("csearch_pages_previous.png") no-repeat right 1px;
+
+	margin:				6px;
+
+	cursor:				pointer;
+}
+
+.CSearch_Pages_Next {
+	float:				left;
+
+	width:				16px;
+	height:				16px;
+
+	background:			url("csearch_pages_next.png") no-repeat left 1px;
+
+	margin:				6px;
+
+	cursor:				pointer;
+}
+
+.CSearch_Pages_NumResults {
+	position:			absolute;
+
+	right:				0px;
+	top:				0px;
+
+	color:				#6D6D6D;
+
+	font-weight:		bold;
+
+	margin:				6px;
+}
+
+.CSearch_Box {
+	width:				283px;
+	height:				42px;
+
+	background-image:	url("csearch_box.png");
+	background-repeat:	no-repeat;
+
+	position:			absolute;
+
+	top:				0px;
+	left:				0px;
+
+	z-index:			20000;
+}
+
+.CSearch_Box_Textbox {
+	position:			absolute;
+
+	left:				48px;
+	top:				7px;
+
+	width:				227px;
+	height:				26px;
+
+	line-height:		26px;
+
+	border:				1px #3F98B3 solid;
+
+	color:				#3F98B3;
+	font-size:			12pt;
+
+	font-weight:		bold;
+
+	z-index:			20001;
+}
+
+/*===========================================================================*/

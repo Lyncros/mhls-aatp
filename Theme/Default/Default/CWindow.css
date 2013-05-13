@@ -1,0 +1,207 @@
+/*===========================================================================*/
+.CWindow {
+	width:				300px;
+	height:				200px;
+
+	background-color:	white;
+
+	color:				#2865B7;
+	font-size:			8pt;	
+
+	position:			absolute;
+}
+
+.CWindow_Minimize {
+	width:				16px;
+	height:				16px;
+
+	position:			absolute;
+
+	right:				32px;
+	top:				12px;
+
+	background-image:	url("./jqueryui/images/ui-icons_d8e7f3_256x240.png");
+	background-position: -48px -128px;
+
+	cursor:				pointer;
+}
+
+.CWindow_Title {
+	width:				100%;
+	height:				31px;
+
+	background-image:	url("cwindow_title.png");
+
+	font-weight:		bold;
+
+	line-height:		31px;
+
+	text-align:			left;
+
+	color:				white;
+
+	font-size:			11px;
+
+	overflow:			hidden;
+}
+
+.CWindow_Title_Left {
+	float:				left;
+
+	width:				2px;
+	height:				31px;
+
+	background-image:	url("cwindow_title_left.png");
+}
+
+.CWindow_Title_Right {
+	float:				right;
+
+	width:				2px;
+	height:				31px;
+
+	background-image:	url("cwindow_title_right.png");
+}
+
+.CWindow_Content {
+	width:				100%;
+	height:				64px;
+
+	overflow:			auto;
+}
+
+.CWindow_Border {
+	width:				1px;
+	height:				1px;
+
+	background-image:	url("./cwindow_border.png");
+}
+
+.CWindow_Border_TL {
+	width:				20px;
+	height:				20px;
+
+	background-image:	url("./cwindow_border_tl.png");
+}
+
+.CWindow_Border_TR {
+	width:				20px;
+	height:				20px;
+
+	background-image:	url("./cwindow_border_tr.png");
+}
+
+.CWindow_Border_BL {
+	width:				20px;
+	height:				20px;
+
+	background-image:	url("./cwindow_border_bl.png");
+}
+
+.CWindow_Border_BR {
+	width:				20px;
+	height:				20px;
+
+	background-image:	url("./cwindow_border_br.png");
+}
+
+.CWindow_Close {
+	width:				12px;
+	height:				14px;
+
+	background-image:	url("./cwindow_close.png");
+	background-repeat:	no-repeat;
+
+	cursor:				pointer;
+
+	position:			absolute;
+
+	top:				3px;
+	right:				3px;
+}
+
+.CWindow_Status_Bar { 
+	width:				100%;
+	height:				16px;
+
+	border-top:			1px #DDDDDD dashed;
+
+	position:			absolute;
+
+	bottom:				0px;
+	left:				0px;
+}
+
+.CWindow_Resize {
+	width:				10px;
+	height:				10px;
+
+	background-image:	url("./cwindow_resize.png");
+	background-repeat:	no-repeat;
+
+	cursor:				pointer;
+
+	position:			absolute;
+
+	bottom:				2px;
+	right:				2px;
+}
+
+.CWindow_Tab_Area {
+	position:			relative;
+
+	height:				22px;
+
+	border-bottom:		1px #2865B7 solid;
+}
+
+.CWindow_Tab_Active {
+	margin:				1px;
+	margin-right:		0px;
+
+	background-color:	#2865B7;
+
+	color:				white;
+
+	height:				20px;
+
+	float:				left;
+
+	text-align:			center;
+
+	line-height:		20px;
+
+	padding-left:		7px;
+	padding-right:		7px;
+}
+
+.CWindow_Tab {
+	margin:				1px;
+	margin-right:		0px;
+
+	background-color:	#77A5E1;
+
+	color:				white;
+
+	height:				20px;
+
+	float:				left;
+
+	text-align:			center;
+
+	line-height:		20px;
+
+	padding-left:		7px;
+	padding-right:		7px;
+
+	cursor:				pointer;
+}
+
+.CWindow_Save { 
+	position:			absolute; 
+	
+	right:				5px; 
+	bottom:				21px;
+}
+
+/*===========================================================================*/
