@@ -1,0 +1,43 @@
+php_value upload_max_filesize 50M
+php_value post_max_size 50M
+php_value max_execution_time 60
+php_value max_input_time 60 
+php_value display_startup_errors 1
+php_value display_errors 1
+
+php_value include_path ".:/usr/share/pear:./Classes/"
+
+<IfModule mod_security.c>
+   SecFilterEngine Off
+   SecFilterScanPOST Off
+</IfModule>
+
+<IfModule mod_security2.c>
+   SecFilterEngine Off
+   SecFilterScanPOST Off
+</IfModule>
+
+##php_value xdebug.profiler_enable 1
+#php_value xdebug.profiler_enable_trigger 1
+##php_value xdebug.profiler_output_dir /data/aatp/Temp/
+
+# Disable directory browsing
+Options -Indexes
+
+# Follow symbolic links in this directory
+Options +FollowSymLinks
+
+DirectoryIndex index.php
+
+<IfModule mod_rewrite.c>
+   RewriteEngine on
+   RewriteBase /
+
+   #RewriteCond %{HTTP_HOST} ^aatp.anywebdev.com [NC]
+   #RewriteRule ^(.*)$ http://aatp.anywebdev.com/$1 [R=301,L]
+
+   RewriteCond %{REQUEST_FILENAME} !-f
+   RewriteCond %{REQUEST_FILENAME} !-d
+   RewriteCond %{REQUEST_FILENAME} !-l
+   RewriteRule ^(.*)$ /index.php [QSA,L]
+</IfModule>
