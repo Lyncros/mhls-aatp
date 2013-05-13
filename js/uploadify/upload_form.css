@@ -1,0 +1,54 @@
+/* Styles For Popup Upload Form */
+
+#file_upload_area{
+background-color: white;
+-webkit-border-radius: 10px;
+-moz-border-radius: 10px;
+border-radius: 10px;
+padding: 15px;
+width: 400px;
+margin: 0 auto;
+margin-top: 10px;
+min-height: 320px;
+}
+#custom-queue{
+border: 1px solid gray;
+min-height: 200px;
+margin-bottom: 10px;
+-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+border-radius: 5px;
+}
+h2{
+font-size: 14px;
+
+color: #374B7E;
+}
+h3{
+font-size: 11px;
+color: #424242;
+font-style: italic;
+
+
+}
+#submit_btn{
+
+
+height: 20px;
+font-style: italic;
+
+font-size: 10px;
+background-color: #2C3E6F;
+border: 0px;
+color: white;
+-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+border-radius: 5px;
+float: right;
+}
+
+#submit_btn:hover{
+background-color: #EAEAEA;
+cursor: pointer;
+color: #2C3E6F;
+}
