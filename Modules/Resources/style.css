@@ -1,0 +1,136 @@
+.Resources {
+	margin-top:		20px;
+	margin-bottom:	20px;
+	margin-left:	10px;
+
+	width:			782px;
+
+	position:		relative;
+}
+
+.ResourcesHeader {
+	text-align:		center;
+
+	color:			#666666;
+
+	width:			89px;
+	height:			42px;
+
+	background-color: #EEEEEE; 
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, #EEEEEE),
+		color-stop(1, #FFFFFF)
+	);
+	background-image: -moz-linear-gradient(
+		center bottom,
+		#EEEEEE 0%,
+		#FFFFFF 100%
+	);
+
+	border:			1px #DBDBDB solid;
+	border-left:	none;
+
+	font-size:		14px;
+	font-weight:	normal;
+
+	line-height:	14px;
+}
+
+.ResourcesHeaderFirst {
+	text-align:		left;
+
+	padding-left:	10px;
+
+	color:			white;
+
+	font-size:		16px;
+	font-weight:	normal;
+	
+	width:			150px;
+
+	background-color: #477FC5; 
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, #3974BB),
+		color-stop(1, #548ACF)
+	);
+	background-image: -moz-linear-gradient(
+		center bottom,
+		#3974BB 0%,
+		#548ACF 100%
+	);
+
+	border:			1px #4880C5 solid;
+}
+
+.ResourcesCellName {
+	font-size:		11px;
+
+	color:			#444444;
+
+	border:			1px #DBDBDB solid;
+	border-top:		none;
+
+	padding:		10px;
+
+	line-height:	14px;
+
+	position:		relative;
+}
+
+.ResourcesCellName h1 {
+	margin:			0;
+	padding:		0;
+
+	color:			#4880C5;
+
+	font-size:		16px;
+	font-weight:	normal;
+
+	margin-bottom:	10px;
+}
+
+.ResourcesCell {
+	border:			1px #DBDBDB solid;
+	border-top:		none;
+	border-left:	none;
+
+	text-align:		center;
+}
+
+.ResourcesCellIcon {
+	float:			left;
+
+	width:			33px;
+	height:			40px;
+
+	margin-right:	8px;
+
+	background-image:	url("./Unknown.png");
+}
+
+.ResourcesCellIconDOC { background-image: url("./DOC.png"); }
+.ResourcesCellIconXLS { background-image: url("./XLS.png"); }
+.ResourcesCellIconPDF { background-image: url("./PDF.png"); }
+
+.ResourcesCellInactiveTag {
+	color:			white; 
+	
+	float:			right; 
+	
+	background-color: #B3B3B3;
+
+	padding-left:	6px;
+	padding-right:	6px;
+	padding-top:	2px;
+	padding-bottom:	2px;
+
+	border-radius:	3px;
+
+	font-size:		10px;
+}

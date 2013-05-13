@@ -1,0 +1,105 @@
+.PageTitle {
+	margin-bottom:	10px;
+}
+
+.ReportBox {
+	float:			left;
+
+	width:			246px;
+	height:			200px;
+
+	margin-top:		10px;
+	margin-left:	10px;
+	margin-right:	10px;
+
+	border:			1px #B7B7B7 solid;
+
+	position:		relative;
+
+	overflow:		hidden;
+}
+
+.ReportBox h1 {
+	position:		absolute;
+
+	left:			-1px;
+	top:			-1px;
+
+	color:			white;
+
+	margin:			0;
+	padding:		0;
+
+	width:			238px;
+	height:			30px;
+
+	padding-left:	10px;
+
+	line-height:	30px;
+
+	font-size:		14px;
+	font-weight:	bold;
+
+	border-bottom:	1px #D5D5D5 solid;
+
+	border-radius:	2px;
+
+	background-color: #299DD5; 
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, rgb(4,115,175)),
+		color-stop(1, rgb(79,198,253))
+	);
+	background-image: -moz-linear-gradient(
+		center bottom,
+		rgb(4,115,175) 0%,
+		rgb(79,198,253) 100%
+	);
+}
+
+.ReportBox table {
+	line-height:	18px;
+}
+
+.Run {
+	background-image:	url("Run.png");
+
+	width:				61px;
+	height:				20px;
+
+	cursor:				pointer;
+
+	position:			absolute;
+
+	left:				92px;
+	bottom:				20px;
+}
+
+.ReportTable {
+	margin-top:			20px;
+}
+
+.ReportTable th {
+	border-bottom:		1px #AAAAAA solid;
+
+	height:				18px;
+	line-height:		18px;
+
+
+	font-size:			14px;
+}
+
+.ReportTable tr:nth-child(odd) {
+	background-color:	#F5F5F5;
+}
+
+.ReportTable tr:first-child {
+	background-color:	transparent;
+}
+
+.ReportTable td {
+	height:				18px;
+	line-height:		18px;
+}

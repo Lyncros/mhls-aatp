@@ -1,0 +1,161 @@
+.Alerts {
+	margin-top:		20px;
+	margin-bottom:	20px;
+	margin-left:	10px;
+
+	width:			782px;
+
+	position:		relative;
+}
+
+.AlertsHeader {
+	text-align:		center;
+
+	color:			#666666;
+
+	width:			582px;
+	height:			42px;
+
+	background-color: #EEEEEE; 
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, #EEEEEE),
+		color-stop(1, #FFFFFF)
+	);
+	background-image: -moz-linear-gradient(
+		center bottom,
+		#EEEEEE 0%,
+		#FFFFFF 100%
+	);
+
+	border:			1px #DBDBDB solid;
+	border-left:	none;
+
+	font-size:		14px;
+	font-weight:	normal;
+
+	line-height:	14px;
+}
+
+.AlertsHeaderFirst {
+	text-align:		left;
+
+	padding-left:	10px;
+
+	color:			white;
+
+	font-size:		16px;
+	font-weight:	normal;
+	
+	width:			200px;
+
+	background-color: #477FC5; 
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, #3974BB),
+		color-stop(1, #548ACF)
+	);
+	background-image: -moz-linear-gradient(
+		center bottom,
+		#3974BB 0%,
+		#548ACF 100%
+	);
+
+	border:			1px #4880C5 solid;
+}
+
+.AlertsCellName {
+	font-size:		11px;
+
+	color:			#444444;
+
+	border:			1px #DBDBDB solid;
+	border-top:		none;
+
+	padding:		10px;
+
+	line-height:	14px;
+
+	position:		relative;
+}
+
+.AlertsCellName h1 {
+	margin:			0;
+	padding:		0;
+
+	color:			#4880C5;
+
+	font-size:		16px;
+	font-weight:	normal;
+
+	margin-bottom:	10px;
+}
+
+.AlertsCell {
+	border:			1px #DBDBDB solid;
+	border-top:		none;
+	border-left:	none;
+
+	padding:		10px;
+}
+
+.AlertsCell a {
+	color:			#3186db;
+
+	font-size:		10px;
+}
+
+.AlertsCellHiddenTag {
+	color:			white; 
+	
+	float:			right; 
+	
+	background-color: #B3B3B3;
+
+	padding-left:	6px;
+	padding-right:	6px;
+	padding-top:	2px;
+	padding-bottom:	2px;
+
+	border-radius:	3px;
+
+	font-size:		10px;
+}
+
+.AvailableGroupsItem {
+	height:			12px;
+	line-height:	12px;
+	
+	margin-bottom:	1px;
+
+	padding:		4px;
+
+	text-align:		left;
+
+	background-color:	#EEEEEE;
+
+	font-size:		11px;
+
+	cursor:			pointer;
+}
+
+.SelectedGroupsItem {
+	height:			12px;
+	line-height:	12px;
+	
+	margin-bottom:	1px;
+
+	padding:		4px;
+
+	text-align:		left;
+
+	background-color:	#C7EAF8;
+
+	font-size:		11px;
+
+	cursor:			pointer;
+}

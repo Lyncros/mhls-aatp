@@ -1,0 +1,333 @@
+.TEMP001 {
+	width:					100%;
+	height:					612px;
+	background-image:		url("./TEMP_001.png");
+}
+
+.DashboardBox {
+	float:			left;
+
+	width:			246px;
+	height:			200px;
+
+	margin-top:		10px;
+	margin-left:	10px;
+	margin-right:	10px;
+
+	border:			1px #B7B7B7 solid;
+
+	position:		relative;
+
+	overflow:		hidden;
+}
+
+.DashboardBox h1 {
+	position:		absolute;
+
+	left:			-1px;
+	top:			-1px;
+
+	color:			white;
+
+	margin:			0;
+	padding:		0;
+
+	width:			238px;
+	height:			30px;
+
+	padding-left:	10px;
+
+	line-height:	30px;
+
+	font-size:		14px;
+	font-weight:	bold;
+
+	border-bottom:	1px #D5D5D5 solid;
+
+	border-radius:	2px;
+}
+
+.TopAlerts h1 {
+	background-color: #299DD5; 
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, rgb(4,115,175)),
+		color-stop(1, rgb(79,198,253))
+	);
+	background-image: -moz-linear-gradient(
+		center bottom,
+		rgb(4,115,175) 0%,
+		rgb(79,198,253) 100%
+	);
+}
+
+.TopAlertsItemFirst {
+	margin-top:			29px;
+
+	border-top:			none;
+}
+
+.TopAlertsItem {
+	height:				33px;
+	line-height:		34px;
+
+	border-top:			1px #999999 solid;
+
+	color:				#333333;
+
+	font-size:			12px;
+
+	background-image:	url("./TopAlertsItem.png");
+	background-position: 5px center;
+	background-repeat:	no-repeat;
+
+	padding-left:		18px;
+
+	cursor:				pointer;
+}
+
+.TopAlertsItemRead {
+	background-image:	url("./TopAlertsItemRead.png");
+}
+
+.Reports h1 { 
+	background-color: #E15C01; 
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, #C44F00),
+		color-stop(1, #FF6600)
+	);
+	background-image: -moz-linear-gradient(
+		center bottom,
+		#C44F00 0%,
+		#FF6600 100%
+	);
+}
+
+.Authorizations h1 {
+	background-color: #5C8802; 
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, #527900),
+		color-stop(1, #669900)
+	);
+	background-image: -moz-linear-gradient(
+		center bottom,
+		#527900 0%,
+		#669900 100%
+	);
+}
+
+.AuthorizationsSpacer {
+	height:			30px;
+}
+
+.AuthorizationsNumber {
+	border-right:	1px #B7B7B7 solid;
+	border-bottom:	1px #B7B7B7 solid;
+
+	font-size:		32px;
+
+	width:			50px;
+	height:			56px;
+	line-height:	56px;
+
+	color:			#333333;
+
+	float:			left;
+
+	text-align:		center;
+}
+
+.AuthorizationsText {
+	border-bottom:	1px #B7B7B7 solid;
+
+	float:			left;
+
+	font-size:		12px;
+
+	width:			174px;
+	height:			56px;
+	line-height:	56px;
+
+	padding-left:	20px;
+}
+
+.TimeClock { 
+	float:			left;
+
+	margin-top:		20px;
+	margin-bottom:	20px;
+	margin-left:	10px;
+
+	width:			782px;
+
+	height:			109px;
+
+	border:			1px #B7B7B7 solid;
+
+	position:		relative;
+
+	padding-top:	65px;
+}
+
+.TimeClock h1 {
+	position:		absolute;
+
+	left:			-1px;
+	top:			-1px;
+
+	color:			white;
+
+	margin:			0;
+	padding:		0;
+
+	width:			774px;
+	height:			30px;
+
+	padding-left:	10px;
+
+	line-height:	30px;
+
+	font-size:		14px;
+	font-weight:	bold;
+
+	border-bottom:	1px #D5D5D5 solid;
+
+	border-radius:	2px;
+
+	background-color: #1E1A1D; 
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, #000000),
+		color-stop(1, #333333)
+	);
+	background-image: -moz-linear-gradient(
+		center bottom,
+		#000000 0%,
+		#333333 100%
+	);
+}
+
+.TimeClockWeekBar {
+	position:		absolute;
+
+	left:			0px;
+	top:			29px;
+
+	width:			100%;
+	height:			35px;
+
+	background-color: #E5E5E5; 
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, #E5E5E5),
+		color-stop(0.9, #E5E5E5),
+		color-stop(1, #ADADAD)
+	);
+	background-image: -moz-linear-gradient(
+		center bottom,
+		#E5E5E5 0%,
+		#E5E5E5 90%,
+		#ADADAD 100%
+	);
+
+	border-bottom:		1px #B7B7B7 solid;
+
+	text-align:		center;
+
+	line-height:	36px;
+
+	font-size:		16px;
+
+	color:			#666666;
+}
+
+.TimeClockWeekBarPrevious {
+	width:			19px;
+	height:			18px;
+
+	background-image:	url("TimeClockWeekBarPrevious.png");
+
+	float:			left;
+
+	cursor:			pointer;
+}
+
+.TimeClockWeekBarNext {
+	width:			19px;
+	height:			18px;
+
+	background-image:	url("TimeClockWeekBarNext.png");
+
+	float:			right;
+
+	cursor:			pointer;
+}
+
+.TimeClockDay {
+	background-color:	#F5F5F5;
+
+	border-right:		1px #B7B7B7 solid;
+	border-bottom:		1px #B7B7B7 solid;
+
+	float:				left;
+
+	width:				111px;
+	height:				44px;
+
+	line-height:		44px;
+
+	color:				#666666;
+
+	text-align:			center;
+
+	font-size:			11px;
+}
+
+.TimeClockDayLast {
+	width:				110px;
+	border-right:		none;
+}
+
+.TimeClockDayCell {
+	background-color:	white;
+
+	border-right:		1px #B7B7B7 solid;
+
+	float:				left;
+
+	width:				111px;
+	height:				64px;
+}
+
+.TimeClockDayCellLast {
+	width:				110px;
+	border-right:		none;
+}
+
+.TimeClockDayCellEntry {
+	width:				9px;
+	height:				9px;
+
+	background-image:	url("./TimeClockDayCellEntry.png");
+	
+	margin:				5px;
+	margin-right:		0px;
+
+	float:				left;
+}
+
+.TimeClockDayCellEntryConfirmed {
+	background-image:	url("./TimeClockDayCellEntryConfirmed.png");
+}
