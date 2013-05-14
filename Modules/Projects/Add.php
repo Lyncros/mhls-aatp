@@ -212,7 +212,7 @@
 			echo CForm::AddTextbox("2011 Sales Gross Units", "2011SalesGrossUnits", $Project->{"2011SalesGrossUnits"});
 			echo CForm::AddTextbox("2011 Sales Gross Revenue", "2011SalesGrossRevenue", $Project->{"2011SalesGrossRevenue"});
 			echo CForm::AddTextarea("Lead Notes", "LeadNotes", $Project->LeadNotes);
-			echo CForm::AddYesNo("Request Plant", "RequestPlant", $Project->RequestPlant);
+			echo CForm::AddTextbox("Request Plant", "RequestPlant", $Project->RequestPlant);
 		?>
 		</table>
 

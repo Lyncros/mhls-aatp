@@ -289,7 +289,7 @@
 								echo CForm::AddTextbox("2011 Sales Gross Units", "2011SalesGrossUnits", $Project->{"2011SalesGrossUnits"}, "", "", "Advanced");
 								echo CForm::AddTextbox("2011 Sales Gross Revenue", "2011SalesGrossRevenue", $Project->{"2011SalesGrossRevenue"}, "", "", "Advanced");
 								echo CForm::AddTextarea("Lead Notes", "LeadNotes", $Project->LeadNotes, "", "Basic");
-								echo CForm::AddYesNo("Request Plant", "RequestPlant", $Project->RequestPlant, "OnOff", "Basic");
+								echo CForm::AddTextbox("Request Plant", "RequestPlant", $Project->RequestPlant, "", "", "Basic");
 								echo CForm::AddHidden("ID", $Project->ID);
 								echo "
 								<tr>
@@ -379,8 +379,9 @@
 											echo CForm::AddTextbox("Name", "Name", "", "Please enter a Name");
 											echo CForm::AddYesNo("Customer Approval", "CustomerApproval", 0, "YesNo");
 											echo CForm::AddTextarea("Summary", "Summary", "");
+											echo CForm::AddDatepicker("Estimated Start Date", "EstimatedStartDate", time(), "", "");
 											echo CForm::AddDatepicker("Expected Delivery Date", "ExpectedDeliveryDate", time(), "", "", "Please enter an Expected Delivery Date");
-											echo CForm::AddDatepicker("Actual Delivery Date", "ActualDeliveryDate", time(), "", "");
+											echo CForm::AddDatepicker("Actual Delivery Date", "ActualDeliveryDate", time(), "", "");											
 											echo CForm::AddTextbox("Plant Allocated", "PlantAllocated", "");
 											echo CForm::AddDropdown("Status", "Status", CMilestones::GetStatusList(), "");
 											echo CForm::AddHidden("ProjectsID", $ProjectID);
@@ -430,6 +431,7 @@
 													echo CForm::AddTextbox("Name", "Name", $Milestone->Name, "Please enter a Name");
 													echo CForm::AddYesNo("Customer Approval", "CustomerApproval", $Milestone->CustomerApproval, "YesNo");
 													echo CForm::AddTextarea("Summary", "Summary", $Milestone->Summary);
+													echo CForm::AddDatepicker("Estimated Start Date", "EstimatedStartDate", ($Milestone->EstimatedStartDate > 0 ? $Milestone->EstimatedStartDate : ""), "", "");
 													echo CForm::AddDatepicker("Expected Delivery Date", "ExpectedDeliveryDate", ($Milestone->ExpectedDeliveryDate > 0 ? $Milestone->ExpectedDeliveryDate : ""), "", "", "Please enter an Expected Delivery Date");
 													echo CForm::AddDatepicker("Actual Delivery Date", "ActualDeliveryDate", ($Milestone->ActualDeliveryDate > 0 ? $Milestone->ActualDeliveryDate : ""), "", "");
 													echo CForm::AddTextbox("Plant Allocated", "PlantAllocated", $Milestone->PlantAllocated);
@@ -440,6 +442,7 @@
 													echo CForm::AddRow("Name", $Milestone->Name);
 													echo CForm::AddRow("Customer Approval", $Milestone->CustomerApproval);
 													echo CForm::AddRow("Summary", $Milestone->Summary);
+													echo CForm::AddRow("Estimated Start Date", ($Milestone->EstimatedStartDate > 0 ? date('F j, Y', $Milestone->EstimatedStartDate) : "N/A"));
 													echo CForm::AddRow("Expected Delivery Date", ($Milestone->ExpectedDeliveryDate > 0 ? date('F j, Y', $Milestone->ExpectedDeliveryDate) : "N/A"));
 													echo CForm::AddRow("Actual Delivery Date", ($Milestone->ActualDeliveryDate > 0 ? date('F j, Y', $Milestone->ActualDeliveryDate) : "N/A"));
 													echo CForm::AddRow("Plant Allocated", $Milestone->PlantAllocated);
@@ -499,10 +502,10 @@
 							foreach($ToDos->Rows as $ToDo) {
 								echo "
 								<tr>
-									<td></td>
 									<td colspan='7' style='padding-left:12px;'>
 										<table style='width:100%;'>
 											<tr>
+												<td style='width: 60px;'>".($ToDo->Complete == 1 ? "<div class='TodoComplete'></div>" : "")."</td>
 												<td>
 													<div style='padding-left:11px; font-weight:bold; font-size:12px; margin-top:12px; margin-bottom:6px; cursor:pointer;' id='ToDoLabel".$ToDo->ID."'><span style='float:left;'>To-Do: ".$ToDo->Name."</span> <div class='ToDoDownArrow'></div></div>
 													<div class='MilestoneToDoDetails' id='MilestoneToDo".$ToDo->ID."' style='padding-left:58px; display:none; clear:both; margin:12px 0px; position:relative; top:12px;'>

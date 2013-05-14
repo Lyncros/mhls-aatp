@@ -305,7 +305,7 @@ input[disabled],select[disabled] {
 	line-height:		46px;
 	
 	float:				left;
-	margin-top:			49px;
+	margin-top:			10px;
 	margin-right:		15px;
 	
 	font-size:			18px;
@@ -462,6 +462,16 @@ input[disabled],select[disabled] {
 	background:							transparent url('./Complete.png') left top no-repeat scroll;
 }
 
+.TodoComplete {
+	width:								16px;
+	height:								13px;
+	background:							transparent url('./TodoComplete.png') left top no-repeat scroll;
+	float:right; 
+	position:relative; 
+	top:6px;
+}
+
+
 .Content {
 	background-color:					#f0f0f0;
 	float:								right;
@@ -471,7 +481,7 @@ input[disabled],select[disabled] {
 	-webkit-border-radius:				3px;
 	-moz-border-radius:					3px;
 	border-radius:						3px;
-	margin:								13px 13px 13px 0px;
+	margin:								5px 13px 13px 0px;
 	padding:							30px;
 	overflow:							hidden;
 }
@@ -736,12 +746,13 @@ input[disabled],select[disabled] {
 	-moz-border-radius:					5px;
 	border-radius:						5px;
 	padding:							5px;
-	margin-bottom:						17px;
+	margin-bottom:						5px;
 }
 
 .FirstPaginator {
 	position:							absolute;
-	top:								100px;
+	top:								85px;
+	margin-bottom:						0px;
 }
 
 

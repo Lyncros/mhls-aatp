@@ -107,7 +107,7 @@
 
 			if(($ID = CUsers::ValidLogin($Username, $Password)) === false) {
 				$this->SessionControl->LoginAttempts = $this->SessionControl->LoginAttempts + 1;
-
+				
 				$this->PageNotice = "Unable to login, please try again";
 				return false;
 			}			

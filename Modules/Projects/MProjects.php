@@ -255,6 +255,7 @@
 				"Name"					=> htmlspecialchars($_POST["Name"]),
 				"CustomerApproval"		=> intval($_POST["CustomerApproval"]),
 				"Summary"				=> htmlspecialchars($_POST["Summary"]),
+				"EstimatedStartDate"	=> strtotime($_POST["EstimatedStartDate"]),
 				"ExpectedDeliveryDate"	=> strtotime($_POST["ExpectedDeliveryDate"]),
 				"ActualDeliveryDate"	=> strtotime($_POST["ActualDeliveryDate"]),
 				"PlantAllocated"		=> htmlspecialchars($_POST["PlantAllocated"]),
@@ -292,6 +293,7 @@
 				"Name"						=> $Data["Name"],
 				"CustomerApproval"			=> ($Data["CustomerApproval"] ? "Yes" : "No"),
 				"Summary"					=> $Data["Summary"],
+				"EstimatedStartDate"		=> ($Data["EstimatedStartDate"] ? date('n/j/Y', $Data["EstimatedStartDate"]) : "N/A"),
 				"ExpectedDeliveryDate"		=> ($Data["ExpectedDeliveryDate"] ? date('n/j/Y', $Data["ExpectedDeliveryDate"]) : "N/A"),
 				"ActualDeliveryDate"		=> ($Data["ActualDeliveryDate"] ? date('n/j/Y', $Data["ActualDeliveryDate"]) : "N/A"),
 				"PlantAllocated"			=> $Data["PlantAllocated"],
@@ -392,6 +394,7 @@
 				"Name"						=> $Milestone->Name,
 				"CustomerApproval"			=> ($Milestone->CustomerApproval ? "Yes" : "No"),
 				"Summary"					=> $Milestone->Summary,
+				"EstimatedStartDate"		=> ($Milestone->EstimatedStartDate ? date('n/j/Y', $Milestone->EstimatedStartDate) : "N/A"),
 				"ExpectedDeliveryDate"		=> ($Milestone->ExpectedDeliveryDate ? date('n/j/Y', $Milestone->ExpectedDeliveryDate) : "N/A"),
 				"ActualDeliveryDate"		=> ($Milestone->ActualDeliveryDate ? date('n/j/Y', $Milestone->ActualDeliveryDate) : "N/A"),
 				"PlantAllocated"			=> $Milestone->PlantAllocated,
@@ -552,7 +555,7 @@
 				"2011SalesGrossUnits"				=> intval($_POST["2011SalesGrossUnits"]),
 				"2011SalesGrossRevenue"				=> doubleval($_POST["2011SalesGrossRevenue"]),
 				"LeadNotes"							=> htmlspecialchars($_POST["LeadNotes"]),
-				"RequestPlant"						=> intval($_POST["RequestPlant"]),
+				"RequestPlant"						=> htmlspecialchars($_POST["RequestPlant"]),
 				"Modified"							=> time(),
 				"ModifiedUsersID"					=> CSecurity::GetUsersID(),
 			);
@@ -692,7 +695,7 @@
 				"User"						=> $User->FirstName . " " . $User->LastName,
 			);
 			CNotifier::Push("Module", "Projects", "New or Updated Project", $EmailData, $ID);
-			if(intval($_POST["RequestPlant"]) && !$OldPlantRequest) {
+			if(htmlspecialchars($_POST["RequestPlant"]) && !$OldPlantRequest) {
 				// Trigger email to appropriate manager
 				// 2012-07-31 per John Henry, just Craig Bartley for now (craig_bartley@mcgraw-hill.com)
 				CNotifier::PushEmail("craig_bartley@mcgraw-hill.com", "Module", "Projects", "Plant Request", $EmailData);
@@ -709,8 +712,6 @@
 				"Name" 		=> htmlspecialchars($_POST["Name"]),
 				"UsersID"	=> CSecurity::GetUsersID(),				
 			);
-		
-			$Data["Options"]["FilterOperator"] = $_POST["FilterOperator"];
 			
 			$CFilterProfiles = new CFilterProfiles();			
 			$Row = $CFilterProfiles->LoadByName($Data["Name"]);

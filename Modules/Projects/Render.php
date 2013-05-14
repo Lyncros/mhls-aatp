@@ -6,10 +6,6 @@
 	$DayOfWeek	= date("w", $Date);
 	$Date		= mktime(2, 0, 0, date("m", $Date), date("d", $Date) - $DayOfWeek, date("Y", $Date));
 ?>
-
-
-	
-
 <?
 	function OnCreated($Value) {
 		return date('n/j/Y', strtotime($Value));
@@ -47,36 +43,28 @@
 			<div class='ProjectContainer'>
 				<table style='width:100%;' cellpadding='0' cellspacing='0'>
 					<tr>
-						<td style='vertical-align:top; padding-top:22px; padding-left:11px;'><div class='ProductIcon'></div></td>
-						<td style='vertical-align:top; padding:22px 11px; width:135px;'>
+						<td style='vertical-align:top; padding-top:7px; padding-left:11px;'><div class='ProductIcon'></div></td>
+						<td style='vertical-align:top; padding:7px 11px; width:135px;'>
 							<div style='font-weight:bold; font-size:14px;'>".$Project->ProductNumber."</div>
-							<div>".$Project->School."</p>
-							<div style='font-weight:bold; font-size:14px;'>".$Project->PrimaryCustomer."</div>
-							<p>(".substr($Project->CustomerPhone, 0, 3).") ".substr($Project->CustomerPhone, 3, 3)."-".substr($Project->CustomerPhone, 6, 4)."</p>
+							<div>".$Project->School."</p>							
 						</td>
-						<td style='vertical-align:top; padding-top:20px;'><div class='Separator'></div></td>
-						<td style='vertical-align:top; padding:22px 11px; width:195px;'>
+						<td style='vertical-align:top; padding-top:10px;'><div class='Separator'></div></td>
+						<td style='vertical-align:top; padding:7px 11px; width:195px;'>
 							<div style='color:#d74c4c; font-weight:bold; font-size:14px;'>Dates</div>
 							<p><b>Due:</b> ".($Project->DueDate > 0 ? date('n/j/Y', $Project->DueDate) : ($Project->CourseStartDate > 0 ? date('n/j/Y', $Project->CourseStartDate) : "N/A"))."</p>
-							<p><b>Last Touched:</b> ".date('n/j/Y', $Project->GetLastModified()).$LastTouchedDays."</p>
-							<p><b>LS Submit:</b> ".date('n/j/Y', $Project->Created)."</p>
-							<p><b>Class Start:</b> ".($Project->CourseStartDate > 0 ? date('n/j/Y', $Project->CourseStartDate) : "N/A")."</p>
+							<p><b>Last Touched:</b> ".date('n/j/Y', $Project->GetLastModified()).$LastTouchedDays."</p>							
 						</td>
-						<td style='vertical-align:top; padding-top:20px;'><div class='Separator'></div></td>
-						<td style='vertical-align:top; padding:22px 11px; width:145px;'>
+						<td style='vertical-align:top; padding-top:10px;'><div class='Separator'></div></td>
+						<td style='vertical-align:top; padding:7px 11px; width:145px;'>
 							<div style='color:#0685c5; font-weight:bold; font-size:14px;'>Project Details</div>
-							<p><b>CA:</b> ".$Project->GetUsers("CreativeAnalysts")."</p>
 							<p><b>LSC:</b> ".$Project->GetUsers("LSCs")."</p>
-							<p><b>Sales Rep:</b> ".$Project->GetUsers("SalesReps")."</p>
-							<!--<p>".$Project->StatSponsorCode."</p>-->
-							<p><b>Product Type(s):</b> ".$Project->GetProductTypesList()."</p>
 							<p style='color:#0685c5; text-decoration:underline; cursor:pointer;' onClick=\"MProjects.ShowPreviewBox(this, 'LeadNotes', ".$Project->ID.");\">Lead Notes</p>
 						</td>
-						<td style='vertical-align:top; padding-top:20px;'><div class='Separator'></div></td>
-						<td style='vertical-align:top; padding:22px 11px; width:150px;'>
+						<td style='vertical-align:top; padding-top:10px;'><div class='Separator'></div></td>
+						<td style='vertical-align:top; padding:7px 11px; width:150px;'>
 							<div style='color:#4f911e; font-weight:bold; font-size:14px;'>Project Value</div>
 							<p style='font-size:18px; font-weight:bold;'>$".number_format($Project->ProjectValue, 2)."</p>
-							<div style='color:#4f911e; font-weight:bold; font-size:14px; margin-top:12px; margin-bottom:6px;'>Milestone Completion</div>
+							<div style='color:#4f911e; font-weight:bold; font-size:13px; margin-top:12px; margin-bottom:6px;'>Milestone Completion</div>
 							<div class='CompletionWrapper'>
 								<div class='CompletionBar' style='width:".$MilestoneBarWidth."px;'></div>
 								<div class='CompletionPercentage'>".number_format($MilestonePercentage * 100)."%</div>
@@ -115,13 +103,14 @@
 	/* 4 */ $Search->AddColumn("Customer Phone", "CustomerPhone", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
 	/* 5 */ $Search->AddColumn("Stat Sponsor Code", "StatSponsorCode", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
 	/* 6 */ $Search->AddColumn("Created", "Created", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
+	/* 7 */ $Search->AddColumn("DueDate", "DueDate", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
 	/* 7 */ //$Search->AddColumn("Product Type", "ProductType", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
 	
 	// Non-deleted Projects
 	$Search->AddRestriction("Deleted", "0");
 	
 	// Where Operator
-	$Search->SetWhereOperator = $_GET["FilterOperator"];
+	$Search->SetWhereOperator($_GET["FilterOperator"]);
 	
 	//$Search->SetDefaultColumn(0, 1);
 	
@@ -398,19 +387,19 @@
 			} else
 			if($_GET["Sort"] == "Date") {
 				$OrderColumn = 6;
+			} else
+			if($_GET["Sort"] == "DueDate") {
+				$OrderColumn = 7;
 			}
 			
-			if($_GET["SortDir"] == "DESC") {
-				//$OrderQuery .= " DESC";
+			if($_GET["SortDir"] == "DESC")
 				$Search->SetDefaultColumn($OrderColumn, 1);
-			} else {
-				//$OrderQuery .= " ASC";
+			else 
 				$Search->SetDefaultColumn($OrderColumn, 0);
-			}
 		}
-	
+		
 	echo "
-	<div id='SearchResultsContainer' style='position:absolute; top:25px; left:25px; width:4050px;'>";
+	<div id='SearchResultsContainer' style='position:absolute; top:10px; left:25px; width:4050px;'>";
 		
 		// Sort By Name
 		$Temp = $_GET;
@@ -424,7 +413,7 @@
 			$Temp["Sort"]		= "Name";
 			$Temp["SortDir"]	= "ASC";
 		}
-		echo "<div class='Button' value='SortName' onClick='CModule.Load(\"Projects\", ".json_encode($Temp).")' style='height:28px; line-height:28px; float:left; margin-top:62px; margin-left:0px;'>Name ".($Temp["SortDir"] == "ASC" ? "A-Z" : "Z-A")."</div>";
+		echo "<div class='Button' value='SortName' onClick='CModule.Load(\"Projects\", ".json_encode($Temp).")' style='height:28px; line-height:28px; float:left; margin-top:45px; margin-left:0px;width:180px;'>Name ".($Temp["SortDir"] == "ASC" ? "A-Z" : "Z-A")."</div>";
 		
 		// Sort by Date Created
 		$Temp = $_GET;
@@ -438,7 +427,21 @@
 			$Temp["Sort"]		= "Date";
 			$Temp["SortDir"]	= "ASC";
 		}
-		echo "<div class='Button' value='SortDate' onClick='CModule.Load(\"Projects\", ".json_encode($Temp).")' style='height:28px; line-height:28px; float:left; margin-top:62px; margin-left:-1px;'>".($Temp["SortDir"] == "ASC" ? "Newest" : "Oldest")." on Top</div>";
+		echo "<div class='Button' value='SortDate' onClick='CModule.Load(\"Projects\", ".json_encode($Temp).")' style='height:28px; line-height:28px; float:left; margin-top:45px; margin-left:-1px;width:180px;'>By creation date - ".($Temp["SortDir"] == "ASC" ? "newest" : "oldest")." on top</div>";
+		
+		// Sort by Due Date
+		$Temp = $_GET;
+		if($Temp["Sort"] == "DueDate") {
+			if($Temp["SortDir"] == "DESC") {
+				$Temp["SortDir"]	= "ASC";
+			} else {
+				$Temp["SortDir"]	= "DESC";
+			}
+		} else {
+			$Temp["Sort"]		= "DueDate";
+			$Temp["SortDir"]	= "ASC";
+		}
+		echo "<div class='Button' value='SortDueDate' onClick='CModule.Load(\"Projects\", ".json_encode($Temp).")' style='height:28px; line-height:28px; float:left; margin-top:45px; margin-left:-1px;width:180px;'>By due date - ".($Temp["SortDir"] == "ASC" ? "newest" : "oldest")." on top</div>";
 		
 		echo "
 		<form id='SearchForm' method='get' style='top:0px;'>
@@ -464,14 +467,47 @@
 					}
 				echo "
 				</select>
-				<div style='float: right;margin-top: 5px;' class='Icon_Delete' title='Delete Filter' onclick='MProjects.DeleteFilter();'></div>
+				<div style='float:right;margin-top: 5px;' class='Icon_Delete' title='Delete Filter' onclick='MProjects.DeleteFilter();'></div>
 				<script type='text/javascript'>$('#FilterProfiles').select2();</script>
-				<p>Choose your filtering options&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<select id='FilterOperator' class='' style='width:55px;'>
-					<option value='AND'>AND</option>
-					<option value='OR'>OR</option>
-				</select>
-				</p>";
+				<div style='width:70%;margin-right:55px;padding-top:5px;padding-bottom:7px;'>Choose your filtering options&nbsp;</div>
+				<style>
+				  #feedback { font-size: 10px; }
+				  #selectable .ui-selecting { background: #FECA40; }
+				  #selectable .ui-selected { background: rgb(114, 107, 97); color: white; border-color: rgb(114, 107, 97);}
+				  #selectable { list-style-type: none; margin: 0; padding: 0; width: 50px;}
+				  #selectable li { vertical-align:middle;margin: 0px; padding: 1px; float: left; width: 50px; height: 18px; font-size: 13px; text-align: center; color: rgb(66, 56, 41); border: 1px solid rgb(66, 56, 41);}
+				</style>";
+				 
+				$Filters = json_decode(urldecode($_GET["Filters"]));
+				echo "<div style='float: right;margin-right:10px;'><ul id='selectable'>";
+					if(isset($Filters->FilterOperator) && $Filters->FilterOperator=='OR')
+					{
+						echo '<li>AND</li>
+						<li class="ui-selected">OR</li>';
+					} else {
+						echo '<li class="ui-selected">AND</li>
+							<li>OR</li>';
+					}
+				echo "</ul>" .
+					'<script>
+						$(function() {
+							$("#selectable" ).selectable();
+							$("#selectable" ).on("selectableselected", function( event, ui ) {
+								$("#FilterOperator option").attr("selected",false);
+								$("#FilterOperator option[value="+ui.selected.outerText+"]").attr("selected",true);
+							} );
+						});
+					</script>' . "
+				<select id='FilterOperator' class='' style='width:55px;display:none;'>";
+					if(isset($Filters->FilterOperator) && $Filters->FilterOperator=='OR')
+					{
+						echo "	<option value='AND'>AND</option>
+								<option value='OR' selected>OR</option>";
+					} else {
+						echo "	<option value='AND' selected>AND</option>
+								<option value='OR'>OR</option>";
+					}
+				echo "</select></div>";
 				foreach($FilterOptions as $Key => $Value) {
 					$FilterOptionContainerActive	= "";
 					$FilterOptionActive				= "";
@@ -543,7 +579,7 @@
 				<div class='Button' value='Apply' onClick=\"MProjects.ApplyFilter();\" style='box-shadow:none; margin-top:0px; margin-left:4px;'>apply</div>
 				<br style='clear:both;'>
 				<input type='text' class='CForm_Textbox' id='SaveFilterName' placeholder='Filter Name' style='margin-top:5px; float:left; width:160px; height:22px;'>
-				<div class='Button' value='Save' onClick=\"MProjects.SaveFilter();\" style='box-shadow:none; margin-top:5px; margin-left:4px;'>save</div>
+				<div class='Button' value='Save' onClick=\"MProjects.SaveFilter();\" style='box-shadow:none; margin-top:5px; margin-left:4px;'>save/edit</div>
 			</div>
 		</div>";
 		
@@ -563,7 +599,7 @@
 		echo "</div>";
 
 		$Search->OnInit();
-		echo "<h1 style='position:absolute; top:12px;'>".$Search->NumRows." Project".($Search->NumRows == 1 ? "" : "s")."</h1>";
+		echo "<h1 style='position:absolute; top:0px;'>".$Search->NumRows." Project".($Search->NumRows == 1 ? "" : "s")."</h1>";
 		
 		echo "
 		<div class='FirstPaginator ProjectWrapper' id='ProjectList'>
@@ -573,7 +609,7 @@
 			</div>
 		</div>";
 		
-		$Search->OnRender("border:none !important; margin-top:150px;", "padding:0px;border:none;background:none;");
+		$Search->OnRender("border:none !important; margin-top:130px;", "padding:0px;border:none;background:none;");
 		
 		echo "
 		<div class='ProjectWrapper' id='ProjectList'>

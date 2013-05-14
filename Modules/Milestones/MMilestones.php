@@ -61,6 +61,7 @@
 				"Summary"					=> htmlspecialchars($_POST["Summary"]),
 				"ExpectedDeliveryDate"		=> htmlspecialchars($_POST[""]),
 				"ActualDeliveryDate"		=> htmlspecialchars($_POST[""]),
+				"EstimatedDeliveryDate"		=> htmlspecialchars($_POST[""]),
 				"PlantAllocated"			=> htmlspecialchars($_POST["PlantAllocated"]),
 				"Active"					=> intval($_POST["Active"]),
 				"ModifiedUsersID"			=> CSecurity::GetUsersID(),

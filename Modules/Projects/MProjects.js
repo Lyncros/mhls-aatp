@@ -76,24 +76,43 @@ MProjects.OnInit = function() {
 		Filters[$(this).attr("name")][str_replace($(this).attr("name"), "", $(this).attr("id"))] = $(this).val();
 		$("#Filters").val(JSON.stringify(Filters))
 	});
+	
+	$("#FilterOperator").change(function(){
+		var Filters = JSON.parse($("#Filters").val());
+
+		Filters['FilterOperator'] = $('#FilterOperator').val();
+		$("#Filters").val(JSON.stringify(Filters));
+	});
 }
 
 //=============================================================================
 MProjects.SaveFilter = function() {
-	var Parms = {};
-	Parms["Name"]		= $('#SaveFilterName').val();
-	Parms["Options"]	= $('#Filters').val();
-	Parms["FilterOperator"] = $('#FilterOperator').val();
-	
-	CAJAX.Add("Projects", "Module", "SaveFilter", Parms, function(Code, Content){
-		if(Code == 0) {
-			alert(Content);
-		} else {
-			$('#FilterProfiles').append($('<option></option>').attr('value', Parms["Options"]).attr('selected', true).text(Parms["Name"]));			
-			CPageNotice.Add("Success", Content);
-			//$('#SearchForm').submit();
-		}
-	});
+	var Filters = JSON.parse($("#Filters").val());
+	Filters['FilterOperator'] = $('#FilterOperator').val();
+	var Name = $('#SaveFilterName').val();
+		
+	// Has to edit a previous filter
+	if((!Name && !$("#FilterProfiles option[value='0']").is(':selected')) || Name)
+	{
+		var Parms = {};
+		Parms["Name"]			= (Name) ? Name : $("#FilterProfiles option:selected").text();
+		Parms["Options"]		= JSON.stringify(Filters);		
+		
+		CAJAX.Add("Projects", "Module", "SaveFilter", Parms, function(Code, Content){
+			if(Code == 0) {
+				alert(Content);
+			} else {
+				$('#FilterProfiles').append($('<option></option>').attr('value', Parms["Options"]).attr('selected', true).text(Parms["Name"]));			
+				CPageNotice.Add("Success", Content);
+				$('#Filters').val(Parms["Options"]);
+				$('#SearchForm').submit();
+			}
+		});
+	}
+	else
+	{	
+		alert('The filter name is required');
+	}
 }
 
 //=============================================================================
@@ -110,7 +129,7 @@ MProjects.DeleteFilter = function() {
 			{				
 				CPageNotice.Add("Success", Content);
 				$("#FilterProfiles option[value='{}']").attr("selected", true);
-				$('#Filters').val($("#FilterProfiles option[value='{}']").val());				
+				$('#Filters').val($("#FilterProfiles option[value='{}']").val());
 				$('#SearchForm').submit();
 			}
 		});
@@ -119,16 +138,20 @@ MProjects.DeleteFilter = function() {
 
 //=============================================================================
 MProjects.ApplyFilter = function() {
+	var Filters = JSON.parse($("#Filters").val());
+	Filters['FilterOperator'] = $('#FilterOperator').val();
+	
 	var Parms = {};
 	Parms["Name"]		= 'Temporary';
-	Parms["Options"]	= $('#Filters').val();
-
+	Parms["Options"]	= JSON.stringify(Filters);	
+	
 	CAJAX.Add("Projects", "Module", "SaveFilter", Parms, function(Code, Content){
 		if(Code == 0) {
 			alert(Content);
 		} else {
-			$('#FilterProfiles').append($('<option></option>').attr('value', Parms["Options"]).attr('selected', true).text(Parms["Name"]));
 			CPageNotice.Add("Success", Content);
+			$('#FilterProfiles').append($('<option></option>').attr('value', Parms["Options"]).attr('selected', true).text(Parms["Name"]));
+			$('#Filters').val(Parms["Options"]);
 			$('#SearchForm').submit();
 		}
 	});
