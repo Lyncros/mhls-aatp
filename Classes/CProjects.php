@@ -160,7 +160,7 @@
 				}
 				asort($this->ProductTypes);
 			}
-			unset($Milestones);
+			unset($Types);
 		}
 		
 		function OnLoadISBNs() {

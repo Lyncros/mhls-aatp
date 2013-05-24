@@ -53,28 +53,28 @@
 		//=====================================================================
 		function AddEdit() {
 			$ID = $_POST["ID"];
-
-			//CTable::Add/Update automatically escapes
+			
 			$Data = Array(
 				"Name"						=> htmlspecialchars($_POST["Name"]),
 				"Active"					=> intval($_POST["Active"]),
+				"Milestones"				=> ($_POST["Milestones"])?serialize(json_decode($_POST["Milestones"])):"",				
 				"Modified"					=> time(),
 				"ModifiedUsersID"			=> CSecurity::GetUsersID(),
-				"ModifiedIPAddress"			=> $_SERVER["REMOTE_ADDR"],
+				"ModifiedIPAddress"			=> $_SERVER["REMOTE_ADDR"]				
 			);
-
+			
 			if($ID > 0) {
 				if(CTable::Update($this->Table, $ID, $Data) === false) {
 					return Array(0, "Unable to update record, please try again");
 				}
-			}else{
+			}else{				
 				$Data["Created"]			= time();
 				$Data["CreatedUsersID"]		= CSecurity::GetUsersID();
 				$Data["CreatedIPAddress"]	= $_SERVER["REMOTE_ADDR"];
 
 				if(($ID = CTable::Add($this->Table, $Data)) === false) {
 					return Array(0, "Unable to add record, please try again");
-				}
+				}				
 			}
 
 			return Array($ID, "Record successfully entered / updated.");

@@ -48,24 +48,39 @@ MProductTypes.Window_Delete = function(ID) {
 }
 
 //=============================================================================
-MProductTypes.Save = function() {
-	if(CForm.Submit("ProductTypes", "Module", "Save", "", function(Code, Content) {
+MProductTypes.Save = function(ID) {
+	var Parms		= {};
+	Parms["ID"]		= ID;
+	if(ID == 0) {
+		Parms["Name"]		= $('#AddName').val();
+		Parms["Active"]		= $('#AddActive').val();
+		Parms["Milestones"]	= $('#AddMilestones').select2("val");		
+	} else {
+		Parms["Name"]		= $('#Edit' + ID + 'Name').val();
+		Parms["Active"]		= $('#Edit' + ID + 'Active').val();
+		Parms["Milestones"]	= $('#Edit' + ID + 'Milestones').select2("val");		
+	}
+	var success = true;
+	CAJAX.Add("ProductTypes", "Module", "AddEdit", Parms, function(Code, Content) {
 		if(Code == 0) {
-			//alert(Content);
+			alert(Content);
+			success = false;
+			return false;
 		}else{
 			$(document.body).scrollTo(0, 800);
-
-			$("#ID").val(Code);
+			
+			if(ID == 0) {
+				$('#AddName').val("");
+				$('#AddActive').val("");				
+				$('#AddMilestones').select2("val", "");				
+				$('#Add').slideUp();
+				location.reload();
+			}
+			
+			return true;			
 		}
-
-		return true;
-	}) == false) {
-		alert(CForm.GetLastError());
-
-		return false;
-	}
-
-	return true;
+	});
+	
+	return success;
 }
 
-//=============================================================================

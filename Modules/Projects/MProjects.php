@@ -81,8 +81,17 @@
 			if($Action == "AddFile") {
 				return $this->AddFile();
 			}else
+			if($Action == "FindMessage") {
+				return $this->FindMessage();
+			}else
 			if($Action == "AddMessage") {
 				return $this->AddMessage();
+			}else
+			if($Action == "EditMessage") {
+				return $this->EditMessage();
+			}else
+			if($Action == "DeleteMessage") {
+				return $this->DeleteMessage();
 			}else
 			if($Action == "AddEditMilestone") {
 				return $this->AddEditMilestone();
@@ -134,6 +143,9 @@
 			}else
 			if($Action == "CheckForUnique") {
 				return $this->CheckForUnique();
+			}else
+			if($Action == "UsedProductNumber") {
+				return $this->UsedProductNumber();
 			}else
 			if($Action == "GetPreviewBoxData") {
 				return $this->GetPreviewBoxData();
@@ -217,6 +229,17 @@
 		}
 		
 		//----------------------------------------------------------------------
+		function FindMessage() {
+			
+			$Message = CTable::SelectById('ProjectsMessages', $_POST["MessageId"]);
+			
+			if($Message)
+				return Array ($Message["ID"], json_encode($Message));
+			else
+				return Array (0, "Message not found");
+		}
+		
+		//----------------------------------------------------------------------
 		function AddMessage() {
 			$Data = Array(
 				"ProjectsID"			=> intval($_POST["ProjectsID"]),
@@ -247,7 +270,36 @@
 			
 			return Array(1, "Message added successfully.");
 		}
-		
+		//----------------------------------------------------------------------
+		function EditMessage() {
+			try
+			{
+				$Data = Array(								
+					"Title"		=> htmlspecialchars($_POST["Title"]),
+					"Content"	=> $_POST["Content"]
+				);
+				
+				if(CTable::Update("ProjectsMessages", intval($_POST["MessageID"]), $Data) === false) return Array(0, "Message cannot be eddited, try again later.");
+				
+				return Array($_POST["MessageID"], "Message updated successfully.");
+			}
+			catch (Exception $e)
+			{
+				return Array(0, "Message cannot be eddited, try again later. (".$e.")");
+			}
+		}
+		//----------------------------------------------------------------------
+		function DeleteMessage() {
+			try
+			{
+				CTable::Delete("ProjectsMessages", $_POST["MessageId"]);
+				return Array($_POST["MessageId"], "Message deleted successfully");
+			}
+			catch (Exception $e)
+			{
+				return Array(0, "Message cannot be deleted, try again later. (".$e.")");
+			}
+		}
 		//----------------------------------------------------------------------
 		function AddEditMilestone() {
 			$Data = Array(
@@ -556,26 +608,35 @@
 				"2011SalesGrossRevenue"				=> doubleval($_POST["2011SalesGrossRevenue"]),
 				"LeadNotes"							=> htmlspecialchars($_POST["LeadNotes"]),
 				"RequestPlant"						=> htmlspecialchars($_POST["RequestPlant"]),
+				"PlantPaid"							=> htmlspecialchars($_POST["PlantPaid"]),
+				"PlantLeft"							=> htmlspecialchars($_POST["PlantLeft"]),
+				"VenderUsed"						=> htmlspecialchars($_POST["VenderUsed"]),
+				"DatePaid"							=> strtotime($_POST["DatePaid"]),
+				"ISBN10"							=> htmlspecialchars($_POST["ISBN10"]),
+				"ISBN13"							=> htmlspecialchars($_POST["ISBN13"]),
+				"CustomISBN"						=> htmlspecialchars($_POST["CustomISBN"]),
 				"Modified"							=> time(),
-				"ModifiedUsersID"					=> CSecurity::GetUsersID(),
+				"ModifiedUsersID"					=> CSecurity::GetUsersID(),				
 			);
 
 			// Changes
-			$Temp = new CProjects();
-			if($Temp->OnLoad($ID) !== false) {
-				$OldPlantRequest = $Temp->RequestPlant;
+			$ProjectInDB = new CProjects();
+			if($ProjectInDB->OnLoad($ID) !== false) {
+				// 2013-05-22: AS CRAIG REQUESTED: EMAIL NOT NEED ANYMORE $OldPlantRequest = $ProjectInDB->RequestPlant;
 				$ChangeData = Array(
 					"ProjectsID"			=> $ID,
 					"Timestamp"				=> time(),
 					"UsersID"				=> CSecurity::GetUsersID(),
 					"IPAddress"				=> $_SERVER["REMOTE_ADDR"],
-					"Old"					=> serialize($Temp->Rows->Current),
+					"Old"					=> serialize($ProjectInDB->Rows->Current),
 					"New"					=> serialize($Data),
 				);
 				CTable::Add("ProjectsChanges", $ChangeData);
-			} else {
-				$OldPlantRequest = 0;
-			}
+			} 
+			/* 2013-05-22: AS CRAIG REQUESTED: EMAIL NOT NEED ANYMORE
+				else {
+					$OldPlantRequest = 0;
+			}*/
 
 			if($ID) {
 				if(CTable::Update("Projects", $ID, $Data) === false) return Array(0, "Error updating record");
@@ -674,9 +735,18 @@
 			}
 
 			// Product Types
-			CTable::RunQuery("DELETE FROM `ProjectsProductTypes` WHERE `ProjectsID` = $ID");
 			if($_POST["ProductTypes"]) {
 				$ProductTypes = explode(",", htmlspecialchars($_POST["ProductTypes"]));
+				$PreviousPTIds = array_keys($ProjectInDB->ProductTypes);
+				
+				foreach($ProductTypes as $ProductTypeId)
+				{
+					if(!array_key_exists($ProductTypeId, $PreviousPTIds))
+						if(!$this->AddMilestonesAndTodoListsToProject($ProjectInDB->ID, $ProductTypeId))
+							return Array(0, "Error updating product types");					
+				}
+				
+				CTable::RunQuery("DELETE FROM `ProjectsProductTypes` WHERE `ProjectsID` = $ID");
 				foreach($ProductTypes as $ProductTypeID) {
 					if(intval($ProductTypeID) <= 0) {
 						$ProductTypeID = self::AddProductType($ProductTypeID);
@@ -685,6 +755,8 @@
 					CTable::Add("ProjectsProductTypes", Array("ProjectsID" => $ID, "ProductTypesID" => $ProductTypeID));
 				}
 			}
+			else
+				CTable::RunQuery("DELETE FROM `ProjectsProductTypes` WHERE `ProjectsID` = $ID");
 
 			$User = new CUsers();
 			$User->OnLoad(CSecurity::GetUsersID());
@@ -695,14 +767,16 @@
 				"User"						=> $User->FirstName . " " . $User->LastName,
 			);
 			CNotifier::Push("Module", "Projects", "New or Updated Project", $EmailData, $ID);
+			
+			/* 2013-05-22: AS CRAIG REQUESTED: EMAIL NOT NEED ANYMORE
 			if(htmlspecialchars($_POST["RequestPlant"]) && !$OldPlantRequest) {
 				// Trigger email to appropriate manager
 				// 2012-07-31 per John Henry, just Craig Bartley for now (craig_bartley@mcgraw-hill.com)
 				CNotifier::PushEmail("craig_bartley@mcgraw-hill.com", "Module", "Projects", "Plant Request", $EmailData);
 				CNotifier::PushEmail("jarrod.nix@jhspecialty.com", "Module", "Projects", "Plant Request", $EmailData);
-			}
+			}*/
 			
-			return Array('Project updated successfully');
+			return Array($ID, 'Project updated successfully');
 		}
 		
 		//----------------------------------------------------------------------
@@ -875,6 +949,18 @@
 			return Array(1, json_encode($Data));			
 		}
 		
+		function UsedProductNumber() {
+			if(array_key_exists("ID",$_POST) && $_POST["ID"] == 'undefined')
+			{				
+				if(CTable::NumRows("Projects","WHERE ProductNumber = " . $_POST["ProductNumber"]) > 0)
+					return Array(0, "The product number: ".$_POST["ProductNumber"]." already in use.");
+				else
+					return Array(1, "Valid product number.");
+			}
+			else 
+				return Array(1, "Valid product number.");
+		}
+		
 		function GetPreviewBoxData() {
 			$Type = $_POST["Type"];			
 			
@@ -1032,6 +1118,71 @@
 			}
 			
 			return Array(1, $Return);
+		}
+		
+		private function AddMilestonesAndTodoListsToProject($ProjectID, $ProductTypeId)
+		{
+		    $success = true;
+			
+			// Load ProductType
+			$ProjectType = CTable::SelectById("ProductTypes", $ProductTypeId);
+			
+			// Create new milestones for the project
+			$MilestonesIds = unserialize($ProjectType['Milestones']);
+			foreach($MilestonesIds as $MilestoneId)
+			{	
+				if(!$this->AddMilestone($ProjectID, CTable::SelectById("Milestones", $MilestoneId)))
+					$success = false;				
+			}
+			
+			return $success;
+		}
+		
+		private function AddMilestone($ProjectID, $Milestone)
+		{		
+			
+			$ProjectMilestone = array();
+			$ProjectMilestone["Name"] 				= $Milestone["Name"];
+			$ProjectMilestone["CustomerApproval"] 	= $Milestone["CustomerApproval"];
+			$ProjectMilestone["Summary"] 			= $Milestone["Summary"];
+			$ProjectMilestone["PlantAllocated"]		= $Milestone["PlantAllocated"];
+			$ProjectMilestone["Status"]				= $Milestone["Status"];			
+			$ProjectMilestone["ProjectsID"] 		= intval($ProjectID);
+			$ProjectMilestone["Created"]			= time();
+			$ProjectMilestone["CreatedUsersID"]		= CSecurity::GetUsersID();
+			$ProjectMilestone["CreatedIPAddress"]	= $_SERVER["REMOTE_ADDR"];
+		
+			$NewMilestoneID = CTable::Add("ProjectsMilestones", $ProjectMilestone);
+			if($NewMilestoneID === false) return false;
+			
+			$ToDoLists = unserialize($Milestone["ToDosLists"]);
+			
+			foreach($ToDoLists as $ToDoListID) {
+				$List = new CToDosLists();
+				if($List->OnLoad($ToDoListID) === false) return Array(0, "Error loading To Do List info");
+				
+				$ListMembers	= unserialize($List->Members);
+				$MembersArray	= Array();
+				foreach($ListMembers as $MemberID) {
+					$Member = new CToDos();
+					if($Member->OnLoad($MemberID) === false) continue;
+					
+					if($Member->Active == 0) continue;
+					
+					$Data = Array(
+						"MilestoneID"			=> intval($NewMilestoneID),
+						"Name"					=> htmlspecialchars($Member->Name),
+						"Comment"				=> htmlspecialchars($Member->Comment),
+						"CommentRequired"		=> intval($Member->CommentRequired),
+						"Created"				=> time(),
+						"CreatedUsersID"		=> CSecurity::GetUsersID(),
+						"CreatedIPAddress"		=> $_SERVER["REMOTE_ADDR"],
+					);
+					if(CTable::Add("ProjectsMilestonesToDos", $Data) === false) return false;
+				}
+			}
+			
+			return true;
 		}
 	};
 

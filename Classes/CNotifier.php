@@ -265,7 +265,7 @@
 			$EmailHandle->ToEmail = $ToEmail;
 
 			$EmailHandle->Content = $EmailContent;
-			echo "here again\n";
+			
 			return $EmailHandle->Send();
 		}
 

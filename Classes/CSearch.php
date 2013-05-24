@@ -39,6 +39,11 @@
 		
 		private $WhereOperator = "AND";
 		
+		private $ShowEdit = false;
+		private $EditItemFunction = '';
+		private $ShowDelete = false;
+		private $DeleteItemFunction = '';
+		
 		function __construct($Table, $TableBusinessesID = 0) {
 			parent::__construct($Table, $TableBusinessesID);
 		}
@@ -296,10 +301,12 @@
 
 		function OnRender($TableStyle = "", $CellStyle = "") {
 			$Return = "";
+			
 			echo "<table class='CSearch_Results' cellspacing='0' cellpadding='2' style='$TableStyle'>\n";
 
 			echo "<tr class='CSearch_Header'>\n";
 			//echo "\t<td class='CSearch_Header_Cell' valign='top'><div class='CSearch_Spacer_Left'></div><div class='CSearch_Spacer_Right'></div><input type='checkbox' class='CSearch_Header_Checkbox'/></td>\n";
+			
 			
 			$i = 0;
 			foreach($this->ItemList as $Item) {
@@ -339,7 +346,12 @@
 
 				++$i;
 			}
-
+			
+			if($this->ShowEdit || $this->ShowDelete)
+			{
+				echo "\t<th class='CSearch_Header_Cell' style='width:100px;'>Actions</th>\n";
+			}
+			
 			echo "</tr>\n";
 			//echo "<tr>\n";
 			//	echo "<td colspan='".count($this->ItemList)."' align='center'><div class='HR_Dashes'></div></td>";
@@ -366,9 +378,9 @@
 					}
 
 					if($i % 2 == 0) {
-						echo "<tr class='CSearch_Row' onMouseOver=\"this.className = 'CSearch_Row_Over';\" onMouseOut=\"this.className = 'CSearch_Row';\" onClick=\"$TempOnClick\" style='".($TempOnClick != "" ? "cursor: pointer;" : "")."'>\n";
+						echo "<tr class='CSearch_Row' itemID='$Row->ID' onMouseOver=\"this.className = 'CSearch_Row_Over';\" onMouseOut=\"this.className = 'CSearch_Row';\" onClick=\"$TempOnClick\" style='".($TempOnClick != "" ? "cursor: pointer;" : "")."'>\n";
 					}else{
-						echo "<tr class='CSearch_Row2' onMouseOver=\"this.className = 'CSearch_Row_Over';\" onMouseOut=\"this.className = 'CSearch_Row2';\" onClick=\"$TempOnClick\" style='".($TempOnClick != "" ? "cursor: pointer;" : "")."'>\n";
+						echo "<tr class='CSearch_Row2' itemID='$Row->ID' onMouseOver=\"this.className = 'CSearch_Row_Over';\" onMouseOut=\"this.className = 'CSearch_Row2';\" onClick=\"$TempOnClick\" style='".($TempOnClick != "" ? "cursor: pointer;" : "")."'>\n";
 					}
 
 					//echo "\t<td class='CSearch_Cell'><input type='checkbox' class='CSearch_Cell_Checkbox'/></td>\n";
@@ -382,11 +394,20 @@
 						if(strlen($ColumnValue) <= 0) {
 							$ColumnValue = "&nbsp;";
 						}
-
+						
 						echo "\t\t<td class='".($j == 0 ? "CSearch_Cell_First" : "CSearch_Cell")."' align='".($j == 0 ? "left" : "left")."' style='$CellStyle'>".$ColumnValue."</td>\n";
 						$j++;
 					}
-
+					
+					if($this->ShowEdit || $this->ShowDelete)
+					{						
+						echo "<td>";
+						if($this->ShowEdit)
+							echo "<a href='#' onclick='$this->EditItemFunction(event, $Row->ID);' class='Icon_Edit' style='text-decoration:none;'>&nbsp;</a>";
+						if($this->ShowDelete)
+							echo "<a href='#' onclick='$this->DeleteItemFunction(event, $Row->ID);' class='Icon_Delete' style='text-decoration:none;'>&nbsp;</a>";
+						echo "</td>";
+					}
 					echo "</tr>\n";
 
 					++$i;
@@ -658,6 +679,16 @@
 		function SetWhereOperator($Value) {
 			$this->WhereOperator = $Value;
 		}
+		
+		function ShowEdit($EditItemFunction) {
+			$this->ShowEdit = true;
+			$this->EditItemFunction = $EditItemFunction;
+		}
+		
+		function ShowDelete($DeleteItemFunction) {
+			$this->ShowDelete = true;
+			$this->DeleteItemFunction = $DeleteItemFunction;
+		}		
 	};
 
 	//=========================================================================

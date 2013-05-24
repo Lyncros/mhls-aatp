@@ -72,8 +72,8 @@
 								<td style='vertical-align:top; padding-top:20px;'><div class='Separator'></div></td>
 								<td style='vertical-align:top; padding:22px 11px; padding-right:0px; width:160px;'>
 									<div style='color:#0685c5; font-weight:bold; font-size:14px;'>&nbsp;</div>
-									<p><b>ISBN-10:</b> 0865479432</p>
-									<p><b>ISBN-13:</b> 978-0865479432</p>
+									<p><b>ISBN-10:</b> ".$Project->ISBN10."</p>
+									<p><b>ISBN-13:</b> ".$Project->ISBN13."</p>
 									<p><b>CA:</b> ".$Project->GetUsers("CreativeAnalysts")."</p>
 									<p><b>PM:</b> ".$Project->GetUsers("ProductManagers")."</p>
 									<p style='color:#0685c5; text-decoration:underline; cursor:pointer;' onClick=\"MProjects.ShowPreviewBox(this, 'ProjectLink', ".$Project->ID.");\">Direct Project Link</p>
@@ -224,7 +224,7 @@
 								echo CForm::AddTextbox("Estimated UMC", "EstimatedUMC", $Project->EstimatedUMC, "", "", "Advanced");
 								echo CForm::AddTextbox("Actual UMC", "ActualUMC", $Project->ActualUMC, "", "", "Advanced");
 								echo CForm::AddTextbox("School", "School", $Project->School, "", "", "Basic");
-								echo CForm::AddTextbox("Status", "Status", $Project->Status, "", "", "Basic");
+								echo CForm::AddDropdown("Status", "Status", array("Live","Dead","Delayed","Completed"), $Project->Status);								
 								echo CForm::AddDatepicker("Course Start Date", "CourseStartDate", ($Project->CourseStartDate > 0 ? $Project->CourseStartDate : ""), "", "", "", "Basic");
 								echo CForm::AddDatepicker("Due Date", "DueDate", ($Project->DueDate > 0 ? $Project->DueDate : ""), "", "", "", "Basic");
 								echo CForm::AddTextbox("QOH", "QOH", $Project->QOH, "", "", "Advanced");
@@ -290,8 +290,15 @@
 								echo CForm::AddTextbox("2011 Sales Gross Revenue", "2011SalesGrossRevenue", $Project->{"2011SalesGrossRevenue"}, "", "", "Advanced");
 								echo CForm::AddTextarea("Lead Notes", "LeadNotes", $Project->LeadNotes, "", "Basic");
 								echo CForm::AddTextbox("Request Plant", "RequestPlant", $Project->RequestPlant, "", "", "Basic");
+								echo CForm::AddTextbox("Plant Paid", "PlantPaid", $Project->PlantPaid, "", "", "Basic");
+								echo CForm::AddTextbox("Plant Left", "PlantLeft", $Project->PlantLeft, "", "", "Basic");
+								echo CForm::AddTextbox("Vender Used", "VenderUsed", $Project->VenderUsed, "", "", "Basic");
+								echo CForm::AddDatepicker("Date Paid", "DatePaid", ($Project->DatePaid > 0 ? $Project->DatePaid : ""), "", "", "", "Basic");
+								echo CForm::AddTextbox("ISBN-10", "ISBN10", $Project->ISBN10, "", "", "Basic");
+								echo CForm::AddTextbox("ISBN-13", "ISBN13", $Project->ISBN13, "", "", "Basic");
+								echo CForm::AddTextbox("Custom ISBN", "CustomISBN", $Project->CustomISBN, "", "", "Basic");
 								echo CForm::AddHidden("ID", $Project->ID);
-								echo "
+								echo "								
 								<tr>
 									<td></td>
 									<td>

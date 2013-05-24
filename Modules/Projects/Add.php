@@ -213,6 +213,13 @@
 			echo CForm::AddTextbox("2011 Sales Gross Revenue", "2011SalesGrossRevenue", $Project->{"2011SalesGrossRevenue"});
 			echo CForm::AddTextarea("Lead Notes", "LeadNotes", $Project->LeadNotes);
 			echo CForm::AddTextbox("Request Plant", "RequestPlant", $Project->RequestPlant);
+			echo CForm::AddTextbox("Plant Paid", "PlantPaid", $Project->PlantPaid);
+			echo CForm::AddTextbox("Plant Left", "PlantLeft", $Project->PlantLeft);
+			echo CForm::AddTextbox("Vender Used", "VenderUsed", $Project->VenderUsed);
+			echo CForm::AddDatepicker("Date Paid", "DatePaid", ($Project->DatePaid > 0 ? $Project->DatePaid : ""));			
+			echo CForm::AddTextbox("ISBN-10", "ISBN10", $Project->ISBN10);
+			echo CForm::AddTextbox("ISBN-13", "ISBN13", $Project->ISBN13);
+			echo CForm::AddTextbox("Custom ISBN", "CustomISBN", $Project->CustomISBN);
 		?>
 		</table>
 

@@ -342,6 +342,20 @@ MProjects.AddMessage = function(Prefix) {
 }
 
 //-----------------------------------------------------------------------------
+MProjects.EditMessage = function(Prefix) {
+	if(CForm.Submit("Projects", "Module", "EditMessage", Prefix, function(Code, Content) {
+		MProjects.ViewMessages($('#' + Prefix + 'ProjectsID').val());
+		return true;
+	}) == false) {
+		alert(CForm.GetLastError());
+
+		return false;
+	}
+
+	return true;
+}
+
+//-----------------------------------------------------------------------------
 MProjects.AddMilestone = function(Prefix) {
 	if(CForm.Submit("Projects", "Module", "AddEditMilestone", Prefix, function(Code, Content) {
 		MProjects.ViewDetails($('#' + Prefix + 'ProjectsID').val());
@@ -866,24 +880,37 @@ MProjects.CheckForUnique = function() {
 
 //-----------------------------------------------------------------------------
 MProjects.Save = function(Prefix) {
-	if(CForm.Submit("Projects", "Module", "Save", Prefix, function(Code, Content) {
+	
+	var Parms = {
+		"ID" 				: $("#"+Prefix+"ID").val(),
+		"ProductNumber" 	: $("#"+Prefix+"ProductNumber").val()
+		};
+	
+	CAJAX.Add("Projects", "Module", "UsedProductNumber", Parms, function(Code, Content) {
 		if(Code == 0) {
 			alert(Content);
+			console.log(Content);
 		}else{
-			// Update Header
-			//var Data = JSON.parse(Content);
-			//$('#Project' + Data.ID + 'Header').val("<strong>" + Data.ProductNumber + " // " + Data.School + "</strong><br><span style='font-size:11px; color:#0685c5; font-style:italic;'>" + Data.Title + "</span>");
-			
-			// Refresh
-			MProjects.ViewDetails($('#' + Prefix + 'ID').val());
-			//$().scrollTo('.Body', 500);
-			$('html, body').animate({ scrollTop : $(".Body").offset().top }, 500, 'swing');
+			CForm.Submit("Projects", "Module", "Save", Prefix, function(Code, Content) {
+				if(Code == 0) {
+					alert(Content);
+				}else{
+					// Update Header
+					//var Data = JSON.parse(Content);
+					//$('#Project' + Data.ID + 'Header').val("<strong>" + Data.ProductNumber + " // " + Data.School + "</strong><br><span style='font-size:11px; color:#0685c5; font-style:italic;'>" + Data.Title + "</span>");
+					
+					// Refresh
+					MProjects.ViewDetails($('#' + Prefix + 'ID').val());
+					//$().scrollTo('.Body', 500);
+					$('html, body').animate({ scrollTop : $(".Body").offset().top }, 500, 'swing');
+				}
+
+				return true;
+			});
 		}
-
-		return true;
-	}))
-
-	return true;
+	});
+	
+	return false;
 }
 
 //=============================================================================

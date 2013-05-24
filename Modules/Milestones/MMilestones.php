@@ -60,9 +60,9 @@
 				"CustomerApproval"			=> intval($_POST["CustomerApproval"]),
 				"Summary"					=> htmlspecialchars($_POST["Summary"]),
 				"ExpectedDeliveryDate"		=> htmlspecialchars($_POST[""]),
-				"ActualDeliveryDate"		=> htmlspecialchars($_POST[""]),
-				"EstimatedDeliveryDate"		=> htmlspecialchars($_POST[""]),
+				"ActualDeliveryDate"		=> htmlspecialchars($_POST[""]),				
 				"PlantAllocated"			=> htmlspecialchars($_POST["PlantAllocated"]),
+				"ToDosLists"				=> ($_POST["ToDosLists"])?serialize(json_decode($_POST["ToDosLists"])):"",
 				"Active"					=> intval($_POST["Active"]),
 				"ModifiedUsersID"			=> CSecurity::GetUsersID(),
 				"ModifiedIPAddress"			=> $_SERVER["REMOTE_ADDR"],
@@ -76,7 +76,7 @@
 				$Data["Created"]			= date("Y-m-d H:i:s");
 				$Data["CreatedUsersID"]		= CSecurity::GetUsersID();
 				$Data["CreatedIPAddress"]	= $_SERVER["REMOTE_ADDR"];
-
+				
 				if(($ID = CTable::Add($this->Table, $Data)) === false) {
 					return Array(0, "Unable to add record, please try again");
 				}

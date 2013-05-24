@@ -175,6 +175,23 @@
 		 *
 		 *
 		 */
+        public static function SelectById($Table, $Id) {
+            $Query = "SELECT * FROM `$Table` WHERE ID = $Id";
+			
+            if(($Res = mysql_query($Query)) === false) {
+                trigger_error("mySQL Error: ".mysql_error()." - ".$Query, E_USER_WARNING);
+                return false;
+            }
+			$Result = new CTableIterator($Res);
+            return $Result->Current;
+        }
+		
+		/**
+		 *
+		 *
+		 *
+		 *
+		 */
 		public static function Add($Table, $Data) {
 			if(is_array($Data) == false) {
 				trigger_error($Table." :: Passed Data not Array: ".$Data, E_USER_WARNING);
