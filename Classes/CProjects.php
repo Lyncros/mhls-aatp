@@ -29,7 +29,10 @@
 		function __construct() {
 			$this->Table = "Projects";
 		}
-
+		
+		public static function GetAllStatus() {
+			return array("1"=>"Live","2"=>"Dead","3"=>"Delayed","4"=>"Completed");
+		}
 		public static function OnCron() {
 			
 		}

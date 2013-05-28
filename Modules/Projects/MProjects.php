@@ -170,8 +170,10 @@
 			}else
 			if($Action == "GetToDoListMembers") {
 				return $this->GetToDoListMembers();
+			}else
+			if($Action == "GetProjectDetailsForList") {
+				return $this->GetProjectDetailsForList();
 			}
-
 			if(parent::CanAccess($Action) == false) {
 				return Array(0, "You do not have permission to perform this action");
 			}
@@ -516,7 +518,7 @@
 				//$Popup	= intval($_POST["Notice_".$i."_Popup"]);
 				$Email	= intval($_POST["Notice_".$i."_Email"]);
 				//$SMS	= intval($_POST["Notice_".$i."_SMS"]);
-
+				
 				$SubData = Array(
 					//"BusinessesID" => intval(CSecurity::GetBusinessesID()), 
 					"UsersID"		=> intval(CSecurity::GetUsersID()),
@@ -737,12 +739,11 @@
 			// Product Types
 			if($_POST["ProductTypes"]) {
 				$ProductTypes = explode(",", htmlspecialchars($_POST["ProductTypes"]));
-				$PreviousPTIds = array_keys($ProjectInDB->ProductTypes);
-				
+				$PreviousPTIds = array_keys($ProjectInDB->ProductTypes);				
 				foreach($ProductTypes as $ProductTypeId)
 				{
-					if(!array_key_exists($ProductTypeId, $PreviousPTIds))
-						if(!$this->AddMilestonesAndTodoListsToProject($ProjectInDB->ID, $ProductTypeId))
+					if(!in_array($ProductTypeId, $PreviousPTIds))					
+						if(!$this->AddMilestonesAndTodoListsToProject($ID, $ProductTypeId))
 							return Array(0, "Error updating product types");					
 				}
 				
@@ -1120,6 +1121,71 @@
 			return Array(1, $Return);
 		}
 		
+		//----------------------------------------------------------------------
+		function GetProjectDetailsForList() {			
+			$Project = new CProjects();
+			$Project->OnLoad(intval($_POST["ProjectID"]));
+			$MilestonePercentage		= 0;
+			$Numerator					= 0;
+			if(count($Project->Milestones) >= 1) {
+				foreach($Project->Milestones as $Milestone) {
+					if($Milestone->Status == "Complete") $Numerator++;
+				}
+				$MilestonePercentage	= $Numerator / count($Project->Milestones);
+			}
+			$MilestoneBarWidth			= round(136 * $MilestonePercentage) - 2 >= 0 ? round(136 * $MilestonePercentage) - 2 : 0;
+
+			$ProjectDetails = 
+				"<div class='ProjectContainer'>
+					<table style='width:100%;' cellpadding='0' cellspacing='0'>
+						<tr>
+							<td style='vertical-align:top; padding-top:7px; padding-left:11px;'><div class='ProductIcon'></div></td>
+							<td style='vertical-align:top; padding:7px 11px; width:135px;'>
+								<div style='font-weight:bold; font-size:14px;'>".$Project->ProductNumber."</div>
+								<div>".$Project->School."</p>							
+							</td>
+							<td style='vertical-align:top; padding-top:10px;'><div class='Separator'></div></td>
+							<td style='vertical-align:top; padding:7px 11px; width:195px;'>
+								<div style='color:#d74c4c; font-weight:bold; font-size:14px;'>Dates</div>
+								<p><b>Due:</b> ".($Project->DueDate > 0 ? date('n/j/Y', $Project->DueDate) : ($Project->CourseStartDate > 0 ? date('n/j/Y', $Project->CourseStartDate) : "N/A"))."</p>
+								<p><b>Last Touched:</b> ".date('n/j/Y', $Project->GetLastModified()).$LastTouchedDays."</p>							
+							</td>
+							<td style='vertical-align:top; padding-top:10px;'><div class='Separator'></div></td>
+							<td style='vertical-align:top; padding:7px 11px; width:145px;'>
+								<div style='color:#0685c5; font-weight:bold; font-size:14px;'>Project Details</div>
+								<p><b>LSC:</b> ".$Project->GetUsers("LSCs")."</p>
+								<p style='color:#0685c5; text-decoration:underline; cursor:pointer;' onClick=\"MProjects.ShowPreviewBox(this, 'LeadNotes', ".$Project->ID.");\">Lead Notes</p>
+							</td>
+							<td style='vertical-align:top; padding-top:10px;'><div class='Separator'></div></td>
+							<td style='vertical-align:top; padding:7px 11px; width:150px;'>
+								<div style='color:#4f911e; font-weight:bold; font-size:14px;'>Project Value</div>
+								<p style='font-size:18px; font-weight:bold;'>$".number_format($Project->ProjectValue, 2)."</p>
+								<div style='color:#4f911e; font-weight:bold; font-size:13px; margin-top:12px; margin-bottom:6px;'>Milestone Completion</div>
+								<div class='CompletionWrapper'>
+									<div class='CompletionBar' style='width:".$MilestoneBarWidth."px;'></div>
+									<div class='CompletionPercentage'>".number_format($MilestonePercentage * 100)."%</div>
+								</div>
+							</td>
+							<td style='padding-right:13px;'>
+								<input type='hidden' id='Project".$Project->ID."Header' value=\"<strong>".$Project->ProductNumber." // ".$Project->School."</strong><br><span style='font-size:11px; color:#0685c5; font-style:italic;'>".$Project->Title."</span>\">
+								<div onClick=\"
+									MProjects.ViewDetails('".$Project->ID."', function() {
+										MProjects.MoveToDetails(".$Project->ID.");
+									});
+									MProjects.ViewMessages('".$Project->ID."');
+									MProjects.ViewResources('".$Project->ID."');
+									MProjects.ViewNotifications('".$Project->ID."');
+								\" class='ProjectDetailsLink'></div>
+							</td>
+						</tr>
+					</table>
+				</div>";
+			
+			return Array(1, $ProjectDetails);
+		}
+		
+		//----------------------------------------------------------------------
+		//----------------------------------------------------------------------
 		private function AddMilestonesAndTodoListsToProject($ProjectID, $ProductTypeId)
 		{
 		    $success = true;

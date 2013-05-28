@@ -8,11 +8,12 @@
 		8/17/2011 7:16 AM
 	*/
 	//==========================================================================
-	require_once("Config.php");
+	
+	require_once("Config.php");	
 	require_once("Auto.php");
 
 	new CApp();
-
+	
 	echo "<pre>";
 	
 	CCron::OnRun();

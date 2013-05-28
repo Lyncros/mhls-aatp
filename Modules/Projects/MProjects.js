@@ -167,6 +167,18 @@ MProjects.MoveToList = function(ProjectID) {
 	$('.SidebarSubicon').hide(500);
 	$('.SidebarActive').animate({ height : '72px' }, 500, 'swing');
 	$('#HeightCalculator').animate({ height : $('#SearchResultsContainer').css('height') }, 500, 'swing');
+	
+	// Update the Project details on the list
+	var Parms = {};
+	Parms["ProjectID"] = ProjectID;
+	
+	CAJAX.Add("Projects", "Module", "GetProjectDetailsForList", Parms, function(Code, Content){
+		if(Code == 0) {
+			alert(Content);
+		} else {
+			$('#ProjectOverview'+ProjectID).html(Content);
+		}
+	});	
 }
 
 //-----------------------------------------------------------------------------

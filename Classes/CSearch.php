@@ -35,7 +35,9 @@
 
 		private $OnClick		= "";
 
-		private $Restrictions	= Array();
+		private $Restrictions	 = Array();
+		private $AndRestrictions = Array();
+		private $OrRestrictions = Array();
 		
 		private $WhereOperator = "AND";
 		
@@ -81,7 +83,7 @@
 				$DB = ($this->TableBusinessesID > 0 ? "`ypp_".intval($this->TableBusinessesID)."`." : "");
 
 				$Selects[] = "`".$this->Table."`.*";
-
+				
 				foreach($this->ItemList as $Item) {
 					if(strlen($Item->Name) <= 0) continue;
 					if($Item->SearchType == CSEARCHCOLUMN_SEARCHTYPE_NOSEARCH) continue;
@@ -96,7 +98,7 @@
 				}
 
 				$Query .= implode(", ", $Selects)." FROM $DB`".$this->Table."` ";
-
+				
 				if(@$_GET["CSearch_Keywords"]) {
 					foreach($this->ItemList as $Item) {
 						if($Item->SearchType == CSEARCHCOLUMN_SEARCHTYPE_NOSEARCH) continue;
@@ -111,7 +113,7 @@
 						}
 					}
 				}
-
+				
 				$KeywordsUsed = false;
 
 				if(count($WhereList) > 0) {
@@ -120,8 +122,7 @@
 					$KeywordsUsed = true;
 				}
 
-				$WhereList = Array();
-
+				$WhereList = Array();				
 				foreach($this->Restrictions as $Restriction) {
 					$Column = $Restriction[0];
 					$Value	= mysql_real_escape_string($Restriction[1]);
@@ -129,24 +130,78 @@
 					$Type	= $Restriction[3];
 
 					if($Type == "Normal") {
-						if(strlen($FTable) > 0) {
+						if(strlen($FTable) > 0) 
 							$WhereList[] = "`$FTable".".$Column` = '$Value'";
-						}else{
-							$WhereList[] = "`".$this->Table."`.`$Column` = '$Value'";
-						}
-					}else{
-						$WhereList[] = $Column;
-					}
+						else
+							$WhereList[] = "`".$this->Table."`.`$Column` = '$Value'";						
+					} else
+						$WhereList[] = $Column;					
 				}
-
+				
 				if(count($WhereList) > 0) {
 					if($KeywordsUsed == false) {
 						$Query .= " HAVING ";
-					}else{
+						$KeywordsUsed = true;
+					}
+					else
 						$Query .= " " . $this->WhereOperator . " ";
+					
+					$Query .= implode(" " . $this->WhereOperator . " ", $WhereList);
+				}
+				
+				$AndWhereList = Array();
+				foreach($this->AndRestrictions as $Restriction) {
+					$Column = $Restriction[0];
+					$Value	= mysql_real_escape_string($Restriction[1]);
+					$FTable = $Restriction[2];
+					$Type	= $Restriction[3];
+
+					if($Type == "Normal") {
+						if(strlen($FTable) > 0) 
+							$AndWhereList[] = "`$FTable".".$Column` = '$Value'";
+						else
+							$AndWhereList[] = "`".$this->Table."`.`$Column` = '$Value'";						
+					} else
+						$AndWhereList[] = $Column;				
+				}
+				
+				if(count($AndWhereList) > 0) {
+					if($KeywordsUsed == false) {
+						$Query .= " HAVING ";
+						$KeywordsUsed = true;
+					}else{
+						$Query .= " AND ";
 					}
 
-					$Query .= implode(" " . $this->WhereOperator . " ", $WhereList);
+					$Query .= implode(" AND ", $AndWhereList);
+				}
+				
+				$OrWhereList = Array();
+				foreach($this->OrRestrictions as $Restriction) {
+					$Column = $Restriction[0];
+					$Value	= mysql_real_escape_string($Restriction[1]);
+					$FTable = $Restriction[2];
+					$Type	= $Restriction[3];
+
+					if($Type == "Normal") {
+						if(strlen($FTable) > 0) {
+							$OrWhereList[] = "`$FTable".".$Column` = '$Value'";
+						}else{
+							$OrWhereList[] = "`".$this->Table."`.`$Column` = '$Value'";
+						}
+					}else{
+						$OrWhereList[] = $Column;
+					}
+				}
+				
+				if(count($OrWhereList) > 0) {
+					if($KeywordsUsed == false) {
+						$Query .= " HAVING ";
+					}else{
+						$Query .= " OR ";
+					}
+
+					$Query .= implode(" OR ", $OrWhereList);
 				}
 
 				$Query .= " ORDER BY ";
@@ -161,7 +216,7 @@
 
 				if($_GET["CSearch_OrderByDir"] == 1)	$Query .= " DESC ";
 				else									$Query .= " ASC ";
-
+								
 				$this->NumRows	= count(CTable::OnLoadByQuery($Query));
 
 				if($this->MaxView <= 0) {
@@ -192,7 +247,7 @@
 						});
 					</script>";
 				}
-				
+				//var_dump($Query);
 				$Rows = CTable::OnLoadByQuery($Query);
 				
 				if(isset($_GET["Test"])) {
@@ -674,6 +729,14 @@
 
 		function AddRestriction($Column, $Value, $FTable = "", $Type = "Normal") {
 			$this->Restrictions[] = Array($Column, $Value, $FTable, $Type);
+		}
+		
+		function AddAndRestriction($Column, $Value, $FTable = "", $Type = "Normal") {
+			$this->AndRestrictions[] = Array($Column, $Value, $FTable, $Type);
+		}
+		
+		function AddOrRestriction($Column, $Value, $FTable = "", $Type = "Normal") {
+			$this->OrRestrictions[] = Array($Column, $Value, $FTable, $Type);
 		}
 		
 		function SetWhereOperator($Value) {

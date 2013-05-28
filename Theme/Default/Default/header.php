@@ -114,9 +114,10 @@
 		$Modules = Array(
 			"Projects"		=> "Project Management",
 		);
-		if(CSecurity::GetUsersGroupsID() == 1) {
-			$Modules["AuditBills"] = "Audit Bill Management";
-		}
+		// 2013.05.25 Issue: remove the Audit Bill Management tab from the superadmin role (http://projects.lyncros.com/redmine/issues/118)
+		//if(CSecurity::GetUsersGroupsID() == 1) {			
+		//	$Modules["AuditBills"] = "Audit Bill Management";
+		//}
 		
 		foreach($Modules as $ModuleName => $Name) {
 			if(CSecurity::CanAccess($ModuleName)) {
@@ -158,7 +159,7 @@
 	
 					foreach($Pages as $PageName => $Name) {
 						if($PageName == "") {
-							echo "<li class='".($_GET["Page"] == $PageName ? "SidebarActive" : "")."' ".($_GET["ID"] ? "style='height:190px;'" : "")."><div class='SidebarIcon SidebarIcon".$Name."' title=\"$Name\" onClick=\"".($_GET["Page"] == $PageName ? "MProjects.MoveToList();" : "CModule.Load('".$App->GetModuleName()."');")."\"></div>";
+							echo "<li class='".($_GET["Page"] == $PageName ? "SidebarActive" : "")."' ".($_GET["ID"] ? "style='height:190px;'" : "")."><div ". ($_GET["Page"] == $PageName ? "id='ProjectListSideBarIcon'" : ""). " class='SidebarIcon SidebarIcon".$Name."' title=\"$Name\" onClick=\"".($_GET["Page"] == $PageName ? "MProjects.MoveToList();" : "CModule.Load('".$App->GetModuleName()."');")."\"></div>";
 							//if($PageName == "" && $_GET["ID"]) {
 								echo "<br><br>";
 								echo "<div class='SidebarSubicon SidebarSubiconProjectDetails' title='Project Details' onClick=\"MProjects.MoveToDetails();\"></div>";

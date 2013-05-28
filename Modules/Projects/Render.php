@@ -46,7 +46,8 @@
 						<td style='vertical-align:top; padding-top:7px; padding-left:11px;'><div class='ProductIcon'></div></td>
 						<td style='vertical-align:top; padding:7px 11px; width:135px;'>
 							<div style='font-weight:bold; font-size:14px;'>".$Project->ProductNumber."</div>
-							<div>".$Project->School."</p>							
+							<div>".$Project->School."</p>
+							<div style='font-weight:bold; font-size:14px;'>".$Project->PrimaryCustomer."</div>							
 						</td>
 						<td style='vertical-align:top; padding-top:10px;'><div class='Separator'></div></td>
 						<td style='vertical-align:top; padding:7px 11px; width:195px;'>
@@ -61,10 +62,8 @@
 							<p style='color:#0685c5; text-decoration:underline; cursor:pointer;' onClick=\"MProjects.ShowPreviewBox(this, 'LeadNotes', ".$Project->ID.");\">Lead Notes</p>
 						</td>
 						<td style='vertical-align:top; padding-top:10px;'><div class='Separator'></div></td>
-						<td style='vertical-align:top; padding:7px 11px; width:150px;'>
-							<div style='color:#4f911e; font-weight:bold; font-size:14px;'>Project Value</div>
-							<p style='font-size:18px; font-weight:bold;'>$".number_format($Project->ProjectValue, 2)."</p>
-							<div style='color:#4f911e; font-weight:bold; font-size:13px; margin-top:12px; margin-bottom:6px;'>Milestone Completion</div>
+						<td style='vertical-align:top; padding:7px 11px; width:160px;'>
+							<div style='color:#4f911e; font-weight:bold; font-size:14px; margin-bottom:10px;'>Milestone Completion</div>
 							<div class='CompletionWrapper'>
 								<div class='CompletionBar' style='width:".$MilestoneBarWidth."px;'></div>
 								<div class='CompletionPercentage'>".number_format($MilestonePercentage * 100)."%</div>
@@ -102,18 +101,26 @@
 	/* 3 */ $Search->AddColumn("Primary Customer", "PrimaryCustomer", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
 	/* 4 */ $Search->AddColumn("Customer Phone", "CustomerPhone", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
 	/* 5 */ $Search->AddColumn("Stat Sponsor Code", "StatSponsorCode", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
-	/* 6 */ $Search->AddColumn("Created", "Created", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
-	/* 7 */ $Search->AddColumn("DueDate", "DueDate", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
+	/* 6 */ //$Search->AddColumn("LSC", "LSC", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
+	/* 6 */ //$Search->AddColumn("Created", "Created", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
+	/* 7 */ //$Search->AddColumn("DueDate", "DueDate", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");	
 	/* 7 */ //$Search->AddColumn("Product Type", "ProductType", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
 	
 	// Non-deleted Projects
-	$Search->AddRestriction("Deleted", "0");
+	$Search->AddAndRestriction("Deleted", "0");
 	
 	// Where Operator
-	$Search->SetWhereOperator($_GET["FilterOperator"]);
+	if($_GET["Filters"]) {
+		$Filters = json_decode(urldecode($_GET["Filters"]));		
+		if($Filters->FilterOperator)		
+			$Search->SetWhereOperator($Filters->FilterOperator);			
+		else
+			$Search->SetWhereOperator("OR");
+	}
+	else
+		$Search->SetWhereOperator("OR");
 	
-	//$Search->SetDefaultColumn(0, 1);
-	
+	//$Search->SetDefaultColumn(0, 1);	
 	$FilterOptions = Array(
 		//"ProjectNumber"			=> "Project Number",
 		//"ProjectName"				=> "Project Name",
@@ -122,21 +129,24 @@
 		//"LastTouched"				=> "Last Touched",
 		//"TouchCount"				=> "Touch Count",
 		//"ProjectValue"			=> "Project Value",
-		"ProjectType"				=> "Project Type",
-		"DistrictManager"			=> "District Manager",
-		"SalesRep"					=> "Sales Rep",
+		//"ProjectType"				=> "Project Type",
+		//"DistrictManager"			=> "District Manager",
+		//"SalesRep"					=> "Sales Rep",
 		"LSC"						=> "LSC",
 		"LSS"						=> "LSS",
-		"LSR"						=> "LSR",
+		//"LSR"						=> "LSR",
 		"CreativeAnalyst"			=> "Creative Analyst",
-		"InstitutionalSalesRep"		=> "Institutional Sales Rep",
-		"ProductManager"			=> "Product Manager",
-		"CourseStartDate"			=> "Course Start Date",
+		"CreativeConsultant"		=> "Creative Consultant",
+		"InstitutionalSalesRep"		=> "Enterprise Sales Rep",
+		"Status"					=> "Status",
+		//"ProductManager"			=> "Product Manager",
+		//"CourseStartDate"			=> "Course Start Date",
 		//"RequestType"				=> "Request Type",
 		//"InstitutionContact"		=> "Institution Contact",
 	);
 	
 		// Project Types
+		/*
 		$SubOptions_ProjectType = Array();
 		$ProductTypes = new CProductTypes();
 		if($ProductTypes->OnLoadAll("WHERE `Active` = 1 ORDER BY `Name`") !== false) {
@@ -157,7 +167,8 @@
 				}
 			}
 		}
-		
+		*/
+		/*
 		// District Managers
 		$SubOptions_DistrictManager = Array();
 		$DMGroup = new CUsersGroups();
@@ -181,7 +192,8 @@
 				}
 			}
 		}
-		
+		*/
+		/*
 		// Sales Reps
 		$SubOptions_SalesRep = Array();
 		$RepGroup = new CUsersGroups();
@@ -205,6 +217,7 @@
 				}
 			}
 		}
+		*/
 		
 		// LSCs
 		$SubOptions_LSC = Array();
@@ -224,8 +237,11 @@
 							$LSCValues[] = $ID;
 						}
 					}
-					$SubQuery = "`Projects`.`ID` IN (SELECT `ProjectsID` FROM `ProjectsLSCs` WHERE `UsersID` IN (".implode(",", $LSCValues)."))";
-					$Search->AddRestriction($SubQuery, "", "", "Custom");
+					if(count($LSCValues) > 0)
+					{					
+						$SubQuery = "`Projects`.`ID` IN (SELECT `ProjectsID` FROM `ProjectsLSCs` WHERE `UsersID` IN (".implode(",", $LSCValues)."))";
+						$Search->AddRestriction($SubQuery, "", "", "Custom");
+					}
 				}
 			}
 		}
@@ -248,12 +264,15 @@
 							$LSSValues[] = $ID;
 						}
 					}
-					$SubQuery = "`ID` IN (SELECT `ProjectsID` FROM `ProjectsLSSs` WHERE `UsersID` IN (".implode(",", $LSSValues)."))";
-					$Search->AddRestriction($SubQuery, "", "", "Custom");
+					if(count($LSSValues) > 0)
+					{
+						$SubQuery = "`ID` IN (SELECT `ProjectsID` FROM `ProjectsLSSs` WHERE `UsersID` IN (".implode(",", $LSSValues)."))";
+						$Search->AddRestriction($SubQuery, "", "", "Custom");
+					}
 				}
 			}
 		}
-		
+		/*
 		// LSRs
 		$SubOptions_LSR = Array();
 		$LSRGroup = new CUsersGroups();
@@ -277,6 +296,7 @@
 				}
 			}
 		}
+		*/
 		
 		// Creative Analysts
 		$SubOptions_CreativeAnalyst = Array();
@@ -296,11 +316,14 @@
 							$CreativeAnalystValues[] = $ID;
 						}
 					}
-					$SubQuery = "`ID` IN (SELECT `ProjectsID` FROM `ProjectsCreativeAnalysts` WHERE `UsersID` IN (".implode(",", $CreativeAnalystValues)."))";
-					$Search->AddRestriction($SubQuery, "", "", "Custom");
+					if(count($CreativeAnalystValues) > 0)
+					{
+						$SubQuery = "`ID` IN (SELECT `ProjectsID` FROM `ProjectsCreativeAnalysts` WHERE `UsersID` IN (".implode(",", $CreativeAnalystValues)."))";
+						$Search->AddRestriction($SubQuery, "", "", "Custom");
+					}
 				}
-			}else
-			if(CSecurity::GetUsersGroupsID() == 7)
+			} 
+			else if(CSecurity::GetUsersGroupsID() == 7)
 			{
 				$Filters							= Array();
 				$Filters["CreativeAnalyst"]			= true;
@@ -310,6 +333,43 @@
 				$_GET["Filters"] = urlencode(json_encode($Filters));
 				$CreativeAnalystValues = Array(CSecurity::GetUsersID());
 				$SubQuery = "`ID` IN (SELECT `ProjectsID` FROM `ProjectsCreativeAnalysts` WHERE `UsersID` = ".CSecurity::GetUsersID().")";
+				$Search->AddRestriction($SubQuery, "", "", "Custom");
+			}
+		}
+		
+		// Creative Analysts
+		$SubOptions_CreativeConsultant = Array();
+		$CreativeConsultantGroup = new CUsersGroups();
+		$CreativeConsultantGroup->OnLoadAll("WHERE `Name` = 'Creative Consultant'");
+		$CreativeConsultants = new CUsers();
+		if($CreativeConsultants->OnLoadAll("WHERE `UsersGroupsID` = ".$CreativeConsultantGroup->ID." && `Active` = 1 ORDER BY `LastName`") !== false) {
+			foreach($CreativeConsultants->Rows as $Row) {
+				$SubOptions_CreativeConsultant[$Row->ID] = $Row->LastName . ", " . $Row->FirstName;
+			}
+			if($_GET["Filters"]) {
+				$Filters = json_decode(urldecode($_GET["Filters"]));
+				if($Filters->CreativeConsultant === true && $Filters->CreativeConsultantValue) {
+					$CreativeConsultantValues = Array();
+					foreach($Filters->CreativeConsultantValue as $ID => $Boolean) {
+						if($Boolean) {
+							$CreativeConsultantValues[] = $ID;
+						}
+					}
+					if(count($CreativeConsultantValues) > 0)
+					{
+						$SubQuery = "`ID` IN (SELECT `ProjectsID` FROM `ProjectsCreativeConsultants` WHERE `UsersID` IN (".implode(",", $CreativeConsultantValues)."))";
+						$Search->AddRestriction($SubQuery, "", "", "Custom");
+					}
+				}
+			}
+			else if(CSecurity::GetUsersGroupsID() == 5)
+			{
+				$Filters							= Array();
+				$Filters["CreativeConsultant"]		= true;
+				$Filters["CreativeConsultantValue"]	= Array(CSecurity::GetUsersID() => true);
+				$_GET["Filters"] = urlencode(json_encode($Filters));
+				$CreativeConsultantValues = Array(CSecurity::GetUsersID());
+				$SubQuery = "`ID` IN (SELECT `ProjectsID` FROM `ProjectsCreativeConsultantAnalysts` WHERE `UsersID` = ".CSecurity::GetUsersID().")";
 				$Search->AddRestriction($SubQuery, "", "", "Custom");
 			}
 		}
@@ -325,19 +385,22 @@
 			}
 			if($_GET["Filters"]) {
 				$Filters = json_decode(urldecode($_GET["Filters"]));
-				if($Filters->SalesRep === true && $Filters->SalesRepValue) {
-					$SalesRepValues = Array();
-					foreach($Filters->SalesRepValue as $ID => $Boolean) {
+				if($Filters->InstitutionalSalesRep === true && $Filters->InstitutionalSalesRepValue) {
+					$InstitutionalSalesRepValues = Array();
+					foreach($Filters->InstitutionalSalesRepValue as $ID => $Boolean) {
 						if($Boolean) {
-							$SalesRepValues[] = $ID;
+							$InstitutionalSalesRepValues[] = $ID;
 						}
 					}
-					$SubQuery = "`ID` IN (SELECT `ProjectsID` FROM `ProjectsInstitutionalSalesReps` WHERE `UsersID` IN (".implode(",", $SalesRepValues)."))";
-					$Search->AddRestriction($SubQuery, "", "", "Custom");
+					if(count($InstitutionalSalesRepValues) > 0)
+					{
+						$SubQuery = "`ID` IN (SELECT `ProjectsID` FROM `ProjectsInstitutionalSalesReps` WHERE `UsersID` IN (".implode(",", $InstitutionalSalesRepValues)."))";
+						$Search->AddRestriction($SubQuery, "", "", "Custom");
+					}
 				}
 			}
 		}
-		
+		/*
 		// Product Managers
 		$SubOptions_ProductManager = Array();
 		$ProductManagerGroup = new CUsersGroups();
@@ -361,7 +424,8 @@
 				}
 			}
 		}
-		
+		*/
+		/*
 		// Course Start Date
 		$SubOptions_CourseStartDate = "Dates";
 		if($_GET["Filters"]) {
@@ -375,6 +439,23 @@
 					if($SubQuery) $SubQuery .= " && ";
 					$SubQuery .= " `CourseStartDate` <= ".$TimestampEnd;
 				}
+				$Search->AddRestriction($SubQuery, "", "", "Custom");
+			}
+		}
+		*/
+		
+		// Status		
+		$SubOptions_Status = CProjects::GetAllStatus();
+		if($_GET["Filters"]) {
+			$Filters = json_decode(urldecode($_GET["Filters"]));
+			if($Filters->Status === true && $Filters->StatusValue) {
+				$StatusValues = Array();
+				foreach($Filters->StatusValue as $ID => $Boolean) {
+					if($Boolean) {
+						$StatusValues[] = $ID;
+					}
+				}
+				$SubQuery = "`Projects`.`Status` IN (".implode(",", $StatusValues).")";
 				$Search->AddRestriction($SubQuery, "", "", "Custom");
 			}
 		}
@@ -398,8 +479,7 @@
 				$Search->SetDefaultColumn($OrderColumn, 0);
 		}
 		
-	echo "
-	<div id='SearchResultsContainer' style='position:absolute; top:10px; left:25px; width:4050px;'>";
+		echo "<div id='SearchResultsContainer' style='position:absolute; top:10px; left:25px; width:4050px;'>";
 		
 		// Sort By Name
 		$Temp = $_GET;
@@ -413,8 +493,22 @@
 			$Temp["Sort"]		= "Name";
 			$Temp["SortDir"]	= "ASC";
 		}
-		echo "<div class='Button' value='SortName' onClick='CModule.Load(\"Projects\", ".json_encode($Temp).")' style='height:28px; line-height:28px; float:left; margin-top:45px; margin-left:0px;width:180px;'>Name ".($Temp["SortDir"] == "ASC" ? "A-Z" : "Z-A")."</div>";
-		
+		echo "<div class='Button' value='SortName' onClick='CModule.Load(\"Projects\", ".json_encode($Temp).")' style='height:28px; line-height:28px; float:left; margin-top:45px; margin-left:0px;width:90px;'>By Name - ".($Temp["SortDir"] == "ASC" ? "A-Z" : "Z-A")."</div>";
+		/*
+		// Sort by LSC 
+		$Temp = $_GET;
+		if($Temp["Sort"] == "LSC") {
+			if($Temp["SortDir"] == "DESC") {
+				$Temp["SortDir"]	= "ASC";
+			} else {
+				$Temp["SortDir"]	= "DESC";
+			}
+		} else {
+			$Temp["Sort"]		= "LSC";
+			$Temp["SortDir"]	= "ASC";
+		}
+		echo "<div class='Button' value='SortLSC' onClick='CModule.Load(\"Projects\", ".json_encode($Temp).")' style='height:28px; line-height:28px; float:left; margin-top:45px; margin-left:-1px;width:90px;'>By LSC - ".($Temp["SortDir"] == "ASC" ? "A-Z" : "Z-A")."</div>";
+		*/
 		// Sort by Date Created
 		$Temp = $_GET;
 		if($Temp["Sort"] == "Date") {
@@ -442,7 +536,7 @@
 			$Temp["SortDir"]	= "ASC";
 		}
 		echo "<div class='Button' value='SortDueDate' onClick='CModule.Load(\"Projects\", ".json_encode($Temp).")' style='height:28px; line-height:28px; float:left; margin-top:45px; margin-left:-1px;width:180px;'>By due date - ".($Temp["SortDir"] == "ASC" ? "newest" : "oldest")." on top</div>";
-		
+				
 		echo "
 		<form id='SearchForm' method='get' style='top:0px;'>
 			<input type='hidden' name='Filters' id='Filters' value='".($_GET["Filters"] ? urldecode($_GET["Filters"]) : "{}")."'>
@@ -480,13 +574,11 @@
 				 
 				$Filters = json_decode(urldecode($_GET["Filters"]));
 				echo "<div style='float: right;margin-right:10px;'><ul id='selectable'>";
-					if(isset($Filters->FilterOperator) && $Filters->FilterOperator=='OR')
+					if(isset($Filters->FilterOperator) && $Filters->FilterOperator=='AND')
 					{
-						echo '<li>AND</li>
-						<li class="ui-selected">OR</li>';
+						echo '<li>OR</li><li class="ui-selected">AND</li>';
 					} else {
-						echo '<li class="ui-selected">AND</li>
-							<li>OR</li>';
+						echo '<li class="ui-selected">OR</li><li>AND</li>';
 					}
 				echo "</ul>" .
 					'<script>
@@ -499,15 +591,13 @@
 						});
 					</script>' . "
 				<select id='FilterOperator' class='' style='width:55px;display:none;'>";
-					if(isset($Filters->FilterOperator) && $Filters->FilterOperator=='OR')
-					{
-						echo "	<option value='AND'>AND</option>
-								<option value='OR' selected>OR</option>";
-					} else {
-						echo "	<option value='AND' selected>AND</option>
-								<option value='OR'>OR</option>";
-					}
-				echo "</select></div>";
+					if(isset($Filters->FilterOperator) && $Filters->FilterOperator=='AND')					
+						echo "<option value='OR'>OR</option><option value='AND' selected>AND</option>";
+					else
+						echo "<option value='OR' selected>OR</option><option value='AND'>AND</option>";					
+					echo 
+				"</select></div>";
+				
 				foreach($FilterOptions as $Key => $Value) {
 					$FilterOptionContainerActive	= "";
 					$FilterOptionActive				= "";
@@ -609,7 +699,7 @@
 			</div>
 		</div>";
 		
-		$Search->OnRender("border:none !important; margin-top:130px;", "padding:0px;border:none;background:none;");
+		$Search->OnRender("border:none !important; margin-top:140px;", "padding:0px;border:none;background:none;");
 		
 		echo "
 		<div class='ProjectWrapper' id='ProjectList'>
@@ -620,7 +710,7 @@
 		</div>
 
 		<h1 id='ProjectDetailsHeader' style='position:absolute; text-transform:none; top:0px; left:835px; line-height:18px;'>Project Details</h1>
-		<div onClick=\"MProjects.MoveToList();\" class='Back' style='top:0px; left:1534px;'></div>
+		<div id='MoveBackButton' onClick=\"MProjects.MoveToList();\" class='Back' style='top:0px; left:1534px;'></div>
 		<div class='ProjectWrapper' id='ProjectDetailsContainer' style='position:absolute; top:50px; left:835px;'></div>
 
 		<h1 id='MessageBoardHeader' style='position:absolute; text-transform:none; top:0px; left:1645px; line-height:18px;'>Message Board</h1>

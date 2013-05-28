@@ -4,11 +4,6 @@
 	$ProjectID = intval($_POST["ProjectID"]);
 	
 	CForm::SetPrefix("");
-?>
-	
-	
-
-<?
 
 	$Project = new CProjects();
 	$Project->OnLoad($ProjectID);
@@ -27,6 +22,12 @@
 
 	
 	echo "
+	<script>
+		$(document).ready(function() {
+			$('#MoveBackButton').attr('onClick','MProjects.MoveToList($ProjectID);');
+			$('#ProjectListSideBarIcon').attr('onClick','MProjects.MoveToList($ProjectID);');			
+		});	
+	</script>	
 	<div class='ProjectContainer' style='padding-bottom:45px;'>
 		<table style='width:100%;' cellpadding='0' cellspacing='0'>
 			<tr>
@@ -81,6 +82,7 @@
 							</tr>
 						</table>
 					</div>";
+					
 					if(CSecurity::$User->CanAccess("ProjectDetails", "Edit")) {
 						echo "
 						<div id='ProjectDetailsEdit' style='display:none;'>
@@ -224,7 +226,7 @@
 								echo CForm::AddTextbox("Estimated UMC", "EstimatedUMC", $Project->EstimatedUMC, "", "", "Advanced");
 								echo CForm::AddTextbox("Actual UMC", "ActualUMC", $Project->ActualUMC, "", "", "Advanced");
 								echo CForm::AddTextbox("School", "School", $Project->School, "", "", "Basic");
-								echo CForm::AddDropdown("Status", "Status", array("Live","Dead","Delayed","Completed"), $Project->Status);								
+								echo CForm::AddDropdown("Status", "Status", CProjects::GetAllStatus(), $Project->Status);
 								echo CForm::AddDatepicker("Course Start Date", "CourseStartDate", ($Project->CourseStartDate > 0 ? $Project->CourseStartDate : ""), "", "", "", "Basic");
 								echo CForm::AddDatepicker("Due Date", "DueDate", ($Project->DueDate > 0 ? $Project->DueDate : ""), "", "", "", "Basic");
 								echo CForm::AddTextbox("QOH", "QOH", $Project->QOH, "", "", "Advanced");
@@ -853,6 +855,5 @@
 			echo "
 		</table>
 	</div>
-	";
-	
+	";	
 ?>
