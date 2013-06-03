@@ -28,6 +28,11 @@
 	define("DEV", 1);
 
 	//==========================================================================
+	define("PROJECTS_EXPORT_WITHOUT_AUTH", "ProjectsExport");
+	define("CSV_COLUMN_DELIMITER", ";");
+	define("CSV_ITEM_DELIMITER", ",");
+	
+	//==========================================================================
 	class Config {
 		static $Options = Array(
 			"mySQL" => Array(

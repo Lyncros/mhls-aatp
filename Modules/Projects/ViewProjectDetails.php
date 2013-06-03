@@ -436,7 +436,12 @@
 											
 												if(CSecurity::$User->CanAccess("Milestones", "Edit")) {
 													CForm::RandomPrefix();
-												
+													$Users = CUsers::GetAllAssignableToMilestone();
+													if($Users === false)
+														$Users = Array(0 => "Nobody");
+													else
+														$Users = Array(0 => "Nobody") + $Users->MultipleColumnRowsToArray("LastName,FirstName");
+													
 													echo CForm::AddTextbox("Name", "Name", $Milestone->Name, "Please enter a Name");
 													echo CForm::AddYesNo("Customer Approval", "CustomerApproval", $Milestone->CustomerApproval, "YesNo");
 													echo CForm::AddTextarea("Summary", "Summary", $Milestone->Summary);
@@ -444,7 +449,8 @@
 													echo CForm::AddDatepicker("Expected Delivery Date", "ExpectedDeliveryDate", ($Milestone->ExpectedDeliveryDate > 0 ? $Milestone->ExpectedDeliveryDate : ""), "", "", "Please enter an Expected Delivery Date");
 													echo CForm::AddDatepicker("Actual Delivery Date", "ActualDeliveryDate", ($Milestone->ActualDeliveryDate > 0 ? $Milestone->ActualDeliveryDate : ""), "", "");
 													echo CForm::AddTextbox("Plant Allocated", "PlantAllocated", $Milestone->PlantAllocated);
-													echo CForm::AddDropdown("Status", "Status", CMilestones::GetStatusList(), $Milestone->Status);
+													echo CForm::AddDropdown("Assigned To", "AssignedTo", $Users, $Milestone->AssignedTo);	
+													echo CForm::AddYesNo("Complete", "Status", $Milestone->IsComplete(), "YesNo");
 													echo CForm::AddHidden("ProjectsID", $ProjectID);
 													echo CForm::AddHidden("MilestoneID", $Milestone->ID);
 												} else {
@@ -455,6 +461,7 @@
 													echo CForm::AddRow("Expected Delivery Date", ($Milestone->ExpectedDeliveryDate > 0 ? date('F j, Y', $Milestone->ExpectedDeliveryDate) : "N/A"));
 													echo CForm::AddRow("Actual Delivery Date", ($Milestone->ActualDeliveryDate > 0 ? date('F j, Y', $Milestone->ActualDeliveryDate) : "N/A"));
 													echo CForm::AddRow("Plant Allocated", $Milestone->PlantAllocated);
+													echo CForm::AddRow("Assigned To", $Milestone->AssignedToUser());
 													echo CForm::AddRow("Status", $Milestone->Status);
 												}
 											
@@ -791,11 +798,17 @@
 											
 												if(CSecurity::$User->CanAccess("ToDos", "Edit")) {
 													CForm::RandomPrefix();
-												
+													$Users = CUsers::GetAllAssignableToTodos();
+													if($Users === false)
+														$Users = Array(0 => "Nobody");
+													else
+														$Users = Array(0 => "Nobody") + $Users->MultipleColumnRowsToArray("LastName,FirstName");
+														
 													echo CForm::AddTextbox("Name", "Name", $ToDo->Name, "Please enter a Name");
 													echo CForm::AddYesNo("Complete", "Complete", $ToDo->Complete, "YesNo");
 													echo CForm::AddTextarea("Comment", "Comment", $ToDo->Comment);
 													echo CForm::AddYesNo("Comment Required", "CommentRequired", $ToDo->CommentRequired, "YesNo");
+													echo CForm::AddDropdown("Assigned To", "AssignedTo", $Users, $ToDo->AssignedTo);	
 													echo CForm::AddHidden("ProjectsID", $ProjectID);
 													echo CForm::AddHidden("ToDoID", $ToDo->ID);
 												} else {
@@ -803,6 +816,7 @@
 													echo CForm::AddRow("Complete", $ToDo->Complete);
 													echo CForm::AddRow("Comment", $ToDo->Comment);
 													echo CForm::AddRow("Comment Required", $ToDo->CommentRequired);
+													echo CForm::AddRow("Comment Required", $ToDo->AssignedToUser());
 												}
 											
 											echo "
@@ -814,7 +828,7 @@
 										if(CSecurity::$User->CanAccess("ToDos", "Edit")) {
 											echo "
 											<input type='hidden' value='0' name='ID' id='ID'/>
-											<div class='Button' value='Save' onClick=\"MProjects.AddToDo('".CForm::GetPrefix()."');\">save</div>
+											<div class='Button' value='Save' onClick=\"MProjects.AddProjectToDo('".CForm::GetPrefix()."');\">save</div>
 											<div class='Button' value='Cancel' onClick=\"MProjects.ViewDetails(".$Project->ID.");\">cancel</div>";
 											if(CSecurity::$User->CanAccess("ToDos", "Delete")) echo "<div class='Button' value='Delete' onClick=\"MProjects.DeleteToDo('".CForm::GetPrefix()."', ".$ToDo->ID.");\">delete</div>";
 										}

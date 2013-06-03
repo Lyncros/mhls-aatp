@@ -33,6 +33,7 @@
 		public static function GetAllStatus() {
 			return array("1"=>"Live","2"=>"Dead","3"=>"Delayed","4"=>"Completed");
 		}
+		
 		public static function OnCron() {
 			
 		}
@@ -210,18 +211,61 @@
 		
 		function GetLSCs() {
 			$UserList = Array();
+			$User = new CUsers();
 			
-			foreach($this->Users as $UserLink) {
-				if($UserLink->Type != "LSC") continue;
-							
-				$User = new CUsers();
-				if($User->OnLoad($UserLink->UsersID) !== false) {
-					$UserList[$User->ID] = $User;
+			foreach($this->LSCs as $UserID) {				
+				if($User->OnLoad($UserID) !== false) {					
+					$UserList[] = $User->Rows->Current;
 				}
 			}
 			
 			return $UserList;
-		}		
+		}
+		
+		function GetLSCsCompleteNames() {			
+			return $this->GetUserCompleteNames($this->LSCs);
+		}
+		
+		function GetLSSsCompleteNames() {			
+			return $this->GetUserCompleteNames($this->LSSs);
+		}
+		
+		function GetLSRsCompleteNames() {			
+			return $this->GetUserCompleteNames($this->LSRs);
+		}
+		
+		function GetJuniorCreativeAnalystsCompleteNames() {
+			return $this->GetUserCompleteNames($this->JuniorCreativeAnalysts);
+		}
+		
+		function GetCreativeAnalystsCompleteNames() {
+			return $this->GetUserCompleteNames($this->CreativeAnalysts);
+		}
+		
+		function GetCreativeConsultantsCompleteNames() {
+			return $this->GetUserCompleteNames($this->CreativeConsultants);
+		}
+
+		function StatusName() {
+			$StatusList = CProjects::GetAllStatus();
+			return (array_key_exists($this->Status,$StatusList))
+						? $StatusList[$this->Status] 
+						: "";		
+		}
+		
+		function GetMilestonCompletionPercentage() {
+			$CompleteMilestonesNumber = 0;
+			$MilestoneNumber = count($this->Milestones);
+			if($MilestoneNumber > 0) {
+				foreach($this->Milestones as $Milestone) 
+					if($Milestone->Status == "Complete") 
+						$CompleteMilestonesNumber++;
+				
+				return ($CompleteMilestonesNumber / $MilestoneNumber)*100;
+			} else {
+				return 0;
+			}
+		}
 		
 		//======================================================================
 		function GetStatusList() {
@@ -332,5 +376,18 @@
 			}
 		}
 		
+		//----------------------------------------------------------------------
+		//----------------------------------------------------------------------
+		private function GetUserCompleteNames($UserIDs) {
+			$UserList = Array();
+			$User = new CUsers();
+			
+			foreach($UserIDs as $UserID)
+				if($User->OnLoad($UserID) !== false)
+					$UserList[] = $User->GetName();				
+			
+			
+			return $UserList;
+		}
 	};
 ?>

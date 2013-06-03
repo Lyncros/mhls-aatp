@@ -159,14 +159,30 @@
 		 *
 		 *
 		 */
-        function Select($Table, $Extra) {
+        public static function SelectFields($Fields, $Table, $Extra) {
+            $Query = "SELECT $Fields FROM `$Table` $Extra";
+			
+            if(($Res = mysql_query($Query)) === false) {
+                trigger_error("mySQL Error: ".mysql_error()." - ".$Query, E_USER_WARNING);
+                return false;
+            }
+            return new CTableIterator($Res);              
+        }
+		
+		/**
+		 *
+		 *
+		 *
+		 *
+		 */
+        public static function Select($Table, $Extra) {
             $Query = "SELECT * FROM `$Table` $Extra";
 			
             if(($Res = mysql_query($Query)) === false) {
                 trigger_error("mySQL Error: ".mysql_error()." - ".$Query, E_USER_WARNING);
                 return false;
             }
-            return $Res;              
+            return new CTableIterator($Res);              
         }
         
 		/**

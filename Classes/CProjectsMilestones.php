@@ -30,6 +30,12 @@
 		}
 		
 		//======================================================================
+		function IsComplete() {
+			return $this->Status && $this->Status == "Complete";
+		}
 		
+		function AssignedToUser() {
+			return CTable::SelectByID("Users", $this->AssignedTo);
+		}
 	};
 ?>

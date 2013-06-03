@@ -141,17 +141,16 @@
 			//------------------------------------------------------------------
 			$Parts = explode("/", $_SERVER["REQUEST_URI"]);
 			$Parts = end($Parts);
-
+			
 			$Parts = explode("?", $Parts);
 			$Parts = $Parts[0];
-
+			
 			$this->URL			= CURL::GetDomain();
 			$this->PageName		= urldecode($Parts);
-
+			
 			//if(substr($this->PageName, 0, 1) == ".") {
 			$this->ModuleName = $this->PageName;	//substr($this->PageName, 0);
 			//}
-
 			//------------------------------------------------------------------
 			// Is this requested Page a module?
 			//------------------------------------------------------------------
@@ -199,7 +198,12 @@
 				$this->Module->OnInit($this->Module, $this->Theme);
 				$this->Module->OnExecute();
 
-			}else{
+			} else if(strlen($this->ModuleName) > 0 && $this->ModuleName == PROJECTS_EXPORT_WITHOUT_AUTH) {
+				$Parts = explode("/", $_SERVER["REQUEST_URI"]);
+				
+				die();
+			} else {
+				
 				$this->LoadModule("Login");
 				return false;
 			}

@@ -30,6 +30,8 @@
 		}
 		
 		//======================================================================
-		
+		function AssignedToUser() {
+			return CTable::SelectByID("Users", $this->AssignedTo);
+		}
 	};
 ?>

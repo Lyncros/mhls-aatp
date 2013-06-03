@@ -362,7 +362,6 @@
 			echo "<tr class='CSearch_Header'>\n";
 			//echo "\t<td class='CSearch_Header_Cell' valign='top'><div class='CSearch_Spacer_Left'></div><div class='CSearch_Spacer_Right'></div><input type='checkbox' class='CSearch_Header_Checkbox'/></td>\n";
 			
-			
 			$i = 0;
 			foreach($this->ItemList as $Item) {
 				if($Item->Hidden) continue;
@@ -417,7 +416,7 @@
 					echo "<td colspan='".count($this->ItemList)."' align='center' class='CSearch_NoResults' style='$CellStyle'>No results found.</td>";
 				echo "</tr>\n";
 			}
-
+			
 			if($this->Rows) {
 				$i = 0;
 				foreach($this->Rows as $Row) {

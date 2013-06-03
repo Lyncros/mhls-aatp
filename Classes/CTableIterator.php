@@ -97,5 +97,44 @@
 		function ColumnExists($Name) {
 			return array_key_exists($Name, $this->Current);
 		}
+		
+		function RowsToAssociativeArray($Column, $IDColumn = "ID") {
+			$Return = Array();
+
+			foreach($this as $Row) {
+				$Return[$Row->{$IDColumn}] = $Row->{$Column};
+			}
+
+			return $Return;
+		}
+		
+		function RowsToArray($Column) {
+			$Return = Array();
+
+			foreach($this as $Row) {
+				$Return[] = $Row->{$Column};
+			}
+
+			return $Return;
+		}
+		
+		function MultipleColumnRowsToArray($Columns) {
+			$Return = Array();
+			$ColumnsArray = explode(",",$Columns);
+			foreach($this as $Row) {
+				$value = "";
+				$isFirst = true;
+				foreach ($ColumnsArray as $Column)
+				{
+					if(!$isFirst) $value .= ", ";
+					$value .= $Row->{$Column};
+					$isFirst = false;
+				}
+				
+				$Return[] = $value;
+			}
+
+			return $Return;
+		}
 	};
 ?>

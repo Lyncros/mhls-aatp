@@ -29,9 +29,9 @@
 
 			return true;
 		}
-
+		
 		function GetName() {
-			if(strlen($this->FirstName) > 0 || strlen($this->LastName)) {
+			if(strlen($this->FirstName) > 0 || strlen($this->LastName) > 0) {
 				return $this->FirstName." ".$this->LastName;
 			}
 
@@ -148,6 +148,18 @@
 			}
 
 			return $UserClass;
+		}
+		
+		public static function GetAllAssignableToMilestone() {
+			$UsersGroups = CTable::Select("UsersGroups", "WHERE `Name` = 'Creative Analyst' OR `Name` = 'Creative Consultant' OR `Name` = 'Junior Creative Analyst' OR `Name` = 'Product Manager'");
+			
+			return CTable::Select("Users","WHERE `UsersGroupsID` IN (".implode(",", $UsersGroups->RowsToArray("ID")).") && `Active` = 1 ORDER BY `LastName`");
+		}
+		
+		public static function GetAllAssignableToTodos() {
+			$UsersGroups = CTable::Select("UsersGroups", "WHERE `Name` = 'Creative Analyst' OR `Name` = 'Creative Consultant' OR `Name` = 'Junior Creative Analyst' OR `Name` = 'Product Manager'");
+			
+			return CTable::Select("Users","WHERE `UsersGroupsID` IN (".implode(",", $UsersGroups->RowsToArray("ID")).") && `Active` = 1 ORDER BY `LastName`");
 		}
 	};
 ?>

@@ -313,7 +313,8 @@
 				"ExpectedDeliveryDate"	=> strtotime($_POST["ExpectedDeliveryDate"]),
 				"ActualDeliveryDate"	=> strtotime($_POST["ActualDeliveryDate"]),
 				"PlantAllocated"		=> htmlspecialchars($_POST["PlantAllocated"]),
-				"Status"				=> htmlspecialchars($_POST["Status"]),
+				"AssignedTo"			=> intval($_POST["AssignedTo"]),
+				"Status"				=> (intval($_POST["Status"])==0)?"Active":"Complete",
 			);
 
 			if(intval($_POST["MilestoneID"]) > 0) {
@@ -351,6 +352,7 @@
 				"ExpectedDeliveryDate"		=> ($Data["ExpectedDeliveryDate"] ? date('n/j/Y', $Data["ExpectedDeliveryDate"]) : "N/A"),
 				"ActualDeliveryDate"		=> ($Data["ActualDeliveryDate"] ? date('n/j/Y', $Data["ActualDeliveryDate"]) : "N/A"),
 				"PlantAllocated"			=> $Data["PlantAllocated"],
+				"AssignedTo"			=> $Data["AssignedTo"],
 				"Status"					=> $Data["Status"],
 			);
 			CNotifier::Push("Module", "Projects", "New or Updated Milestone", $EmailData, $Project->ID);
@@ -467,6 +469,7 @@
 				"Complete"				=> intval($_POST["Complete"]),
 				"Comment"				=> htmlspecialchars($_POST["Comment"]),
 				"CommentRequired"		=> intval($_POST["CommentRequired"]),
+				"AssignedTo"		=> intval($_POST["AssignedTo"])
 			);
 
 			if(intval($_POST["ToDoID"]) > 0) {
@@ -499,6 +502,7 @@
 				"User"						=> $User->FirstName . " " . $User->LastName,
 				"Name"						=> $Data["Name"],
 				"Comment"					=> $Data["Comment"],
+				"AssignedTo"				=> $Data["AssignedTo"],
 				"Complete"					=> ($Data["Complete"] ? "Yes" : "No"),
 			);
 			CNotifier::Push("Module", "Projects", "New or Updated To-Do", $EmailData, $Project->ID);
