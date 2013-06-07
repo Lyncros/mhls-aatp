@@ -101,9 +101,9 @@
 	/* 3 */ $Search->AddColumn("Primary Customer", "PrimaryCustomer", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
 	/* 4 */ $Search->AddColumn("Customer Phone", "CustomerPhone", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
 	/* 5 */ $Search->AddColumn("Stat Sponsor Code", "StatSponsorCode", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
+	/* 6 */ $Search->AddColumn("Created", "Created", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
+	/* 7 */ $Search->AddColumn("DueDate", "DueDate", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");	
 	/* 6 */ //$Search->AddColumn("LSC", "LSC", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
-	/* 6 */ //$Search->AddColumn("Created", "Created", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
-	/* 7 */ //$Search->AddColumn("DueDate", "DueDate", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");	
 	/* 7 */ //$Search->AddColumn("Product Type", "ProductType", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
 	
 	// Non-deleted Projects
