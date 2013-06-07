@@ -12,4 +12,4 @@ ALTER TABLE `Projects` ADD `CustomISBN` VARCHAR(225) AFTER `ISBN13`;
 
 
 ALTER TABLE `ProjectsMilestones` ADD `AssignedTo` INT(10) AFTER `PlantAllocated`;
-ALTER TABLE `ProjectsTodos` ADD `AssignedTo` INT(10) AFTER `CommentRequired`;
+ALTER TABLE `ProjectsToDos` ADD `AssignedTo` INT(10) AFTER `CommentRequired`;
