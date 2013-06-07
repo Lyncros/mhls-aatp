@@ -384,7 +384,11 @@
 												</td>
 											</tr>
 											";
-											
+											$Users = CUsers::GetAllAssignableToMilestone();
+											if($Users === false)
+												$Users = Array(0 => "Nobody");
+											else
+												$Users = Array(0 => "Nobody") + $Users->MultipleColumnRowsToArray("LastName,FirstName");
 											echo CForm::AddTextbox("Name", "Name", "", "Please enter a Name");
 											echo CForm::AddYesNo("Customer Approval", "CustomerApproval", 0, "YesNo");
 											echo CForm::AddTextarea("Summary", "Summary", "");
@@ -392,6 +396,7 @@
 											echo CForm::AddDatepicker("Expected Delivery Date", "ExpectedDeliveryDate", time(), "", "", "Please enter an Expected Delivery Date");
 											echo CForm::AddDatepicker("Actual Delivery Date", "ActualDeliveryDate", time(), "", "");											
 											echo CForm::AddTextbox("Plant Allocated", "PlantAllocated", "");
+											echo CForm::AddDropdown("Assigned To", "AssignedTo", $Users, "");	
 											echo CForm::AddDropdown("Status", "Status", CMilestones::GetStatusList(), "");
 											echo CForm::AddHidden("ProjectsID", $ProjectID);
 										

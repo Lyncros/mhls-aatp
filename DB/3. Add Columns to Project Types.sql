@@ -1,3 +1,8 @@
+set sql_mode = 'STRICT_ALL_TABLES';
+alter table `Projects` change `RequestPlant` `RequestPlant` varchar(100);
+
+ALTER TABLE `ProjectsMilestones` ADD `EstimatedStartDate` INT;
+
 ALTER TABLE `ProductTypes` ADD `Milestones` TEXT AFTER `Name`;
 
 ALTER TABLE `Milestones` ADD `ToDosLists` TEXT AFTER `PlantAllocated`;
