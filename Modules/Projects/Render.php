@@ -43,7 +43,6 @@
 			<div class='ProjectContainer'>
 				<table style='width:100%;' cellpadding='0' cellspacing='0'>
 					<tr>
-						<td style='vertical-align:top; padding-top:7px; padding-left:11px;'><div class='ProductIcon'></div></td>
 						<td style='vertical-align:top; padding:7px 11px; width:135px;'>
 							<div style='font-weight:bold; font-size:14px;'>".$Project->ProductNumber."</div>
 							<div>".$Project->School."</p>
@@ -574,11 +573,11 @@
 				 
 				$Filters = json_decode(urldecode($_GET["Filters"]));
 				echo "<div style='float: right;margin-right:10px;'><ul id='selectable'>";
-					if(isset($Filters->FilterOperator) && $Filters->FilterOperator=='AND')
+					if(isset($Filters->FilterOperator) && $Filters->FilterOperator=='OR')
 					{
-						echo '<li>OR</li><li class="ui-selected">AND</li>';
+						echo '<li>AND</li><li class="ui-selected">OR</li>';
 					} else {
-						echo '<li class="ui-selected">OR</li><li>AND</li>';
+						echo '<li class="ui-selected">AND</li><li>OR</li>';
 					}
 				echo "</ul>" .
 					'<script>
@@ -591,10 +590,10 @@
 						});
 					</script>' . "
 				<select id='FilterOperator' class='' style='width:55px;display:none;'>";
-					if(isset($Filters->FilterOperator) && $Filters->FilterOperator=='AND')					
-						echo "<option value='OR'>OR</option><option value='AND' selected>AND</option>";
+					if(isset($Filters->FilterOperator) && $Filters->FilterOperator=='OR')					
+						echo "<option value='AND'>AND</option><option value='OR' selected>OR</option>";					
 					else
-						echo "<option value='OR' selected>OR</option><option value='AND'>AND</option>";					
+						echo "<option value='AND' selected>AND</option><option value='OR'>OR</option>";
 					echo 
 				"</select></div>";
 				

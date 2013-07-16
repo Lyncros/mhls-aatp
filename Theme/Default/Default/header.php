@@ -165,7 +165,6 @@
 								echo "<div class='SidebarSubicon SidebarSubiconProjectDetails' title='Project Details' onClick=\"MProjects.MoveToDetails();\"></div>";
 								echo "<div class='SidebarSubicon SidebarSubiconMilestones' title='Milestones' onClick=\"MProjects.MoveToMilestones();\"></div>";
 								echo "<div class='SidebarSubicon SidebarSubiconMessageBoard' title='Message Board' onClick=\"MProjects.MoveToMessages();\"></div>";
-								echo "<div class='SidebarSubicon SidebarSubiconResourceCenter' title='Resource Center' onClick=\"MProjects.MoveToResources();\"></div>";
 								echo "<div class='SidebarSubicon SidebarSubiconNotifications' title='Notifications' onClick=\"MProjects.MoveToNotifications();\"></div>";
 							//}
 							echo "</li>";	// <a href='/".$ModuleName."' style='".($App->GetModuleName() == $ModuleName ? "color: white;" : "")."'>".$Name."</a>

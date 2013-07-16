@@ -31,7 +31,7 @@
 	<div class='ProjectContainer' style='padding-bottom:45px;'>
 		<table style='width:100%;' cellpadding='0' cellspacing='0'>
 			<tr>
-				<td style='width:33px; padding-top:17px; padding-left:11px;'><div class='ProductIcon'></div></td>
+				<td style='width:33px; padding-top:17px;'></td>
 				<td colspan='7' style='padding-top:20px; font-size:24px;'>
 					<div style='float:left;'>Project Details</div>";
 					if(CSecurity::$User->CanAccess("ProjectDetails", "Edit")) {
@@ -39,7 +39,7 @@
 					}
 					echo "
 				</td>
-				<td style='width:30px;'></td>
+				<td style='width:33px;'></td>
 			</tr>
 			<tr>
 				<td></td>

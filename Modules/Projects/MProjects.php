@@ -1145,7 +1145,6 @@
 				"<div class='ProjectContainer'>
 					<table style='width:100%;' cellpadding='0' cellspacing='0'>
 						<tr>
-							<td style='vertical-align:top; padding-top:7px; padding-left:11px;'><div class='ProductIcon'></div></td>
 							<td style='vertical-align:top; padding:7px 11px; width:135px;'>
 								<div style='font-weight:bold; font-size:14px;'>".$Project->ProductNumber."</div>
 								<div>".$Project->School."</p>							

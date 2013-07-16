@@ -186,7 +186,7 @@ MProjects.MoveToDetails = function(ProjectID) {
 	$(".PreviewBox").fadeOut("fast");
 	$('#SearchResultsContainer').animate({ left		: '-810px' }, 500, 'swing');
 	$('.SidebarSubicon').show(500);
-	$('.SidebarActive').animate({ height : '190px' }, 500, 'swing');
+	$('.SidebarActive').animate({ height : '170px' }, 500, 'swing');
 	//$().scrollTo('.Body', 500);
 	$('html, body').animate({ scrollTop : $(".Body").offset().top }, 500, 'swing');
 	$('#HeightCalculator').animate({ height : ($('#ProjectDetailsContainer').height() + 2000) + "px" }, 500, 'swing');
