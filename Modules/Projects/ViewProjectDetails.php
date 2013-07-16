@@ -128,19 +128,7 @@
 								}
 								echo CForm::AddListbox("LSS", "LSSUsersID", $LSSArray, $Project->LSSs, "", "", "", "Basic");
 								
-								// LSR
-								$LSRArray = Array("" => "");
-								$LSRGroup = new CUsersGroups();
-								$LSRGroup->OnLoadAll("WHERE `Name` = 'Learning Solutions Representative'");
-								$LSRs = new CUsers();
-								if($LSRs->OnLoadAll("WHERE `UsersGroupsID` = ".$LSRGroup->ID." && `Active` = 1 ORDER BY `LastName`") !== false) {
-									foreach($LSRs->Rows as $Row) {
-										$LSRArray[$Row->ID] = $Row->LastName . ", " . $Row->FirstName;
-									}
-								}
-								echo CForm::AddListbox("LSR", "LSRUsersID", $LSRArray, $Project->LSRs, "", "", "", "Basic");
-								
-								// Junior Creative Analyst
+								// Associate Creative Analyst (former Junior Creative Analyst)
 								$JCAArray = Array("" => "");
 								$JCAGroup = new CUsersGroups();
 								$JCAGroup->OnLoadAll("WHERE `Name` = 'Junior Creative Analyst'");
@@ -150,7 +138,7 @@
 										$JCAArray[$Row->ID] = $Row->LastName . ", " . $Row->FirstName;
 									}
 								}
-								echo CForm::AddListbox("Associate Creative Analyst", "JuniorCreativeAnalystUsersID", $JCAArray, $Project->JuniorCreativeAnalysts, "", "", "", "Basic");
+								echo CForm::AddListbox("Associate Creative Analyst", "JuniorCreativeAnalystUsersID", $JCAArray, $Project->JuniorCreativeAnalysts, "", "", "", "Advanced");
 								
 								// Creative Analyst
 								$CAArray = Array("" => "");
@@ -187,27 +175,17 @@
 									}
 								}
 								echo CForm::AddListbox("Institutional Sales Rep", "InstitutionalSalesRepUsersID", $RepArray, $Project->InstitutionalSalesReps, "", "", "", "Advanced");
-								
-								//echo CForm::AddTextbox("Business Analyst", "BusinessAnalyst", $Project->BusinessAnalyst);
-								
-								echo CForm::AddTextbox("Primary Customer", "PrimaryCustomer", $Project->PrimaryCustomer, "", "", "Advanced");
+								echo CForm::AddTextbox("Primary Customer", "PrimaryCustomer", $Project->PrimaryCustomer, "", "", "Basic");
 								echo CForm::AddTextbox("Customer Phone", "CustomerPhone", $Project->CustomerPhone, "", "", "Advanced");
 								echo CForm::AddTextbox("Customer Email", "CustomerEmail", $Project->CustomerEmail, "", "", "Advanced");
 								echo CForm::AddTextbox("Lead Author", "LeadAuthor", $Project->LeadAuthor, "", "", "Advanced");
 								echo CForm::AddTextbox("Title", "Title", $Project->Title, "", "", "Advanced");
-								echo CForm::AddTextbox("MHID", "MHID", $Project->MHID, "", "", "Basic");
 								echo CForm::AddTextbox("Ed", "Ed", $Project->Ed, "", "", "Advanced");
-								echo CForm::AddTextbox("Imp", "Imp", $Project->Imp, "", "", "Advanced");
 								echo CForm::AddTextbox("Net Price", "NetPrice", $Project->NetPrice, "", "", "Advanced");
-								echo CForm::AddTextbox("Estimated UMC", "EstimatedUMC", $Project->EstimatedUMC, "", "", "Advanced");
-								echo CForm::AddTextbox("Actual UMC", "ActualUMC", $Project->ActualUMC, "", "", "Advanced");
 								echo CForm::AddTextbox("School", "School", $Project->School, "", "", "Basic");
 								echo CForm::AddDropdown("Status", "Status", CProjects::GetAllStatus(), $Project->Status);
-								echo CForm::AddDatepicker("Course Start Date", "CourseStartDate", ($Project->CourseStartDate > 0 ? $Project->CourseStartDate : ""), "", "", "", "Basic");
-								echo CForm::AddDatepicker("Due Date", "DueDate", ($Project->DueDate > 0 ? $Project->DueDate : ""), "", "", "", "Basic");
-								echo CForm::AddTextbox("QOH", "QOH", $Project->QOH, "", "", "Advanced");
-								echo CForm::AddDatepicker("QOH Date", "QOHDate", ($Project->QOHDate > 0 ? $Project->QOHDate : ""), "", "", "", "Advanced");
-	
+								echo CForm::AddDatepicker("Course Start Date", "CourseStartDate", ($Project->CourseStartDate > 0 ? $Project->CourseStartDate : ""), "", "", "", "Advanced");
+								echo CForm::AddDatepicker("Due Date", "DueDate", ($Project->DueDate > 0 ? $Project->DueDate : ""), "", "", "", "Advanced");
 	
 								// Milestone template (former Product Types)
 								$Mt = new CProductTypes();
@@ -217,23 +195,14 @@
 								echo CForm::AddDropdown("Milestone template", "ProductTypes", $ValuesArray, $PTIds[0]);
 		
 								echo CForm::AddTextbox("Stat Sponsor Code", "StatSponsorCode", $Project->StatSponsorCode, "", "", "Advanced");
-								echo CForm::AddTextbox("2012 YTD Sales Net Units", "2012YTDSalesNetUnits", $Project->{"2012YTDSalesNetUnits"}, "", "", "Advanced");
-								echo CForm::AddTextbox("2012 YTD Sales Net Revenue", "2012YTDSalesNetRevenue", $Project->{"2012YTDSalesNetRevenue"}, "", "", "Advanced");
-								echo CForm::AddTextbox("2012 YTD Sales Gross Units", "2012YTDSalesGrossUnits", $Project->{"2012YTDSalesGrossUnits"}, "", "", "Advanced");
-								echo CForm::AddTextbox("2012 YTD Sales Gross Revenue", "2012YTDSalesGrossRevenue", $Project->{"2012YTDSalesGrossRevenue"}, "", "", "Advanced");
-								echo CForm::AddTextbox("2011 Sales Net Units", "2011SalesNetUnits", $Project->{"2011SalesNetUnits"}, "", "", "Advanced");
-								echo CForm::AddTextbox("2011 Sales Net Revenue", "2011SalesNetRevenue", $Project->{"2011SalesNetRevenue"}, "", "", "Advanced");
-								echo CForm::AddTextbox("2011 Sales Gross Units", "2011SalesGrossUnits", $Project->{"2011SalesGrossUnits"}, "", "", "Advanced");
-								echo CForm::AddTextbox("2011 Sales Gross Revenue", "2011SalesGrossRevenue", $Project->{"2011SalesGrossRevenue"}, "", "", "Advanced");
-								echo CForm::AddTextbox("Request Plant", "RequestPlant", $Project->RequestPlant, "", "", "Basic");
-								echo CForm::AddTextbox("Plant Paid", "PlantPaid", $Project->PlantPaid, "", "", "Basic");
-								echo CForm::AddTextbox("Plant Left", "PlantLeft", $Project->PlantLeft, "", "", "Basic");
-								echo CForm::AddTextbox("Vendor", "VenderUsed", $Project->VenderUsed, "", "", "Basic");
-								echo CForm::AddDatepicker("Date Paid", "DatePaid", ($Project->DatePaid > 0 ? $Project->DatePaid : ""), "", "", "", "Basic");
-								echo CForm::AddTextbox("ISBN-10", "ISBN10", $Project->ISBN10, "", "", "Basic");
-								echo CForm::AddTextbox("Custom ISBN", "CustomISBN", $Project->CustomISBN, "", "", "Basic");
-								echo CForm::AddTextbox("Spec doc link", "SpecDocLink", $Project->SpecDocLink, "", "", "Basic");
-								echo CForm::AddTextbox("Connect Request ID link", "ConnectRequestIDLink", $Project->ConnectRequestIDLink, "", "", "Basic");
+								echo CForm::AddTextbox("Request Plant", "RequestPlant", $Project->RequestPlant, "", "", "Advanced");
+								echo CForm::AddTextbox("Plant Paid", "PlantPaid", $Project->PlantPaid, "", "", "Advanced");
+								echo CForm::AddTextbox("Plant Left", "PlantLeft", $Project->PlantLeft, "", "", "Advanced");
+								echo CForm::AddTextbox("Vendor", "VenderUsed", $Project->VenderUsed, "", "", "Advanced");
+								echo CForm::AddDatepicker("Date Paid", "DatePaid", ($Project->DatePaid > 0 ? $Project->DatePaid : ""), "", "", "", "Advanced");
+								echo CForm::AddTextbox("ISBN-10", "ISBN10", $Project->ISBN10, "", "", "Advanced");
+								echo CForm::AddTextbox("Spec doc link", "SpecDocLink", $Project->SpecDocLink, "", "", "Advanced");
+								echo CForm::AddTextbox("Connect Request ID link", "ConnectRequestIDLink", $Project->ConnectRequestIDLink, "", "", "Advanced");
 								echo CForm::AddHidden("ID", $Project->ID);
 								echo "								
 								<tr>
