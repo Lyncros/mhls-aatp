@@ -62,56 +62,14 @@
 			
 			echo CForm::AddTextbox("Primary Customer", "PrimaryCustomer", $Project->PrimaryCustomer);
 			echo CForm::AddTextbox("School", "School", $Project->School);
-			echo CForm::AddDropdown("Status", "Status", CProjects::GetAllStatus(), $Project->Status);			
+			echo CForm::AddDropdown("Status", "Status", CProjects::GetAllStatus(), $Project->Status);
 			
-			$Types = new CProductTypes();
-			$Types->OnLoadAll("WHERE `Active` = 1 ORDER BY `Name` ASC");
-			$ValuesArray = Array();
-			foreach(CForm::RowsToArray($Types->Rows, "Name") as $Key => $Value) {
-				$ValuesArray[] = json_encode(Array("id" => $Key, "text" => $Value));
-			}
-			$SelectedArray = Array();
-			$SelectedArray2 = Array();
-			foreach(@$Project->ProductTypes as $Key => $Value) {
-				$SelectedArray[] = json_encode(Array("id" => $Key, "text" => $Value));
-				$SelectedArray2[] = $Key;
-			}
-			echo CForm::AddStatic("Product Type(s)", "<input type='text' name='".CForm::GetPrefix()."ProductTypes' id='".CForm::GetPrefix()."ProductTypes' value='' style='width:300px;'>"); 
+			//Milestone template (former Product Types)
+			$Mt = new CProductTypes();
+			$Mt->OnLoadAll("WHERE `Active` = 1 ORDER BY `Name` ASC");
+			$ValuesArray = array(0 => "N/A") + CForm::RowsToArray($Mt->Rows, "Name");
 			
-			//*
-			echo "
-			<script type='text/javascript'>
-				$('#".CForm::GetPrefix()."ProductTypes').select2({
-					minimumResultsForSearch		: 20,
-					multiple					: true,
-					data						: [".str_replace('"id"', 'id', str_replace('"text"', 'text', implode(",", $ValuesArray)))."],
-					createSearchChoice			: function(term, data) {
-						if ($(data).filter(function() {
-							return this.text.localeCompare(term) === 0;
-						}).length === 0) {
-							//return MProjects.AddProductType(term);
-							return {id:term, text:term};
-						}
-					}
-				});
-				$('#".CForm::GetPrefix()."ProductTypes').select2('val', [";
-				$Separator = "";
-				foreach(@$Project->ProductTypes as $Key => $Value) {
-					echo $Separator . "{id:".$Key.", text:\"".$Value."\"}";
-					$Separator = ",";
-				}
-				echo "])
-			</script>
-			";
-			//*/
-			/*
-			 *initSelection				: function (element) {
-						var data = [];
-						$(element.val().split('|')).each(function () {
-							data.push({id: this, text: this});
-						});
-						return data;
-					},*/
+			echo CForm::AddDropdown("Milestone template", "ProductTypes", $ValuesArray, $Project->ProductTypes);
 		?>
 		</table>
 

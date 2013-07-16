@@ -7,7 +7,7 @@
 
 	$Project = new CProjects();
 	$Project->OnLoad($ProjectID);
-
+	
 	/*if($Project->GetLastTouchedDays() >= 1)*/ $LastTouchedDays = " <span class='LastTouched' style='cursor:pointer;' onClick=\"MProjects.ShowPreviewBox(this, 'LastTouched', ".$Project->ID.");\">".$Project->GetLastTouchedDays()."</span>";
 	
 	$MilestonePercentage		= 0;
@@ -65,7 +65,7 @@
 								<td style='vertical-align:top; padding:22px 11px; width:135px;'>
 									<div style='color:#0685c5; font-weight:bold; font-size:14px;'>Project Details</div>
 									<p><b>LSC:</b> ".$Project->GetUsers("LSCs")."</p>
-									<p><b>Product Type(s):</b> ".$Project->GetProductTypesList()."</p>
+									<p><b>Milestone Template:</b> ".$Project->GetProductTypesList()."</p>
 								</td>
 								<td style='vertical-align:top; padding-top:20px;'><div class='Separator'></div></td>
 								<td style='vertical-align:top; padding:22px 11px; padding-right:0px; width:160px;'>
@@ -203,55 +203,14 @@
 								echo CForm::AddTextbox("QOH", "QOH", $Project->QOH, "", "", "Advanced");
 								echo CForm::AddDatepicker("QOH Date", "QOHDate", ($Project->QOHDate > 0 ? $Project->QOHDate : ""), "", "", "", "Advanced");
 	
-								$Types = new CProductTypes();
-								$Types->OnLoadAll("WHERE `Active` = 1 ORDER BY `Name` ASC");
-								$ValuesArray = Array();
-								foreach(CForm::RowsToArray($Types->Rows, "Name") as $Key => $Value) {
-									$ValuesArray[] = json_encode(Array("id" => $Key, "text" => $Value));
-								}
-								$SelectedArray = Array();
-								$SelectedArray2 = Array();
-								foreach($Project->ProductTypes as $Key => $Value) {
-									$SelectedArray[] = json_encode(Array("id" => $Key, "text" => $Value));
-									$SelectedArray2[] = $Key;
-								}
-								echo CForm::AddStatic("Product Type(s)", "<input type='text' name='".CForm::GetPrefix()."ProductTypes' id='".CForm::GetPrefix()."ProductTypes' value='' style='width:300px;'>", "Basic"); 
-								
-								//*
-								echo "
-								<script type='text/javascript'>
-									$('#".CForm::GetPrefix()."ProductTypes').select2({
-										minimumResultsForSearch		: 20,
-										multiple					: true,
-										data						: [".str_replace('"id"', 'id', str_replace('"text"', 'text', implode(",", $ValuesArray)))."],
-										createSearchChoice			: function(term, data) {
-											if ($(data).filter(function() {
-												return this.text.localeCompare(term) === 0;
-											}).length === 0) {
-												//return MProjects.AddProductType(term);
-												return {id:term, text:term};
-											}
-										}
-									});
-									$('#".CForm::GetPrefix()."ProductTypes').select2('val', [";
-									$Separator = "";
-									foreach($Project->ProductTypes as $Key => $Value) {
-										echo $Separator . "{id:".$Key.", text:\"".$Value."\"}";
-										$Separator = ",";
-									}
-									echo "])
-								</script>
-								";
-								//*/
-								/*
-								 *initSelection				: function (element) {
-											var data = [];
-											$(element.val().split('|')).each(function () {
-												data.push({id: this, text: this});
-											});
-											return data;
-										},*/
 	
+								// Milestone template (former Product Types)
+								$Mt = new CProductTypes();
+								$Mt->OnLoadAll("WHERE `Active` = 1 ORDER BY `Name` ASC");
+								$ValuesArray = array(0 => "N/A") + CForm::RowsToArray($Mt->Rows, "Name");
+								$PTIds = array_keys($Project->ProductTypes);
+								echo CForm::AddDropdown("Milestone template", "ProductTypes", $ValuesArray, $PTIds[0]);
+		
 								echo CForm::AddTextbox("Stat Sponsor Code", "StatSponsorCode", $Project->StatSponsorCode, "", "", "Advanced");
 								echo CForm::AddTextbox("2012 YTD Sales Net Units", "2012YTDSalesNetUnits", $Project->{"2012YTDSalesNetUnits"}, "", "", "Advanced");
 								echo CForm::AddTextbox("2012 YTD Sales Net Revenue", "2012YTDSalesNetRevenue", $Project->{"2012YTDSalesNetRevenue"}, "", "", "Advanced");
