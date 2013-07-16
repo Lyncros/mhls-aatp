@@ -622,7 +622,9 @@
 				"ISBN13"							=> htmlspecialchars($_POST["ISBN13"]),
 				"CustomISBN"						=> htmlspecialchars($_POST["CustomISBN"]),
 				"Modified"							=> time(),
-				"ModifiedUsersID"					=> CSecurity::GetUsersID(),				
+				"ModifiedUsersID"					=> CSecurity::GetUsersID(),
+				"SpecDocLink"						=> htmlspecialchars($_POST["SpecDocLink"]),
+				"ConnectRequestIDLink"				=> htmlspecialchars($_POST["ConnectRequestIDLink"]),			
 			);
 
 			// Changes

@@ -65,18 +65,13 @@
 								<td style='vertical-align:top; padding:22px 11px; width:135px;'>
 									<div style='color:#0685c5; font-weight:bold; font-size:14px;'>Project Details</div>
 									<p><b>LSC:</b> ".$Project->GetUsers("LSCs")."</p>
-									<p><b>Sales Rep:</b> ".$Project->GetUsers("SalesReps")."</p>
-									<!--<p>".$Project->StatSponsorCode."</p>-->
 									<p><b>Product Type(s):</b> ".$Project->GetProductTypesList()."</p>
-									<p style='color:#0685c5; text-decoration:underline; cursor:pointer;' onClick=\"MProjects.ShowPreviewBox(this, 'LeadNotes', ".$Project->ID.");\">Lead Notes</p>
 								</td>
 								<td style='vertical-align:top; padding-top:20px;'><div class='Separator'></div></td>
 								<td style='vertical-align:top; padding:22px 11px; padding-right:0px; width:160px;'>
 									<div style='color:#0685c5; font-weight:bold; font-size:14px;'>&nbsp;</div>
 									<p><b>ISBN-10:</b> ".$Project->ISBN10."</p>
-									<p><b>ISBN-13:</b> ".$Project->ISBN13."</p>
 									<p><b>CA:</b> ".$Project->GetUsers("CreativeAnalysts")."</p>
-									<p><b>PM:</b> ".$Project->GetUsers("ProductManagers")."</p>
 									<p style='color:#0685c5; text-decoration:underline; cursor:pointer;' onClick=\"MProjects.ShowPreviewBox(this, 'ProjectLink', ".$Project->ID.");\">Direct Project Link</p>
 								</td>
 							</tr>
@@ -103,19 +98,7 @@
 									}
 								}
 								echo CForm::AddListbox("District Manager", "DistrictManagerUsersID", $DMArray, $Project->DistrictManagers, "", "", "", "Advanced");
-								
-								// Sales Rep
-								$RepArray = Array("" => "");
-								$RepGroup = new CUsersGroups();
-								$RepGroup->OnLoadAll("WHERE `Name` = 'Sales Rep'");
-								$Reps = new CUsers();
-								if($Reps->OnLoadAll("WHERE `UsersGroupsID` = ".$RepGroup->ID." && `Active` = 1 ORDER BY `LastName`") !== false) {
-									foreach($Reps->Rows as $Row) {
-										$RepArray[$Row->ID] = $Row->LastName . ", " . $Row->FirstName;
-									}
-								}
-								echo CForm::AddListbox("Sales Rep", "SalesRepUsersID", $RepArray, $Project->SalesReps, "", "", "", "Advanced");
-								
+	
 								// LSC
 								$LSCArray = Array("" => "");
 								$LSCGroup = new CUsersGroups();
@@ -202,18 +185,6 @@
 								
 								//echo CForm::AddTextbox("Business Analyst", "BusinessAnalyst", $Project->BusinessAnalyst);
 								
-								// Product Manager
-								$PMArray = Array("" => "");
-								$PMGroup = new CUsersGroups();
-								$PMGroup->OnLoadAll("WHERE `Name` = 'Product Manager'");
-								$PMs = new CUsers();
-								if($PMs->OnLoadAll("WHERE `UsersGroupsID` = ".$PMGroup->ID." && `Active` = 1 ORDER BY `LastName`") !== false) {
-									foreach($PMs->Rows as $Row) {
-										$PMArray[$Row->ID] = $Row->LastName . ", " . $Row->FirstName;
-									}
-								}
-								echo CForm::AddListbox("Product Manager", "ProductManagerUsersID", $PMArray, $Project->ProductManagers, "", "", "", "Advanced");
-								
 								echo CForm::AddTextbox("Primary Customer", "PrimaryCustomer", $Project->PrimaryCustomer, "", "", "Advanced");
 								echo CForm::AddTextbox("Customer Phone", "CustomerPhone", $Project->CustomerPhone, "", "", "Advanced");
 								echo CForm::AddTextbox("Customer Email", "CustomerEmail", $Project->CustomerEmail, "", "", "Advanced");
@@ -290,15 +261,15 @@
 								echo CForm::AddTextbox("2011 Sales Net Revenue", "2011SalesNetRevenue", $Project->{"2011SalesNetRevenue"}, "", "", "Advanced");
 								echo CForm::AddTextbox("2011 Sales Gross Units", "2011SalesGrossUnits", $Project->{"2011SalesGrossUnits"}, "", "", "Advanced");
 								echo CForm::AddTextbox("2011 Sales Gross Revenue", "2011SalesGrossRevenue", $Project->{"2011SalesGrossRevenue"}, "", "", "Advanced");
-								echo CForm::AddTextarea("Lead Notes", "LeadNotes", $Project->LeadNotes, "", "Basic");
 								echo CForm::AddTextbox("Request Plant", "RequestPlant", $Project->RequestPlant, "", "", "Basic");
 								echo CForm::AddTextbox("Plant Paid", "PlantPaid", $Project->PlantPaid, "", "", "Basic");
 								echo CForm::AddTextbox("Plant Left", "PlantLeft", $Project->PlantLeft, "", "", "Basic");
-								echo CForm::AddTextbox("Vender Used", "VenderUsed", $Project->VenderUsed, "", "", "Basic");
+								echo CForm::AddTextbox("Vendor", "VenderUsed", $Project->VenderUsed, "", "", "Basic");
 								echo CForm::AddDatepicker("Date Paid", "DatePaid", ($Project->DatePaid > 0 ? $Project->DatePaid : ""), "", "", "", "Basic");
 								echo CForm::AddTextbox("ISBN-10", "ISBN10", $Project->ISBN10, "", "", "Basic");
-								echo CForm::AddTextbox("ISBN-13", "ISBN13", $Project->ISBN13, "", "", "Basic");
 								echo CForm::AddTextbox("Custom ISBN", "CustomISBN", $Project->CustomISBN, "", "", "Basic");
+								echo CForm::AddTextbox("Spec doc link", "SpecDocLink", $Project->SpecDocLink, "", "", "Basic");
+								echo CForm::AddTextbox("Connect Request ID link", "ConnectRequestIDLink", $Project->ConnectRequestIDLink, "", "", "Basic");
 								echo CForm::AddHidden("ID", $Project->ID);
 								echo "								
 								<tr>
