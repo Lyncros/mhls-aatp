@@ -38,18 +38,18 @@
 		private function Header()
 		{
 			return array(	'Project Number','Project Value','District Manager','LSC','LSS',
-							'LSR','Associate Creative Analyst','Creative Analyst','Creative Consultant','Institutional Sales Rep',
+							/*'LSR',*/'Associate Creative Analyst','Creative Analyst','Creative Consultant','Institutional Sales Rep',
 							
 							'Primary Customer','Customer Phone','Customer Email','Lead Author','Title',
-							'MHID','Ed','Imp','Net Price','Estimated UMC',
+							/*'MHID',*/'Ed',/*'Imp',*/'Net Price',/*'Estimated UMC',*/
 							
-							'Actual UMC','School','Status','Course State Date','Due Date',
-							'QOH','QOH Date','Product Type','Stat Sponsor Code','2012 YTD Sales Net Units',
+							/*'Actual UMC',*/'School','Status','Course State Date','Due Date',
+							/*'QOH','QOH Date',*/'Milestone template','Stat Sponsor Code',/*'2012 YTD Sales Net Units',*/
 							
-							'2012 YTD Sales Net Revenue','2012 YTD Sales Gross Units','2012 YTD Sales Gross Revenue','2011 Sales Net Units','2011 Sales Net Revenue',
-							'2011 Sales Gross Units','2011 Sales Gross Revenue', 'Request Plant','Plant Paid','Plant Left',
+							/*'2012 YTD Sales Net Revenue','2012 YTD Sales Gross Units','2012 YTD Sales Gross Revenue','2011 Sales Net Units','2011 Sales Net Revenue',*/
+							/*'2011 Sales Gross Units','2011 Sales Gross Revenue', */'Request Plant','Plant Paid','Plant Left',
 							
-							'Vendor','Date Paid','ISBN-10','Custom ISBN','Spec Doc Link',
+							'Vendor','Date Paid','ISBN-10',/*'Custom ISBN',*/'Spec Doc Link',
 							'Connect Request ID link','Milestones','Milestone Completion Percentage');
 		}
 		
@@ -63,59 +63,66 @@
 				$Project = new CProjects();
 				$Project->OnLoad($Row->Current["ID"]);
 				
+				$col = 1;
+				
 				$ProjectInfo 		= Array();
-				$ProjectInfo[1] 	= $Project->ProductNumber;
-				$ProjectInfo[2] 	= $Project->ProjectValue;
-				$ProjectInfo[3] 	= implode (CSV_ITEM_DELIMITER,$Project->GetDistrictManagersCompleteNames());
-				$ProjectInfo[4] 	= implode (CSV_ITEM_DELIMITER,$Project->GetLSCsCompleteNames());
-				$ProjectInfo[5] 	= implode (CSV_ITEM_DELIMITER,$Project->GetLSSsCompleteNames());
-				$ProjectInfo[6] 	= implode (CSV_ITEM_DELIMITER,$Project->GetLSRsCompleteNames());
-				$ProjectInfo[7] 	= implode (CSV_ITEM_DELIMITER,$Project->GetJuniorCreativeAnalystsCompleteNames());
-				$ProjectInfo[8] 	= implode (CSV_ITEM_DELIMITER,$Project->GetCreativeAnalystsCompleteNames());
-				$ProjectInfo[9] 	= implode (CSV_ITEM_DELIMITER,$Project->GetCreativeConsultantsCompleteNames());
-				$ProjectInfo[10] 	= implode (CSV_ITEM_DELIMITER,$Project->GetInstitutionalSalesRepsCompleteNames());
+				$ProjectInfo[$col++] 	= $Project->ProductNumber;
+				$ProjectInfo[$col++] 	= $Project->ProjectValue;
+				$ProjectInfo[$col++] 	= implode (CSV_ITEM_DELIMITER,$Project->GetDistrictManagersCompleteNames());
+				$ProjectInfo[$col++] 	= implode (CSV_ITEM_DELIMITER,$Project->GetLSCsCompleteNames());
+				$ProjectInfo[$col++] 	= implode (CSV_ITEM_DELIMITER,$Project->GetLSSsCompleteNames());
+				//$ProjectInfo[$col++] 	= implode (CSV_ITEM_DELIMITER,$Project->GetLSRsCompleteNames());
+				$ProjectInfo[$col++] 	= implode (CSV_ITEM_DELIMITER,$Project->GetJuniorCreativeAnalystsCompleteNames());
+				$ProjectInfo[$col++] 	= implode (CSV_ITEM_DELIMITER,$Project->GetCreativeAnalystsCompleteNames());
+				$ProjectInfo[$col++] 	= implode (CSV_ITEM_DELIMITER,$Project->GetCreativeConsultantsCompleteNames());
+				$ProjectInfo[$col++] 	= implode (CSV_ITEM_DELIMITER,$Project->GetInstitutionalSalesRepsCompleteNames());
+				//10
 				
-				$ProjectInfo[11] 	= $Project->PrimaryCustomer;
-				$ProjectInfo[12] 	= $Project->CustomerPhone;
-				$ProjectInfo[13] 	= $Project->CustomerEmail;				
-				$ProjectInfo[14] 	= $Project->LeadAuthor;				
-				$ProjectInfo[15] 	= $Project->Title;
-				$ProjectInfo[16] 	= $Project->MHID;
-				$ProjectInfo[17] 	= $Project->Ed;
-				$ProjectInfo[18] 	= $Project->Imp;
-				$ProjectInfo[19] 	= $Project->NetPrice;
-				$ProjectInfo[20] 	= $Project->EstimatedUMC;
+				$ProjectInfo[$col++] 	= $Project->PrimaryCustomer;
+				$ProjectInfo[$col++] 	= $Project->CustomerPhone;
+				$ProjectInfo[$col++] 	= $Project->CustomerEmail;				
+				$ProjectInfo[$col++] 	= $Project->LeadAuthor;				
+				$ProjectInfo[$col++] 	= $Project->Title;
+				//$ProjectInfo[$col++] 	= $Project->MHID;
+				$ProjectInfo[$col++] 	= $Project->Ed;
+				//$ProjectInfo[$col++] 	= $Project->Imp;
+				$ProjectInfo[$col++] 	= $Project->NetPrice;
+				//$ProjectInfo[$col++] 	= $Project->EstimatedUMC;
+				//20
 				
-				$ProjectInfo[21] 	= $Project->ActualUMC;
-				$ProjectInfo[22] 	= $Project->School;
-				$ProjectInfo[23] 	= $Project->StatusName();
-				$ProjectInfo[24] 	= date("m-d-Y",$Project->CourseStartDate);
-				$ProjectInfo[25] 	= date("m-d-Y",$Project->DueDate);
-				$ProjectInfo[26] 	= $Project->QOH;
-				$ProjectInfo[27] 	= date("m-d-Y",$Project->QOHDate);
-				$ProjectInfo[28] 	= $Project->GetProductTypesList();
-				$ProjectInfo[29] 	= $Project->StatSponsorCode;
-				$ProjectInfo[30] 	= $Project->{"2012YTDSalesNetUnits"};
+				//$ProjectInfo[$col++] 	= $Project->ActualUMC;
+				$ProjectInfo[$col++] 	= $Project->School;
+				$ProjectInfo[$col++] 	= $Project->StatusName();
+				$ProjectInfo[$col++] 	= date("m-d-Y",$Project->CourseStartDate);
+				$ProjectInfo[$col++] 	= date("m-d-Y",$Project->DueDate);
+				//$ProjectInfo[$col++] 	= $Project->QOH;
+				//$ProjectInfo[$col++] 	= date("m-d-Y",$Project->QOHDate);
+				$ProjectInfo[$col++] 	= $Project->GetProductTypesList();
+				$ProjectInfo[$col++] 	= $Project->StatSponsorCode;
+				//$ProjectInfo[$col++] 	= $Project->{"2012YTDSalesNetUnits"};
+				//30
 				
-				$ProjectInfo[31] 	= $Project->{"2012YTDSalesNetRevenue"};
-				$ProjectInfo[32] 	= $Project->{"2012YTDSalesGrossUnits"};
-				$ProjectInfo[33] 	= $Project->{"2012YTDSalesGrossRevenue"};
-				$ProjectInfo[34] 	= $Project->{"2011SalesNetUnits"}; 
-				$ProjectInfo[35] 	= $Project->{"2011SalesNetRevenue"}; 
-				$ProjectInfo[36] 	= $Project->{"2011SalesGrossUnits"}; 
-				$ProjectInfo[37] 	= $Project->{"2011SalesGrossRevenue"}; 
-				$ProjectInfo[38] 	= $Project->RequestPlant; 
-				$ProjectInfo[39] 	= $Project->PlantPaid; 
-				$ProjectInfo[40] 	= $Project->PlantLeft; 
+				//$ProjectInfo[$col++] 	= $Project->{"2012YTDSalesNetRevenue"};
+				//$ProjectInfo[$col++] 	= $Project->{"2012YTDSalesGrossUnits"};
+				//$ProjectInfo[$col++] 	= $Project->{"2012YTDSalesGrossRevenue"};
+				//$ProjectInfo[$col++] 	= $Project->{"2011SalesNetUnits"}; 
+				//$ProjectInfo[$col++] 	= $Project->{"2011SalesNetRevenue"}; 
+				//$ProjectInfo[$col++] 	= $Project->{"2011SalesGrossUnits"}; 
+				//$ProjectInfo[$col++] 	= $Project->{"2011SalesGrossRevenue"}; 
+				$ProjectInfo[$col++] 	= $Project->RequestPlant; 
+				$ProjectInfo[$col++] 	= $Project->PlantPaid; 
+				$ProjectInfo[$col++] 	= $Project->PlantLeft; 
+				//40
 				
-				$ProjectInfo[41] 	= $Project->VenderUsed; 
-				$ProjectInfo[42] 	= date("m-d-Y",$Project->DatePaid); 
-				$ProjectInfo[43] 	= $Project->ISBN10; 
-				$ProjectInfo[44] 	= $Project->CustomISBN; 
-				$ProjectInfo[45] 	= $Project->SpecDocLink;
-				$ProjectInfo[46] 	= $Project->{"ConnectRequestIDLink"}; 
-				$ProjectInfo[47] 	= $this->FormatMilestone($Project->Milestones);
-				$ProjectInfo[48] 	= $Project->GetMilestonCompletionPercentage();				
+				$ProjectInfo[$col++] 	= $Project->VenderUsed; 
+				$ProjectInfo[$col++] 	= date("m-d-Y",$Project->DatePaid); 
+				$ProjectInfo[$col++] 	= $Project->ISBN10; 
+				//$ProjectInfo[$col++] 	= $Project->CustomISBN; 
+				$ProjectInfo[$col++] 	= $Project->SpecDocLink;
+				$ProjectInfo[$col++] 	= $Project->{"ConnectRequestIDLink"}; 
+				$ProjectInfo[$col++] 	= $this->FormatMilestone($Project->Milestones);
+				$ProjectInfo[$col++] 	= $Project->GetMilestonCompletionPercentage();				
+				//48
 				
 				$ProjectListInfo[$i] = $ProjectInfo;
 				$i++;
