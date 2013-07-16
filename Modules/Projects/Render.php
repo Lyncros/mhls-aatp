@@ -25,7 +25,7 @@
 		$Project = new CProjects();
 		$Project->OnLoad($Obj->ID);
 		
-		/*if($Project->GetLastTouchedDays() >= 1)*/ $LastTouchedDays = " <span class='LastTouched' style='cursor:pointer;' onClick=\"MProjects.ShowPreviewBox(this, 'LastTouched', ".$Project->ID.");\">".$Project->GetLastTouchedDays()."</span>";
+		$LastTouchedDays = " <span class='LastTouched' style='cursor:pointer;' onClick=\"MProjects.ShowPreviewBox(this, 'LastTouched', ".$Project->ID.");\">".$Project->GetLastTouchedDays()."</span>";
 
 		$MilestonePercentage		= 0;
 		$Numerator					= 0;
@@ -48,25 +48,26 @@
 							<div>".$Project->School."</p>
 							<div style='font-weight:bold; font-size:14px;'>".$Project->PrimaryCustomer."</div>							
 						</td>
-						<td style='vertical-align:top; padding-top:10px;'><div class='Separator'></div></td>
+						<td style='vertical-align:top; padding-top:7px; padding-bottom:7px;'><div class='Separator'></div></td>
 						<td style='vertical-align:top; padding:7px 11px; width:195px;'>
 							<div style='color:#d74c4c; font-weight:bold; font-size:14px;'>Dates</div>
 							<p><b>Due:</b> ".($Project->DueDate > 0 ? date('n/j/Y', $Project->DueDate) : ($Project->CourseStartDate > 0 ? date('n/j/Y', $Project->CourseStartDate) : "N/A"))."</p>
 							<p><b>Last Touched:</b> ".date('n/j/Y', $Project->GetLastModified()).$LastTouchedDays."</p>							
 						</td>
-						<td style='vertical-align:top; padding-top:10px;'><div class='Separator'></div></td>
+						<td style='vertical-align:top; padding-top:7px; padding-bottom:7px;'><div class='Separator'></div></td>
 						<td style='vertical-align:top; padding:7px 11px; width:145px;'>
 							<div style='color:#0685c5; font-weight:bold; font-size:14px;'>Project Details</div>
 							<p><b>LSC:</b> ".$Project->GetUsers("LSCs")."</p>
 							<p style='color:#0685c5; text-decoration:underline; cursor:pointer;' onClick=\"MProjects.ShowPreviewBox(this, 'LeadNotes', ".$Project->ID.");\">Lead Notes</p>
 						</td>
-						<td style='vertical-align:top; padding-top:10px;'><div class='Separator'></div></td>
+						<td style='vertical-align:top; padding-top:7px; padding-bottom:7px;'><div class='Separator'></div></td>
 						<td style='vertical-align:top; padding:7px 11px; width:160px;'>
 							<div style='color:#4f911e; font-weight:bold; font-size:14px; margin-bottom:10px;'>Milestone Completion</div>
 							<div class='CompletionWrapper'>
 								<div class='CompletionBar' style='width:".$MilestoneBarWidth."px;'></div>
 								<div class='CompletionPercentage'>".number_format($MilestonePercentage * 100)."%</div>
 							</div>
+							<p style='padding-top:10px;'><b>Status:</b> ".$Project->GetFriendlyStatus()."</p>
 						</td>
 						<td style='padding-right:13px;'>
 							<input type='hidden' id='Project".$Project->ID."Header' value=\"<strong>".$Project->ProductNumber." // ".$Project->School."</strong><br><span style='font-size:11px; color:#0685c5; font-style:italic;'>".$Project->Title."</span>\">
@@ -93,6 +94,8 @@
 	}
 
 	$Search = new CSearch("Projects");
+	
+	$Search->SetItemsPerPage(50);
 	
 	/* 0 */ $Search->AddColumn("ID", "ID", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_NOSEARCH, "", "", "", "OnRow");
 	/* 1 */ $Search->AddColumn("Product #", "ProductNumber", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
@@ -698,7 +701,7 @@
 			</div>
 		</div>";
 		
-		$Search->OnRender("border:none !important; margin-top:140px;", "padding:0px;border:none;background:none;");
+		$Search->OnRender("border:none !important; margin-top:131px;", "padding:0px;border:none;background:none;");
 		
 		echo "
 		<div class='ProjectWrapper' id='ProjectList'>

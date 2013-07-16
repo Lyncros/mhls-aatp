@@ -1131,6 +1131,9 @@
 		function GetProjectDetailsForList() {			
 			$Project = new CProjects();
 			$Project->OnLoad(intval($_POST["ProjectID"]));
+
+			$LastTouchedDays = " <span class='LastTouched' style='cursor:pointer;' onClick=\"MProjects.ShowPreviewBox(this, 'LastTouched', ".$Project->ID.");\">".$Project->GetLastTouchedDays()."</span>";
+			
 			$MilestonePercentage		= 0;
 			$Numerator					= 0;
 			if(count($Project->Milestones) >= 1) {
@@ -1140,36 +1143,36 @@
 				$MilestonePercentage	= $Numerator / count($Project->Milestones);
 			}
 			$MilestoneBarWidth			= round(136 * $MilestonePercentage) - 2 >= 0 ? round(136 * $MilestonePercentage) - 2 : 0;
-
+			
 			$ProjectDetails = 
 				"<div class='ProjectContainer'>
 					<table style='width:100%;' cellpadding='0' cellspacing='0'>
 						<tr>
 							<td style='vertical-align:top; padding:7px 11px; width:135px;'>
 								<div style='font-weight:bold; font-size:14px;'>".$Project->ProductNumber."</div>
-								<div>".$Project->School."</p>							
+								<div>".$Project->School."</p>
+								<div style='font-weight:bold; font-size:14px;'>".$Project->PrimaryCustomer."</div>								
 							</td>
-							<td style='vertical-align:top; padding-top:10px;'><div class='Separator'></div></td>
+							<td style='vertical-align:top; padding-top:7px; padding-bottom:7px;'><div class='Separator'></div></td>
 							<td style='vertical-align:top; padding:7px 11px; width:195px;'>
 								<div style='color:#d74c4c; font-weight:bold; font-size:14px;'>Dates</div>
 								<p><b>Due:</b> ".($Project->DueDate > 0 ? date('n/j/Y', $Project->DueDate) : ($Project->CourseStartDate > 0 ? date('n/j/Y', $Project->CourseStartDate) : "N/A"))."</p>
 								<p><b>Last Touched:</b> ".date('n/j/Y', $Project->GetLastModified()).$LastTouchedDays."</p>							
 							</td>
-							<td style='vertical-align:top; padding-top:10px;'><div class='Separator'></div></td>
+							<td style='vertical-align:top; padding-top:7px; padding-bottom:7px;'><div class='Separator'></div></td>
 							<td style='vertical-align:top; padding:7px 11px; width:145px;'>
 								<div style='color:#0685c5; font-weight:bold; font-size:14px;'>Project Details</div>
 								<p><b>LSC:</b> ".$Project->GetUsers("LSCs")."</p>
 								<p style='color:#0685c5; text-decoration:underline; cursor:pointer;' onClick=\"MProjects.ShowPreviewBox(this, 'LeadNotes', ".$Project->ID.");\">Lead Notes</p>
 							</td>
-							<td style='vertical-align:top; padding-top:10px;'><div class='Separator'></div></td>
-							<td style='vertical-align:top; padding:7px 11px; width:150px;'>
-								<div style='color:#4f911e; font-weight:bold; font-size:14px;'>Project Value</div>
-								<p style='font-size:18px; font-weight:bold;'>$".number_format($Project->ProjectValue, 2)."</p>
-								<div style='color:#4f911e; font-weight:bold; font-size:13px; margin-top:12px; margin-bottom:6px;'>Milestone Completion</div>
+							<td style='vertical-align:top; padding-top:7px; padding-bottom:7px;'><div class='Separator'></div></td>
+							<td style='vertical-align:top; padding:7px 11px; width:160px;'>
+								<div style='color:#4f911e; font-weight:bold; font-size:14px; margin-bottom:10px;'>Milestone Completion</div>
 								<div class='CompletionWrapper'>
 									<div class='CompletionBar' style='width:".$MilestoneBarWidth."px;'></div>
 									<div class='CompletionPercentage'>".number_format($MilestonePercentage * 100)."%</div>
 								</div>
+								<p style='padding-top:10px;'><b>Status:</b> ".$Project->GetFriendlyStatus()."</p>
 							</td>
 							<td style='padding-right:13px;'>
 								<input type='hidden' id='Project".$Project->ID."Header' value=\"<strong>".$Project->ProductNumber." // ".$Project->School."</strong><br><span style='font-size:11px; color:#0685c5; font-style:italic;'>".$Project->Title."</span>\">

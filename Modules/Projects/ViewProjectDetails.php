@@ -336,7 +336,7 @@
 					<tr>
 						<td>".($Milestone->Status === "Complete" ? "<div class='Complete' style='float:right; position:relative; top:2px;'></div>" : "")."</td>
 						<td colspan='7'>
-							<div style='padding-left:11px; font-weight:bold; font-size:14px; margin-top:12px; margin-bottom:6px; cursor:pointer;' id='MilestoneLabel".$Milestone->ID."'><span style='float:left;'>[".$i.".] ".$Milestone->Name."</span> <div class='MilestoneDownArrow'></div></div>
+							<div style='padding-left:11px; font-weight:bold; font-size:14px; margin-top:12px; margin-bottom:6px; cursor:pointer;' id='MilestoneLabel".$Milestone->ID."'><span style='float:left;'>[".$i.".] ".$Milestone->Name. "&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;" . date('F j, Y', $Milestone->ExpectedDeliveryDate) . "</span> <div class='MilestoneDownArrow'></div></div>
 							<div class='MilestoneDetails' id='Milestone".$Milestone->ID."' style='padding-left:58px; display:none; clear:both; margin:12px 0px; position:relative; top:12px;'>
 								<table width='100%' cellspacing='0' cellpadding='0'>
 									<tr>

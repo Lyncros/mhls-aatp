@@ -745,8 +745,8 @@ input[disabled],select[disabled] {
 	-webkit-border-radius:				5px;
 	-moz-border-radius:					5px;
 	border-radius:						5px;
-	padding:							5px;
-	margin-bottom:						5px;
+	padding:							2px;
+	margin-bottom:						3px;
 }
 
 .FirstPaginator {

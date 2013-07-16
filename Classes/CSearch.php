@@ -607,6 +607,11 @@
 		}
 
 		//=====================================================================
+		function SetItemsPerPage($Number) {
+			$this->MaxView = $Number;
+		}
+		
+		//=====================================================================
 		function SetDefaultColumn($ID, $Dir = 0) {
 			if($ID < 0 || $ID >= count($this->ItemList)) return false;
 

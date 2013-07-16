@@ -222,6 +222,10 @@
 			return $UserList;
 		}
 		
+		function GetDistrictManagersCompleteNames() {			
+			return $this->GetUserCompleteNames($this->DistrictManagers);
+		}
+		
 		function GetLSCsCompleteNames() {			
 			return $this->GetUserCompleteNames($this->LSCs);
 		}
@@ -244,6 +248,10 @@
 		
 		function GetCreativeConsultantsCompleteNames() {
 			return $this->GetUserCompleteNames($this->CreativeConsultants);
+		}
+		
+		function GetInstitutionalSalesRepsCompleteNames() {
+			return $this->GetUserCompleteNames($this->InstitutionalSalesReps);
 		}
 
 		function StatusName() {
@@ -375,7 +383,12 @@
 				return "N/A";
 			}
 		}
-		
+		//----------------------------------------------------------------------
+		function GetFriendlyStatus() {
+			$status = CProjects::GetAllStatus();
+			
+			return $status[$this->Status];
+		}
 		//----------------------------------------------------------------------
 		//----------------------------------------------------------------------
 		private function GetUserCompleteNames($UserIDs) {
