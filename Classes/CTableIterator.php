@@ -122,19 +122,34 @@
 			$Return = Array();
 			$ColumnsArray = explode(",",$Columns);
 			foreach($this as $Row) {
-				$value = "";
-				$isFirst = true;
-				foreach ($ColumnsArray as $Column)
-				{
-					if(!$isFirst) $value .= ", ";
-					$value .= $Row->{$Column};
-					$isFirst = false;
-				}
-				
-				$Return[] = $value;
+				$Return[] = $this->ConcatColumnValues($Row, $ColumnsArray);
 			}
 
 			return $Return;
+		}
+		
+		function RowsToAssociativeArrayWithMultipleColumns($Columns, $IDColumn = "ID") {
+			$Return = Array();
+
+			$ColumnsArray = explode(",",$Columns);
+			foreach($this as $Row) {
+				$Return[$Row->{$IDColumn}] = $this->ConcatColumnValues($Row, $ColumnsArray);
+			}
+
+			return $Return;
+		}
+		
+		function ConcatColumnValues($Row, $ColumnsArray) {
+			$value = "";
+			$isFirst = true;
+			foreach ($ColumnsArray as $Column)
+			{
+				if(!$isFirst) $value .= ", ";
+				$value .= $Row->{$Column};
+				$isFirst = false;
+			}
+			
+			return $value;
 		}
 	};
 ?>

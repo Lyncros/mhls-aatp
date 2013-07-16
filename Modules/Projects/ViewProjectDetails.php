@@ -275,7 +275,7 @@
 											foreach($DefaultMilestones->Rows as $Row) {
 												$DefaultArray[$Row->ID] = $Row->Name;
 											}
-											//echo CForm::AddDropdown("Default Milestone", "DefaultMilestone", $DefaultArray);
+
 											echo "
 											<tr>
 												<td valign='top' align='right' class='CForm_Name'><b onmouseout='CTooltip.Hide();' onmouseover='CTooltip.Show('');'>Default Milestone:</b>&nbsp;</td>
@@ -289,10 +289,8 @@
 											</tr>
 											";
 											$Users = CUsers::GetAllAssignableToMilestone();
-											if($Users === false)
-												$Users = Array(0 => "Nobody");
-											else
-												$Users = Array(0 => "Nobody") + $Users->MultipleColumnRowsToArray("LastName,FirstName");
+											$Users = Array(0 => "Nobody") + $Users->RowsToAssociativeArrayWithMultipleColumns("LastName,FirstName");
+											
 											echo CForm::AddTextbox("Name", "Name", "", "Please enter a Name");
 											echo CForm::AddYesNo("Customer Approval", "CustomerApproval", 0, "YesNo");
 											echo CForm::AddTextarea("Summary", "Summary", "");
@@ -346,10 +344,7 @@
 												if(CSecurity::$User->CanAccess("Milestones", "Edit")) {
 													CForm::RandomPrefix();
 													$Users = CUsers::GetAllAssignableToMilestone();
-													if($Users === false)
-														$Users = Array(0 => "Nobody");
-													else
-														$Users = Array(0 => "Nobody") + $Users->MultipleColumnRowsToArray("LastName,FirstName");
+													$Users = Array(0 => "Nobody") + $Users->RowsToAssociativeArrayWithMultipleColumns("LastName,FirstName");
 													
 													echo CForm::AddTextbox("Name", "Name", $Milestone->Name, "Please enter a Name");
 													echo CForm::AddYesNo("Customer Approval", "CustomerApproval", $Milestone->CustomerApproval, "YesNo");
@@ -446,6 +441,12 @@
 																			echo CForm::AddYesNo("Complete", "Complete", $ToDo->Complete, "YesNo");
 																			echo CForm::AddTextarea("Comment", "Comment", $ToDo->Comment);
 																			echo CForm::AddYesNo("Comment Required", "CommentRequired", $ToDo->CommentRequired, "YesNo");
+																			
+																			$Users = CUsers::GetAllAssignableToMilestoneTodos();
+																			$Users = Array(0 => "Nobody") + $Users->RowsToAssociativeArrayWithMultipleColumns("LastName,FirstName");
+																			
+																			echo CForm::AddDropdown("Assigned To", "AssignedTo", $Users, $ToDo->AssignedTo);
+																			
 																			echo CForm::AddHidden("MilestoneID", $Milestone->ID);
 																			echo CForm::AddHidden("ProjectsID", $ProjectID);
 																			echo CForm::AddHidden("ToDoID", $ToDo->ID);
@@ -708,18 +709,17 @@
 												if(CSecurity::$User->CanAccess("ToDos", "Edit")) {
 													CForm::RandomPrefix();
 													$Users = CUsers::GetAllAssignableToTodos();
-													if($Users === false)
-														$Users = Array(0 => "Nobody");
-													else
-														$Users = Array(0 => "Nobody") + $Users->MultipleColumnRowsToArray("LastName,FirstName");
+													$Users = Array(0 => "Nobody") + $Users->RowsToAssociativeArrayWithMultipleColumns("LastName,FirstName");
 														
 													echo CForm::AddTextbox("Name", "Name", $ToDo->Name, "Please enter a Name");
 													echo CForm::AddYesNo("Complete", "Complete", $ToDo->Complete, "YesNo");
 													echo CForm::AddTextarea("Comment", "Comment", $ToDo->Comment);
 													echo CForm::AddYesNo("Comment Required", "CommentRequired", $ToDo->CommentRequired, "YesNo");
-													echo CForm::AddDropdown("Assigned To", "AssignedTo", $Users, $ToDo->AssignedTo);	
+													echo CForm::AddDropdown("Assigned To", "AssignedTo", $Users, $ToDo->AssignedTo);
 													echo CForm::AddHidden("ProjectsID", $ProjectID);
 													echo CForm::AddHidden("ToDoID", $ToDo->ID);
+													
+													
 												} else {
 													echo CForm::AddRow("Name", $ToDo->Name);
 													echo CForm::AddRow("Complete", $ToDo->Complete);

@@ -368,6 +368,7 @@
 				"Complete"				=> intval($_POST["Complete"]),
 				"Comment"				=> htmlspecialchars($_POST["Comment"]),
 				"CommentRequired"		=> intval($_POST["CommentRequired"]),
+				"AssignedTo"			=> intval($_POST["AssignedTo"]),
 			);
 
 			if(intval($_POST["ToDoID"]) > 0) {
@@ -469,7 +470,7 @@
 				"Complete"				=> intval($_POST["Complete"]),
 				"Comment"				=> htmlspecialchars($_POST["Comment"]),
 				"CommentRequired"		=> intval($_POST["CommentRequired"]),
-				"AssignedTo"		=> intval($_POST["AssignedTo"])
+				"AssignedTo"			=> intval($_POST["AssignedTo"])
 			);
 
 			if(intval($_POST["ToDoID"]) > 0) {
