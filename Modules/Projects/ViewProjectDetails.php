@@ -65,7 +65,12 @@
 								<td style='vertical-align:top; padding:22px 11px; width:135px;'>
 									<div style='color:#0685c5; font-weight:bold; font-size:14px;'>Project Details</div>
 									<p><b>LSC:</b> ".$Project->GetUsers("LSCs")."</p>
-									<p><b>Milestone Template:</b> ".$Project->GetProductTypesList()."</p>
+										<table style='border-spacing:0px'>
+											<tr>
+												<td style='width:62px'><b>Milestone Template:</b></td>
+												<td>".$Project->GetProductTypesList()."</td>
+											</tr>
+										</table>
 								</td>
 								<td style='vertical-align:top; padding-top:20px;'><div class='Separator'></div></td>
 								<td style='vertical-align:top; padding:22px 11px; padding-right:0px; width:160px;'>
