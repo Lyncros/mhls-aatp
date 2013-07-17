@@ -17,7 +17,7 @@
 		public static function OnInit() {
 			if(defined("DEV")) {
 				ini_set("display_errors", "On");
-				error_reporting(E_ALL ^ E_NOTICE);
+				error_reporting(E_ALL ^ E_NOTICE ^ E_STRICT);
 
 				@set_error_handler(array("CDebug", "OnError"));
 			}else{
