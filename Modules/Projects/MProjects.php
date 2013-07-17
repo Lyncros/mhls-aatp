@@ -362,28 +362,35 @@
 		
 		//----------------------------------------------------------------------
 		function AddEditMilestoneToDo() {
+			$AssignedToID = intval($_POST["AssignedTo"]);
+			$NotifyAssignedTo = isset($AssignedToID) && ($AssignedToID > 0);
+			
 			$Data = Array(
 				"MilestoneID"			=> intval($_POST["MilestoneID"]),
 				"Name"					=> htmlspecialchars($_POST["Name"]),
 				"Complete"				=> intval($_POST["Complete"]),
 				"Comment"				=> htmlspecialchars($_POST["Comment"]),
 				"CommentRequired"		=> intval($_POST["CommentRequired"]),
-				"AssignedTo"			=> intval($_POST["AssignedTo"]),
+				"AssignedTo"			=> $AssignedToID,
 			);
 
-			if(intval($_POST["ToDoID"]) > 0) {
+			$ToDoID = intval($_POST["ToDoID"]); 
+			if($ToDoID > 0) {
 				$Temp = new CProjectsMilestonesToDos();
-				$Temp->OnLoad(intval($_POST["ToDoID"]));
+				$Temp->OnLoad($ToDoID);
 				$ChangeData = Array(
-					"ToDoID"			=> intval($_POST["ToDoID"]),
+					"ToDoID"			=> $ToDoID,
 					"Timestamp"			=> time(),
 					"UsersID"			=> CSecurity::GetUsersID(),
 					"IPAddress"			=> $_SERVER["REMOTE_ADDR"],
 					"Old"				=> serialize($Temp->Rows->Current),
 					"New"				=> serialize($Data),
 				);
+
+				$NotifyAssignedTo = $NotifyAssignedTo && ($AssignedToID != $Temp->AssignedTo);
+				
 				CTable::Add("ProjectsMilestonesToDosChanges", $ChangeData);
-				if(CTable::Update("ProjectsMilestonesToDos", intval($_POST["ToDoID"]), $Data) === false) return Array(0, "Error updating To-Do");
+				if(CTable::Update("ProjectsMilestonesToDos", $ToDoID, $Data) === false) return Array(0, "Error updating To-Do");
 			} else {
 				$Data["Created"]				= time();
 				$Data["CreatedUsersID"]			= CSecurity::GetUsersID();
@@ -405,8 +412,15 @@
 				"Comment"					=> $Data["Comment"],
 				"Complete"					=> ($Data["Complete"] ? "Yes" : "No"),
 			);
+			
+			//Notify changes in the project
 			CNotifier::Push("Module", "Projects", "New or Updated To-Do", $EmailData, $Project->ID);
 			
+			//Notify the 'assigned to' user
+			if ($NotifyAssignedTo) {
+				CNotifier::PushEmailToUserID($AssignedToID, "Module", "Projects", "Assigned Milestone To-Do", $EmailData);
+			}
+						
 			return Array(1, "To-Do added successfully.");
 		}
 		
@@ -774,6 +788,9 @@
 				"DateTime"					=> date('n/j/Y g:ia', time()),
 				"User"						=> $User->FirstName . " " . $User->LastName,
 			);
+
+			//Right now we ignore the results of sending notifications. 
+			//If needed, check the return value of Push(...) and display a proper message.
 			CNotifier::Push("Module", "Projects", "New or Updated Project", $EmailData, $ID);
 			
 			/* 2013-05-22: AS CRAIG REQUESTED: EMAIL NOT NEED ANYMORE

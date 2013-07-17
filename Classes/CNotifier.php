@@ -306,12 +306,14 @@
 		 *	@return boolean
 		 */
 		public static function Push($Type, $Name, $SubName, array $EmailParms = Array(), $ProjectsID) {
+			$result = true;
+			
 			$SubClass = new CNotifierSubscriptions();
 			if($SubClass->OnLoadAllByType($Type, $Name, $SubName, $ProjectsID) === false) {
 				// If no subscription for the Project, attempt the default
 				if($SubClass->OnLoadAllByType($Type, $Name, $SubName, 0) === false) return false;
 			}
-
+			
 			$Title		= CDataParser::ParseString(@Config::$Options[$Type][$Name][$SubName]["PopupTitle"]);
 			$Content	= CDataParser::ParseString(@Config::$Options[$Type][$Name][$SubName]["PopupContent"]);
 			$SMSContent	= CDataParser::ParseString(@Config::$Options[$Type][$Name][$SubName]["SMSContent"]);
@@ -326,7 +328,7 @@
 				if($Row->Popup) {
 					//Tim, you should move $Title, $Content, and $URL down here
 					//no need to waste time parsing something if it isn't used
-					self::PushPopup($User->ID, $Title, $Content, $URL);
+					$result = $result && self::PushPopup($User->ID, $Title, $Content, $URL);
 				}
 
 				if($Row->Email && $User) {
@@ -337,17 +339,17 @@
 							"URL"		=> $URL
 						);
 					}
-
-					self::PushEmail($User->Email, $Type, $Name, $SubName, $EmailParms);
+					
+					$result = $result && self::PushEmail($User->Email, $Type, $Name, $SubName, $EmailParms);
 				}
 
 				if($Row->SMS && $User) {
 					//Likewise, you should move $SMSContent down here
-					self::PushSMS($User->PhoneSMS, $SMSContent);
+					$result = $result && self::PushSMS($User->PhoneSMS, $SMSContent);
 				}
 			}
-
-			return true;
+			
+			return $result;
 		}
 
 		/**
@@ -410,6 +412,29 @@
 
 			return true;
 		}
+
+
+		/**
+		 *	Sends a single email, using a template that already exists in the system, to the
+		 *  user whom ID is received.
+		 *
+		 *	@static
+		 *	@param string $UserID - the email address of the recipient
+		 *	@param string $Type - the template type
+		 *	@param string $Name - the template name
+		 *	@param string $SubName - the template subname
+		 *	@param array $EmailParams - a series of key/value pairs that contain the data needed for the template
+		 *	@return boolean
+		 */
+		public static function PushEmailToUserID($UserID, $Type, $Name, $SubName, Array $EmailParms) {
+			$User = new CUsers();
+			if($User->OnLoad($UserID)) {
+				return self::PushEmail($User->Email, $Type, $Name, $SubName, $EmailParms);			
+			}
+			
+			return false;			
+		}
+
 	};
 
 	//==========================================================================
