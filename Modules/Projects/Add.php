@@ -36,29 +36,17 @@
 			}
 			echo CForm::AddListbox("LSS", "LSSUsersID", $LSSArray, $Project->LSSUsersID);
 			
-			// Creative Analyst
-			$CAArray = Array("" => "");
-			$CAGroup = new CUsersGroups();
-			$CAGroup->OnLoadAll("WHERE `Name` = 'Creative Analyst'");
-			$CAs = new CUsers();
-			if($CAs->OnLoadAll("WHERE `UsersGroupsID` = ".$CAGroup->ID." && `Active` = 1 ORDER BY `LastName`") !== false) {
-				foreach($CAs->Rows as $Row) {
-					$CAArray[$Row->ID] = $Row->LastName . ", " . $Row->FirstName;
-				}
-			}
-			echo CForm::AddListbox("Creative Analyst", "CreativeAnalystUsersID", $CAArray, $Project->CreativeAnalysts);
-			
-			// Creative Consultant
+			// Creative Contact (former Creative Analyst, Creative Consultant, Junior Creative Analyst and Associate Creative Analyst)
 			$CCArray = Array("" => "");
 			$CCGroup = new CUsersGroups();
-			$CCGroup->OnLoadAll("WHERE `Name` = 'Creative Consultant'");
+			$CCGroup->OnLoadAll("WHERE `Name` = 'Creative Contact'");
 			$CCs = new CUsers();
-			if($CCs->OnLoadAll("WHERE `UsersGroupsID` = ".$CCGroup->ID." && `Active` = 1 ORDER BY `LastName`") !== false) {
+			if($CCs->OnLoadAll("WHERE `UsersGroupsID` = ".$CCGroup->ID." && `Active` = 1 ORDER BY `LastName`")) {
 				foreach($CCs->Rows as $Row) {
 					$CCArray[$Row->ID] = $Row->LastName . ", " . $Row->FirstName;
 				}
 			}
-			echo CForm::AddListbox("Creative Consultant", "CreativeConsultantUsersID", $CCArray, $Project->CreativeConsultants);
+			echo CForm::AddListbox("Creative Contact", "CreativeContactUsersID", $CCArray);
 			
 			echo CForm::AddTextbox("Primary Customer", "PrimaryCustomer", $Project->PrimaryCustomer);
 			echo CForm::AddTextbox("School", "School", $Project->School);
@@ -69,7 +57,7 @@
 			$Mt->OnLoadAll("WHERE `Active` = 1 ORDER BY `Name` ASC");
 			$MtValuesArray = array(0 => "N/A") + CForm::RowsToArray($Mt->Rows, "Name");
 			
-			echo CForm::AddDropdown("Milestone template", "ProductTypes", $MtValuesArray, $Project->ProductTypes);
+			echo CForm::AddDropdown("Milestone template", "ProductTypes", $MtValuesArray);
 			
 			//Tags
 			$Tags = new CTags();

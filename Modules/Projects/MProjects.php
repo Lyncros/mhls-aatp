@@ -731,31 +731,14 @@
 					CTable::Add("ProjectsLSRs", Array("ProjectsID" => $ID, "UsersID" => intval($UserID)));
 				}
 			}
-			
-			// Junior Creative Analysts
-			CTable::RunQuery("DELETE FROM `ProjectsJuniorCreativeAnalysts` WHERE `ProjectsID` = $ID");
-			if($_POST["JuniorCreativeAnalystUsersID"] != "null") {
-				$JCAs = json_decode($_POST["JuniorCreativeAnalystUsersID"]);
-				foreach($JCAs as $UserID) {
-					CTable::Add("ProjectsJuniorCreativeAnalysts", Array("ProjectsID" => $ID, "UsersID" => intval($UserID)));
-				}
-			}
-			
-			// Creative Analysts
-			CTable::RunQuery("DELETE FROM `ProjectsCreativeAnalysts` WHERE `ProjectsID` = $ID");
-			if($_POST["CreativeAnalystUsersID"] != "null") {
-				$CAs = json_decode($_POST["CreativeAnalystUsersID"]);
-				foreach($CAs as $UserID) {
-					CTable::Add("ProjectsCreativeAnalysts", Array("ProjectsID" => $ID, "UsersID" => intval($UserID)));
-				}
-			}
-			
+				
 			// Creative Consultants
-			CTable::RunQuery("DELETE FROM `ProjectsCreativeConsultants` WHERE `ProjectsID` = $ID");
-			if($_POST["CreativeConsultantUsersID"] != "null") {
-				$CCs = json_decode($_POST["CreativeConsultantUsersID"]);
+			CTable::RunQuery("DELETE FROM `ProjectsCreativeContacts` WHERE `ProjectsID` = $ID");
+			$CreativeContactIDs = $_POST["CreativeContactUsersID"];
+			if(! is_null($CreativeContactIDs)) {
+				$CCs = json_decode($CreativeContactIDs);
 				foreach($CCs as $UserID) {
-					CTable::Add("ProjectsCreativeConsultants", Array("ProjectsID" => $ID, "UsersID" => intval($UserID)));
+					CTable::Add("ProjectsCreativeContacts", Array("ProjectsID" => $ID, "UsersID" => intval($UserID)));
 				}
 			}
 			

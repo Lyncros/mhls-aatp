@@ -38,7 +38,7 @@
 		private function Header()
 		{
 			return array(	'Project Number','Project Value','District Manager','LSC','LSS',
-							/*'LSR',*/'Associate Creative Analyst','Creative Analyst','Creative Consultant','Institutional Sales Rep',
+							/*'LSR',*/'Creative Contact',/*'Creative Analyst','Creative Consultant',*/'Institutional Sales Rep',
 							
 							'Primary Customer','Customer Phone','Customer Email','Lead Author','Title',
 							/*'MHID',*/'Ed',/*'Imp',*/'Net Price',/*'Estimated UMC',*/
@@ -72,9 +72,9 @@
 				$ProjectInfo[$col++] 	= implode (CSV_ITEM_DELIMITER,$Project->GetLSCsCompleteNames());
 				$ProjectInfo[$col++] 	= implode (CSV_ITEM_DELIMITER,$Project->GetLSSsCompleteNames());
 				//$ProjectInfo[$col++] 	= implode (CSV_ITEM_DELIMITER,$Project->GetLSRsCompleteNames());
-				$ProjectInfo[$col++] 	= implode (CSV_ITEM_DELIMITER,$Project->GetJuniorCreativeAnalystsCompleteNames());
-				$ProjectInfo[$col++] 	= implode (CSV_ITEM_DELIMITER,$Project->GetCreativeAnalystsCompleteNames());
-				$ProjectInfo[$col++] 	= implode (CSV_ITEM_DELIMITER,$Project->GetCreativeConsultantsCompleteNames());
+				$ProjectInfo[$col++] 	= implode (CSV_ITEM_DELIMITER,$Project->GetCreativeContactCompleteNames());
+				//$ProjectInfo[$col++] 	= implode (CSV_ITEM_DELIMITER,$Project->GetCreativeAnalystsCompleteNames());
+				//$ProjectInfo[$col++] 	= implode (CSV_ITEM_DELIMITER,$Project->GetCreativeConsultantsCompleteNames());
 				$ProjectInfo[$col++] 	= implode (CSV_ITEM_DELIMITER,$Project->GetInstitutionalSalesRepsCompleteNames());
 				//10
 				

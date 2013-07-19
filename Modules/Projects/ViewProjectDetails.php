@@ -76,7 +76,7 @@
 								<td style='vertical-align:top; padding:22px 11px; padding-right:0px; width:160px;'>
 									<div style='color:#0685c5; font-weight:bold; font-size:14px;'>&nbsp;</div>
 									<p><b>ISBN-10:</b> ".$Project->ISBN10."</p>
-									<p><b>CA:</b> ".$Project->GetUsers("CreativeAnalysts")."</p>
+									<p><b>CC:</b> ".$Project->GetUsers("CreativeContacts")."</p>
 									<p style='color:#0685c5; text-decoration:underline; cursor:pointer;' onClick=\"MProjects.ShowPreviewBox(this, 'ProjectLink', ".$Project->ID.");\">Direct Project Link</p>
 								</td>
 							</tr>
@@ -129,41 +129,17 @@
 								}
 								echo CForm::AddListbox("LSS", "LSSUsersID", $LSSArray, $Project->LSSs, "", "", "", "Basic");
 								
-								// Associate Creative Analyst (former Junior Creative Analyst)
-								$JCAArray = Array("" => "");
-								$JCAGroup = new CUsersGroups();
-								$JCAGroup->OnLoadAll("WHERE `Name` = 'Junior Creative Analyst'");
-								$JCAs = new CUsers();
-								if($JCAs->OnLoadAll("WHERE `UsersGroupsID` = ".$JCAGroup->ID." && `Active` = 1 ORDER BY `LastName`") !== false) {
-									foreach($JCAs->Rows as $Row) {
-										$JCAArray[$Row->ID] = $Row->LastName . ", " . $Row->FirstName;
-									}
-								}
-								echo CForm::AddListbox("Associate Creative Analyst", "JuniorCreativeAnalystUsersID", $JCAArray, $Project->JuniorCreativeAnalysts, "", "", "", "Advanced");
-								
-								// Creative Analyst
-								$CAArray = Array("" => "");
-								$CAGroup = new CUsersGroups();
-								$CAGroup->OnLoadAll("WHERE `Name` = 'Creative Analyst'");
-								$CAs = new CUsers();
-								if($CAs->OnLoadAll("WHERE `UsersGroupsID` = ".$CAGroup->ID." && `Active` = 1 ORDER BY `LastName`") !== false) {
-									foreach($CAs->Rows as $Row) {
-										$CAArray[$Row->ID] = $Row->LastName . ", " . $Row->FirstName;
-									}
-								}
-								echo CForm::AddListbox("Creative Analyst", "CreativeAnalystUsersID", $CAArray, $Project->CreativeAnalysts, "", "", "", "Basic");
-								
-								// Creative Consultant
+								// Creative Contact (combination of old AC Analyst, Junior Creative Analyst, Creative Analyst and Creative Consultant)
 								$CCArray = Array("" => "");
 								$CCGroup = new CUsersGroups();
-								$CCGroup->OnLoadAll("WHERE `Name` = 'Creative Consultant'");
+								$CCGroup->OnLoadAll("WHERE `Name` = 'Creative Contact'");
 								$CCs = new CUsers();
 								if($CCs->OnLoadAll("WHERE `UsersGroupsID` = ".$CCGroup->ID." && `Active` = 1 ORDER BY `LastName`") !== false) {
 									foreach($CCs->Rows as $Row) {
 										$CCArray[$Row->ID] = $Row->LastName . ", " . $Row->FirstName;
 									}
 								}
-								echo CForm::AddListbox("Creative Consultant", "CreativeConsultantUsersID", $CCArray, $Project->CreativeConsultants, "", "", "", "Basic");
+								echo CForm::AddListbox("Creative Contact", "CreativeContactUsersID", $CCArray, $Project->CreativeContacts);
 								
 								// Institutional Sales Rep
 								$RepArray = Array("" => "");

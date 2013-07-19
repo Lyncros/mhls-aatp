@@ -16,9 +16,7 @@
 		public $LSCs					= Array();
 		public $LSSs					= Array();
 		public $LSRs					= Array();
-		public $JuniorCreativeAnalysts	= Array();
-		public $CreativeAnalysts		= Array();
-		public $CreativeConsultants		= Array();
+		public $CreativeContacts		= Array();
 		public $InstitutionalSalesReps	= Array();
 		public $ProductManagers			= Array();
 		
@@ -93,24 +91,10 @@
 				}
 			}
 			
-			$JuniorCreativeAnalysts = new CTable("ProjectsJuniorCreativeAnalysts");
-			if($JuniorCreativeAnalysts->OnLoadAll("WHERE `ProjectsID` = ".$this->ID) !== false) {
-				foreach($JuniorCreativeAnalysts->Rows as $Row) {
-					$this->JuniorCreativeAnalysts[] = $Row->UsersID;
-				}
-			}
-			
-			$CreativeAnalysts = new CTable("ProjectsCreativeAnalysts");
-			if($CreativeAnalysts->OnLoadAll("WHERE `ProjectsID` = ".$this->ID) !== false) {
-				foreach($CreativeAnalysts->Rows as $Row) {
-					$this->CreativeAnalysts[] = $Row->UsersID;
-				}
-			}
-			
-			$CreativeConsultants = new CTable("ProjectsCreativeConsultants");
-			if($CreativeConsultants->OnLoadAll("WHERE `ProjectsID` = ".$this->ID) !== false) {
-				foreach($CreativeConsultants->Rows as $Row) {
-					$this->CreativeConsultants[] = $Row->UsersID;
+			$CreativeContacts = new CTable("ProjectsCreativeContacts");
+			if($CreativeContacts->OnLoadAll("WHERE `ProjectsID` = ".$this->ID)) {
+				foreach($CreativeContacts->Rows as $Row) {
+					$this->CreativeContacts[] = $Row->UsersID;
 				}
 			}
 			
@@ -128,7 +112,7 @@
 				}
 			}
 		}
-		
+
 		function OnLoadMilestones() {
 			$Milestones = new CProjectsMilestones();
 			if($Milestones->OnLoadAll("WHERE `ProjectsID` = ".$this->ID." && `Deleted` = 0 ORDER BY `Created` ASC") !== false) {
@@ -254,16 +238,8 @@
 			return $this->GetUserCompleteNames($this->LSRs);
 		}
 		
-		function GetJuniorCreativeAnalystsCompleteNames() {
-			return $this->GetUserCompleteNames($this->JuniorCreativeAnalysts);
-		}
-		
-		function GetCreativeAnalystsCompleteNames() {
-			return $this->GetUserCompleteNames($this->CreativeAnalysts);
-		}
-		
-		function GetCreativeConsultantsCompleteNames() {
-			return $this->GetUserCompleteNames($this->CreativeConsultants);
+		function GetCreativeContactCompleteNames() {
+			return $this->GetUserCompleteNames($this->CreativeContacts);
 		}
 		
 		function GetInstitutionalSalesRepsCompleteNames() {

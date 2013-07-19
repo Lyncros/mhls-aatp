@@ -133,12 +133,11 @@
 		//"ProjectValue"			=> "Project Value",
 		//"ProjectType"				=> "Project Type",
 		//"DistrictManager"			=> "District Manager",
-		//"SalesRep"					=> "Sales Rep",
+		//"SalesRep"				=> "Sales Rep",
 		"LSC"						=> "LSC",
 		"LSS"						=> "LSS",
 		//"LSR"						=> "LSR",
-		"CreativeAnalyst"			=> "Creative Analyst",
-		"CreativeConsultant"		=> "Creative Consultant",
+		"CreativeContact"			=> "Creative Contact",
 		"InstitutionalSalesRep"		=> "Enterprise Sales Rep",
 		"Status"					=> "Status",
 		//"ProductManager"			=> "Product Manager",
@@ -300,78 +299,42 @@
 		}
 		*/
 		
-		// Creative Analysts
-		$SubOptions_CreativeAnalyst = Array();
-		$CreativeAnalystGroup = new CUsersGroups();
-		$CreativeAnalystGroup->OnLoadAll("WHERE `Name` = 'Creative Analyst'");
-		$CreativeAnalysts = new CUsers();
-		if($CreativeAnalysts->OnLoadAll("WHERE `UsersGroupsID` = ".$CreativeAnalystGroup->ID." && `Active` = 1 ORDER BY `LastName`") !== false) {
-			foreach($CreativeAnalysts->Rows as $Row) {
-				$SubOptions_CreativeAnalyst[$Row->ID] = $Row->LastName . ", " . $Row->FirstName;
+		// Creative Contact (combination of old Associate Creative Analyst, Junior Creative Analyst, Creative Analyst and Creative Consultant)
+		$SubOptions_CreativeContact = Array();
+		$CCGroup = new CUsersGroups();
+		$CCGroup->OnLoadAll("WHERE `Name` = 'Creative Contact'");
+		$CreativeContacts = new CUsers();
+		if($CreativeContacts->OnLoadAll("WHERE `UsersGroupsID` = ".$CCGroup->ID." && `Active` = 1 ORDER BY `LastName`")) {
+			foreach($CreativeContacts->Rows as $Row) {
+				$SubOptions_CreativeContact[$Row->ID] = $Row->LastName . ", " . $Row->FirstName;
 			}
 			if($_GET["Filters"]) {
 				$Filters = json_decode(urldecode($_GET["Filters"]));
-				if($Filters->CreativeAnalyst === true && $Filters->CreativeAnalystValue) {
-					$CreativeAnalystValues = Array();
-					foreach($Filters->CreativeAnalystValue as $ID => $Boolean) {
+				if($Filters->CreativeContact === true && $Filters->CreativeContactValue) {
+					$CreativeContactsValues = Array();
+					foreach($Filters->CreativeContactValue as $ID => $Boolean) {
 						if($Boolean) {
-							$CreativeAnalystValues[] = $ID;
+							$CreativeContactsValues[] = $ID;
 						}
 					}
-					if(count($CreativeAnalystValues) > 0)
+					if(count($CreativeContactsValues) > 0)
 					{
-						$SubQuery = "`ID` IN (SELECT `ProjectsID` FROM `ProjectsCreativeAnalysts` WHERE `UsersID` IN (".implode(",", $CreativeAnalystValues)."))";
+						$SubQuery = "`ID` IN (SELECT `ProjectsID` FROM `ProjectsCreativeContacts` WHERE `UsersID` IN (".implode(",", $CreativeContactsValues)."))";
 						$Search->AddRestriction($SubQuery, "", "", "Custom");
 					}
 				}
 			} 
-			else if(CSecurity::GetUsersGroupsID() == 7)
+			else if(CSecurity::GetUsersGroupsID() == 15)
 			{
+				//TODO: Fix this!
 				$Filters							= Array();
-				$Filters["CreativeAnalyst"]			= true;
-				$Filters["CreativeAnalystValue"]	= Array(
+				$Filters["CreativeContact"]			= true;
+				$Filters["CreativeContactValue"]	= Array(
 					CSecurity::GetUsersID()		=> true
 				);
 				$_GET["Filters"] = urlencode(json_encode($Filters));
-				$CreativeAnalystValues = Array(CSecurity::GetUsersID());
-				$SubQuery = "`ID` IN (SELECT `ProjectsID` FROM `ProjectsCreativeAnalysts` WHERE `UsersID` = ".CSecurity::GetUsersID().")";
-				$Search->AddRestriction($SubQuery, "", "", "Custom");
-			}
-		}
-		
-		// Creative Analysts
-		$SubOptions_CreativeConsultant = Array();
-		$CreativeConsultantGroup = new CUsersGroups();
-		$CreativeConsultantGroup->OnLoadAll("WHERE `Name` = 'Creative Consultant'");
-		$CreativeConsultants = new CUsers();
-		if($CreativeConsultants->OnLoadAll("WHERE `UsersGroupsID` = ".$CreativeConsultantGroup->ID." && `Active` = 1 ORDER BY `LastName`") !== false) {
-			foreach($CreativeConsultants->Rows as $Row) {
-				$SubOptions_CreativeConsultant[$Row->ID] = $Row->LastName . ", " . $Row->FirstName;
-			}
-			if($_GET["Filters"]) {
-				$Filters = json_decode(urldecode($_GET["Filters"]));
-				if($Filters->CreativeConsultant === true && $Filters->CreativeConsultantValue) {
-					$CreativeConsultantValues = Array();
-					foreach($Filters->CreativeConsultantValue as $ID => $Boolean) {
-						if($Boolean) {
-							$CreativeConsultantValues[] = $ID;
-						}
-					}
-					if(count($CreativeConsultantValues) > 0)
-					{
-						$SubQuery = "`ID` IN (SELECT `ProjectsID` FROM `ProjectsCreativeConsultants` WHERE `UsersID` IN (".implode(",", $CreativeConsultantValues)."))";
-						$Search->AddRestriction($SubQuery, "", "", "Custom");
-					}
-				}
-			}
-			else if(CSecurity::GetUsersGroupsID() == 5)
-			{
-				$Filters							= Array();
-				$Filters["CreativeConsultant"]		= true;
-				$Filters["CreativeConsultantValue"]	= Array(CSecurity::GetUsersID() => true);
-				$_GET["Filters"] = urlencode(json_encode($Filters));
-				$CreativeConsultantValues = Array(CSecurity::GetUsersID());
-				$SubQuery = "`ID` IN (SELECT `ProjectsID` FROM `ProjectsCreativeConsultantAnalysts` WHERE `UsersID` = ".CSecurity::GetUsersID().")";
+				$CreativeContactsValues = Array(CSecurity::GetUsersID());
+				$SubQuery = "`ID` IN (SELECT `ProjectsID` FROM `ProjectsCreativeContacts` WHERE `UsersID` = ".CSecurity::GetUsersID().")";
 				$Search->AddRestriction($SubQuery, "", "", "Custom");
 			}
 		}
@@ -402,31 +365,7 @@
 				}
 			}
 		}
-		/*
-		// Product Managers
-		$SubOptions_ProductManager = Array();
-		$ProductManagerGroup = new CUsersGroups();
-		$ProductManagerGroup->OnLoadAll("WHERE `Name` = 'Product Manager'");
-		$ProductManagers = new CUsers();
-		if($ProductManagers->OnLoadAll("WHERE `UsersGroupsID` = ".$ProductManagerGroup->ID." && `Active` = 1 ORDER BY `LastName`") !== false) {
-			foreach($ProductManagers->Rows as $Row) {
-				$SubOptions_ProductManager[$Row->ID] = $Row->LastName . ", " . $Row->FirstName;
-			}
-			if($_GET["Filters"]) {
-				$Filters = json_decode(urldecode($_GET["Filters"]));
-				if($Filters->ProductManager === true && $Filters->ProductManagerValue) {
-					$ProductManagerValues = Array();
-					foreach($Filters->ProductManagerValue as $ID => $Boolean) {
-						if($Boolean) {
-							$ProductManagerValues[] = $ID;
-						}
-					}
-					$SubQuery = "`ID` IN (SELECT `ProjectsID` FROM `ProjectsProductManagers` WHERE `UsersID` IN (".implode(",", $ProductManagerValues)."))";
-					$Search->AddRestriction($SubQuery, "", "", "Custom");
-				}
-			}
-		}
-		*/
+
 		/*
 		// Course Start Date
 		$SubOptions_CourseStartDate = "Dates";
