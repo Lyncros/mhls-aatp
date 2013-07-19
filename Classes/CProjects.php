@@ -25,6 +25,7 @@
 		public $Milestones				= Array();
 		public $ToDos					= Array();
 		public $ProductTypes			= Array();
+		public $Tags					= Array();
 		
 		function __construct() {
 			$this->Table = "Projects";
@@ -51,6 +52,7 @@
 			$this->OnLoadMilestones();
 			$this->OnLoadToDos();
 			$this->OnLoadProductTypes();
+			$this->OnLoadTags();
 			
 			return true;
 		}
@@ -165,6 +167,20 @@
 				asort($this->ProductTypes);
 			}
 			unset($Types);
+		}
+		
+		function OnLoadTags() {
+			$ProjectsTags = new CTable("ProjectsTags");
+			if($ProjectsTags->OnLoadAll("WHERE `ProjectsID` = ".$this->ID)) {
+				foreach($ProjectsTags->Rows as $Row) {
+					$Tag = new CTags();
+					if(! $Tag->OnLoad($Row->TagsID)) continue;
+
+					$this->Tags[intval($Tag->ID)] = $Tag->Name;
+				}
+				asort($this->Tags);
+			}
+			unset($ProjectsTags);
 		}
 		
 		function OnLoadISBNs() {

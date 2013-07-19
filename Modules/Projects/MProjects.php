@@ -582,6 +582,26 @@
 		}
 		
 		//----------------------------------------------------------------------
+		function AddTag($Name) {
+			$Name = htmlspecialchars($Name);
+			
+			$Data = Array(
+				"Name"					=> $Name,
+				"Active"				=> 1,
+				"Created"				=> time(),
+				"CreatedUsersID"		=> CSecurity::GetUsersID(),
+				"CreatedIPAddress"		=> $_SERVER["REMOTE_ADDR"],
+				"Modified"				=> time(),
+				"ModifiedUsersID"		=> CSecurity::GetUsersID(),
+				"ModifiedIPAddress"		=> $_SERVER["REMOTE_ADDR"],
+			);
+			
+			if(($ID = CTable::Add("Tags", $Data)) !== false) return $ID;
+			
+			return false;
+		}
+		
+		//----------------------------------------------------------------------
 		function UpdateResourceList() {
 			$ProjectID = $_POST["ProjectID"];
 			
@@ -747,15 +767,6 @@
 					CTable::Add("ProjectsInstitutionalSalesReps", Array("ProjectsID" => $ID, "UsersID" => intval($UserID)));
 				}
 			}
-			
-			// Product Managers
-			CTable::RunQuery("DELETE FROM `ProjectsProductManagers` WHERE `ProjectsID` = $ID");
-			if($_POST["ProductManagerUsersID"] != "null") {
-				$ProductManagers = json_decode($_POST["ProductManagerUsersID"]);
-				foreach($ProductManagers as $UserID) {
-					CTable::Add("ProjectsProductManagers", Array("ProjectsID" => $ID, "UsersID" => intval($UserID)));
-				}
-			}
 
 			// Product Types
 			if($_POST["ProductTypes"]) {
@@ -777,8 +788,35 @@
 					CTable::Add("ProjectsProductTypes", Array("ProjectsID" => $ID, "ProductTypesID" => $ProductTypeID));
 				}
 			}
-			else
+			else {
 				CTable::RunQuery("DELETE FROM `ProjectsProductTypes` WHERE `ProjectsID` = $ID");
+			}
+			
+			// Tags
+			if($_POST["Tags"]) {
+				$Tags = explode(",", htmlspecialchars($_POST["Tags"]));
+				$PreviousTagIds = array_keys($ProjectInDB->Tags);
+				$TagsToAdd = array_diff($Tags, $PreviousTagIds);
+				$TagsToRemove = array_diff($PreviousTagIds, $Tags);
+				
+				foreach ($TagsToAdd as $TagID) {
+					if(intval($TagID) <= 0) {
+						$TagID = self::AddTag($TagID);
+						if(!$TagID) continue;
+					}
+					
+					CTable::Add("ProjectsTags", Array("ProjectsID" => $ID, "TagsID" => intval($TagID)));
+				}
+				
+				if (!empty($TagsToRemove)) {
+					$InList = implode(", ", $TagsToRemove);
+					CTable::RunQuery("DELETE FROM `ProjectsTags` WHERE `ProjectsID` = $ID AND `TagsID` IN ($InList)");
+				}
+			} else {
+				if (!empty($ProjectInDB->Tags)) {
+					CTable::RunQuery("DELETE FROM `ProjectsTags` WHERE `ProjectsID` = $ID");
+				}
+			}
 
 			$User = new CUsers();
 			$User->OnLoad(CSecurity::GetUsersID());

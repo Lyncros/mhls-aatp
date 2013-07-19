@@ -88,6 +88,7 @@
 						<div id='ProjectDetailsEdit' style='display:none;'>
 							<table class='CForm_Table'>";
 								CForm::RandomPrefix();
+								
 								echo CForm::AddRow("<div class='Button' value='Save' onClick=\"if($(this).text() == 'show advanced') { $('tr.Advanced').slideDown(); $(this).text('hide advanced'); } else { $('tr.Advanced').slideUp(); $(this).text('show advanced'); }\" style='float:left; width:150px; margin:0px 0px 10px 0px;'>show advanced</div>", "Basic");
 								echo CForm::AddTextbox("Project Number", "ProductNumber", $Project->ProductNumber, "", "", "Basic");
 								echo CForm::AddTextbox("Project Value", "ProjectValue", $Project->ProjectValue, "", "", "Advanced");
@@ -175,6 +176,7 @@
 									}
 								}
 								echo CForm::AddListbox("Institutional Sales Rep", "InstitutionalSalesRepUsersID", $RepArray, $Project->InstitutionalSalesReps, "", "", "", "Advanced");
+								
 								echo CForm::AddTextbox("Primary Customer", "PrimaryCustomer", $Project->PrimaryCustomer, "", "", "Basic");
 								echo CForm::AddTextbox("Customer Phone", "CustomerPhone", $Project->CustomerPhone, "", "", "Advanced");
 								echo CForm::AddTextbox("Customer Email", "CustomerEmail", $Project->CustomerEmail, "", "", "Advanced");
@@ -193,6 +195,39 @@
 								$ValuesArray = array(0 => "N/A") + CForm::RowsToArray($Mt->Rows, "Name");
 								$PTIds = array_keys($Project->ProductTypes);
 								echo CForm::AddDropdown("Milestone template", "ProductTypes", $ValuesArray, $PTIds[0]);
+								
+								//Tags
+								$Tags = new CTags();
+								$Tags->OnLoadAll("WHERE `Active` = 1 ORDER BY `Name` ASC");
+								$TagsValuesArray = Array();
+								foreach(CForm::RowsToArray($Tags->Rows, "Name") as $Key => $Value) {
+									$TagsValuesArray[] = json_encode(Array("id" => $Key, "text" => $Value));
+								}
+								
+								echo CForm::AddStatic("Tags", "<input type='text' name='".CForm::GetPrefix()."Tags' id='".CForm::GetPrefix()."Tags' value='' style='width:300px;'>"); 
+								echo "<script type='text/javascript'>
+										$('#".CForm::GetPrefix()."Tags').select2({
+											minimumResultsForSearch		: 20,
+											multiple					: true,
+											data						: [".str_replace('"id"', 'id', str_replace('"text"', 'text', implode(",", $TagsValuesArray)))."],
+											createSearchChoice			: function(term, data) {
+												if ($(data).filter(function() {
+													return this.text.localeCompare(term) === 0;
+												}).length === 0) {
+													return {id:term, text:term};
+												}
+											}
+										});
+										
+										$('#".CForm::GetPrefix()."Tags').select2('val', [";
+										$Separator = "";
+										foreach($Project->Tags as $Key => $Value) {
+											echo $Separator . "{id:".$Key.", text:\"".$Value."\"}";
+											$Separator = ",";
+										}
+										echo "])
+									</script>";
+								//End tags
 		
 								echo CForm::AddTextbox("Stat Sponsor Code", "StatSponsorCode", $Project->StatSponsorCode, "", "", "Advanced");
 								echo CForm::AddTextbox("Request Plant", "RequestPlant", $Project->RequestPlant, "", "", "Advanced");

@@ -1,0 +1,28 @@
+CREATE  TABLE `aatp`.`Tags` (
+  `ID` INT(10) NOT NULL ,
+  `Name` VARCHAR(64) NULL ,
+  `Active` TINYINT(1) NOT NULL ,
+  `Created` INT(10) NOT NULL ,
+  `CreatedUsersID` INT(10) NOT NULL ,
+  `CreatedIPAddress` VARCHAR(64) NOT NULL ,
+  `Modified` INT(10) NOT NULL ,
+  `ModifiedUsersID` INT(10) NOT NULL ,
+  `ModifiedIPAddress` VARCHAR(64) NOT NULL ,
+  PRIMARY KEY (`ID`) );
+
+ALTER TABLE `aatp`.`Tags` 
+CHANGE COLUMN `ID` `ID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT  ;
+
+
+CREATE  TABLE `aatp`.`ProjectsTags` (
+  `ID` INT(10) NOT NULL ,
+  `ProjectsID` INT(10) NOT NULL ,
+  `TagsID` INT(10) NOT NULL ,
+  PRIMARY KEY (`ID`) );
+
+
+ALTER TABLE `aatp`.`ProjectsTags` 
+CHANGE COLUMN `ID` `ID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT  , 
+CHANGE COLUMN `ProjectsID` `ProjectsID` INT(10) UNSIGNED NOT NULL  , 
+CHANGE COLUMN `TagsID` `TagsID` INT(10) UNSIGNED NOT NULL  ;
+

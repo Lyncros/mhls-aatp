@@ -67,9 +67,46 @@
 			//Milestone template (former Product Types)
 			$Mt = new CProductTypes();
 			$Mt->OnLoadAll("WHERE `Active` = 1 ORDER BY `Name` ASC");
-			$ValuesArray = array(0 => "N/A") + CForm::RowsToArray($Mt->Rows, "Name");
+			$MtValuesArray = array(0 => "N/A") + CForm::RowsToArray($Mt->Rows, "Name");
 			
-			echo CForm::AddDropdown("Milestone template", "ProductTypes", $ValuesArray, $Project->ProductTypes);
+			echo CForm::AddDropdown("Milestone template", "ProductTypes", $MtValuesArray, $Project->ProductTypes);
+			
+			//Tags
+			$Tags = new CTags();
+			$Tags->OnLoadAll("WHERE `Active` = 1 ORDER BY `Name` ASC");
+			$TagsValuesArray = Array();
+			foreach(CForm::RowsToArray($Tags->Rows, "Name") as $Key => $Value) {
+				$TagsValuesArray[] = json_encode(Array("id" => $Key, "text" => $Value));
+			}
+			
+			echo CForm::AddStatic("Tags", "<input type='text' name='".CForm::GetPrefix()."Tags' id='".CForm::GetPrefix()."Tags' value='' style='width:300px;'>"); 
+			
+			//*
+			echo "
+			<script type='text/javascript'>
+				$('#".CForm::GetPrefix()."Tags').select2({
+					minimumResultsForSearch		: 20,
+					multiple					: true,
+					data						: [".str_replace('"id"', 'id', str_replace('"text"', 'text', implode(",", $TagsValuesArray)))."],
+					createSearchChoice			: function(term, data) {
+						if ($(data).filter(function() {
+							return this.text.localeCompare(term) === 0;
+						}).length === 0) {
+							return {id:term, text:term};
+						}
+					}
+				});
+				$('#".CForm::GetPrefix()."Tags').select2('val', [";
+				$Separator = "";
+				foreach($Project->Tags as $Key => $Value) {
+					echo $Separator . "{id:".$Key.", text:\"".$Value."\"}";
+					$Separator = ",";
+				}
+				echo "])
+			</script>
+			";
+			//End tags
+			
 		?>
 		</table>
 
