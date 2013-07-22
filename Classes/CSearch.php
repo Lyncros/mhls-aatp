@@ -649,7 +649,7 @@
 			if($Item["URL"] == $URL) return;
 
 			$_SESSION["CSearch"][$this->Table][] = Array(
-				"Timestamp" => mktime(),
+				"Timestamp" => time(),
 				"Name"		=> $this->Table,
 				"Keywords"	=> @$_GET["CSearch_Keywords"],
 				"URL"		=> $URL

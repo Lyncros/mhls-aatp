@@ -12,7 +12,7 @@
 				$Expire = Config::$Options["System"]["Cookie"]["Expire"];
 			}
 
-			setcookie($Name."_".$CookieName, $CookieValue, mktime() + $Expire);
+			setcookie($Name."_".$CookieName, $CookieValue, time() + $Expire);
 		}
 
 		public static function GetValue($Name, $CookieName) {

@@ -24,6 +24,8 @@
 		public $ToDos					= Array();
 		public $ProductTypes			= Array();
 		public $Tags					= Array();
+		public $Vendors					= Array();
+		
 		
 		function __construct() {
 			$this->Table = "Projects";
@@ -51,6 +53,8 @@
 			$this->OnLoadToDos();
 			$this->OnLoadProductTypes();
 			$this->OnLoadTags();
+			$this->OnLoadVendors();
+			$this->OnLoadProductSolutions();
 			
 			return true;
 		}
@@ -165,6 +169,26 @@
 				asort($this->Tags);
 			}
 			unset($ProjectsTags);
+		}
+		
+		function OnLoadVendors() {
+			$ProjectsVendors = new CTable("ProjectsVendors");
+			if($ProjectsVendors->OnLoadAll("WHERE `ProjectsID` = ".$this->ID) !== false) {
+				foreach($ProjectsVendors->Rows as $Row) {
+					$this->Vendors[] = $Row->VendorsID;
+				}
+			}			
+			unset($ProjectsVendors);
+		}
+		
+		function OnLoadProductSolutions() {
+			$ProjectsProductSolutions = new CTable("ProjectsProductSolutions");
+			if($ProjectsProductSolutions->OnLoadAll("WHERE `ProjectsID` = ".$this->ID) !== false) {
+				foreach($ProjectsProductSolutions->Rows as $Row) {
+					$this->ProductSolutions[] = $Row->ProductSolutionsID;
+				}
+			}			
+			unset($ProjectsProductSolutions);			
 		}
 		
 		function OnLoadISBNs() {
@@ -382,6 +406,41 @@
 			return $status[$this->Status];
 		}
 		//----------------------------------------------------------------------
+		function GetVendors() {
+			$VendorsList	= "";
+			$Vendor			= new CVendors();
+			$Separator		= "";
+			foreach($this->Vendors as $VendorID) {
+				if($Vendor->OnLoad($VendorID) !== false) {
+					$VendorsList .= $Separator . $Vendor->Name;
+					$Separator = "; ";
+				}
+			}
+			
+			if($VendorsList) {
+				return $VendorsList;
+			} else {
+				return "N/A";
+			}
+		}		
+		//----------------------------------------------------------------------
+		function GetProductSolutions() {
+			$ProductSolutionList	= "";
+			$ProductSolution		= new CProductSolutions();
+			$Separator				= "";
+			foreach($this->ProductSolutions as $ProductSolutionID) {
+				if($ProductSolution->OnLoad($ProductSolutionID) !== false) {
+					$ProductSolutionList .= $Separator . $ProductSolution->Name;
+					$Separator = "; ";
+				}
+			}
+			
+			if($ProductSolutionList) {
+				return $ProductSolutionList;
+			} else {
+				return "N/A";
+			}
+		}	
 		//----------------------------------------------------------------------
 		private function GetUserCompleteNames($UserIDs) {
 			$UserList = Array();

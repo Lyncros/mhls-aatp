@@ -31,7 +31,7 @@
 				fputcsv($Output, $Project, CSV_COLUMN_DELIMITER);}
 			
 			// close the file
-			fclose($Output); 
+			fclose($Output);		
 		}
 		
 		//==========================================================================
@@ -61,8 +61,7 @@
 			
 			foreach($this->GetProjects() as $Row) {
 				$Project = new CProjects();
-				$Project->OnLoad($Row->Current["ID"]);
-				
+				$Project->OnLoad($Row->Current["ID"]);	
 				$col = 1;
 				
 				$ProjectInfo 		= Array();
@@ -124,7 +123,7 @@
 				$ProjectInfo[$col++] 	= $Project->GetMilestonCompletionPercentage();				
 				//48
 				
-				$ProjectListInfo[$i] = $ProjectInfo;
+				$ProjectListInfo[$i] = $ProjectInfo;				
 				$i++;
 			}
 			
@@ -154,7 +153,10 @@
 			$FromDueDate 		 = (isset($_GET["FromDueDate"]) 		&& strtotime($_GET["FromDueDate"]))			? strtotime($_GET["FromDueDate"]) 			: "";
 			$ToDueDate 			 = (isset($_GET["ToDueDate"]) 			&& strtotime($_GET["ToDueDate"]))			? strtotime($_GET["ToDueDate"]) 			: "";
 			
+			$From = "";
 			$Where = "";
+			$GroupBy = " GROUP BY Projects.ID";
+			
 			$isFirst = true;
 			if($ShowDeleted)
 				$Where =  "";
@@ -164,30 +166,77 @@
 			}			
 			if($FromCourseStartDate)
 			{
-				if(!$isFirst) $Where .= " && ";
+				if(!$isFirst) $Where .= " AND ";
 				$Where .= "Projects.CourseStartDate >= $FromCourseStartDate";
 				$isFirst = false;
 			}
 			if($ToCourseStartDate)
 			{			
-				if(!$isFirst) $Where .= " && ";
+				if(!$isFirst) $Where .= " AND ";
 				$Where .= "Projects.CourseStartDate <= $ToCourseStartDate";
 				$isFirst = false;
 			}
 			if($FromDueDate)
 			{
-				if(!$isFirst) $Where .= " && ";
+				if(!$isFirst) $Where .= " AND ";
 				$Where .= "Projects.DueDate >= $FromDueDate";
 				$isFirst = false;
 			}
 			if($ToDueDate)
 			{
-				if(!$isFirst) $Where .= " && ";
+				if(!$isFirst) $Where .= " AND ";
 				$Where .= "Projects.DueDate <= $ToDueDate";
 				$isFirst = false;
 			}
 			
-			return CTable::Select("Projects",(($Where)?"WHERE $Where ":"")."ORDER BY $OrderBy $OrderType");
+			$LSCFirstNames 	= (isset($_GET["LSCFirstNames"])) 	? $_GET["LSCFirstNames"] 	: "";
+			$LSCLastNames	= (isset($_GET["LSCLastNames"]))	? $_GET["LSCLastNames"] 	: "";			
+			if (!empty($LSCFirstNames) || !empty($LSCLastNames))
+			{
+				$From .= " 	LEFT JOIN ProjectsLSCs 		ON Projects.ID 			= ProjectsLSCs.ProjectsID
+							LEFT JOIN Users AS UsersLSC ON ProjectsLSCs.UsersID = UsersLSC.ID ";
+				
+				if(!$isFirst) $Where .= " AND ";
+				
+				$RegExpFirstNames 	= (!empty($LSCFirstNames))?str_replace(',','|',$LSCFirstNames):"a^";
+				$RegExpLastNames 	= (!empty($LSCLastNames))?str_replace(',','|',$LSCLastNames):"a^";
+				
+				$Where .= " (UsersLSC.FirstName REGEXP '$RegExpFirstNames'";
+				$Where .= " OR UsersLSC.LastName REGEXP '$RegExpLastNames')";
+				
+				$isFirst = false;
+			}
+			
+			$LSSFirstNames	= (isset($_GET["LSSFirstNames"])) 	? $_GET["LSSFirstNames"] 	: "";
+			$LSSLastNames	= (isset($_GET["LSSLastNames"])) 	? $_GET["LSSLastNames"] 	: "";			
+			if (!empty($LSSFirstNames) || !empty($LSSLastNames))
+			{
+				$From .= " 	LEFT JOIN ProjectsLSSs 		ON Projects.ID 			= ProjectsLSSs.ProjectsID
+							LEFT JOIN Users AS UsersLSS ON ProjectsLSSs.UsersID = UsersLSS.ID ";
+				
+				if(!$isFirst) $Where .= " AND ";
+				
+				$RegExpFirstNames 	= (!empty($LSSFirstNames))?str_replace(',','|',$LSSFirstNames):"a^";
+				$RegExpLastNames 	= (!empty($LSSLastNames))?str_replace(',','|',$LSSLastNames):"a^";
+				
+				$Where .= " (UsersLSS.FirstName REGEXP '$RegExpFirstNames'";
+				$Where .= " OR UsersLSS.LastName REGEXP '$RegExpLastNames')";				
+				
+				$isFirst = false;
+			}
+			
+			$Status	= (isset($_GET["Status"])) ? $_GET["Status"] : "";			
+			if (!empty($Status))
+			{				
+				$statusId = array_search($Status, CProjects::GetAllStatus());
+				if ($statusId)
+				{
+					if(!$isFirst) $Where .= " AND ";
+					$Where .= " Status LIKE '$statusId'";
+				}
+			}			
+			
+			return CTable::SelectFields("Projects.*","Projects",(($Where)?"$From WHERE $Where $GroupBy":"")." ORDER BY $OrderBy $OrderType");
 		}
 		
 		private function IsValidOrderBy($ColumnName)

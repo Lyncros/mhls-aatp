@@ -17,7 +17,7 @@
 		public static function OnInit() {
 			if(defined("DEV")) {
 				ini_set("display_errors", "On");
-				error_reporting(E_ALL ^ E_NOTICE ^ E_STRICT);
+				error_reporting(E_ALL ^ E_NOTICE);
 
 				@set_error_handler(array("CDebug", "OnError"));
 			}else{
@@ -33,7 +33,7 @@
 
 			if(defined("DEV")) {
 				if(self::$Counter < 50) {
-					if(mysql_query("INSERT INTO `Debug` VALUES ('', '".$_SERVER["REMOTE_ADDR"]."', ".mktime().", '".mysql_real_escape_string($Type)."', '".mysql_real_escape_string($File)."',  '".mysql_real_escape_string($Line)."', '".mysql_real_escape_string($Error)."', '".mysql_real_escape_string(serialize($_SERVER))."', '".mysql_real_escape_string(serialize($_SESSION))."', '".mysql_real_escape_string(serialize($_POST))."', '".mysql_real_escape_string(serialize($_GET))."')") === false) {
+					if(mysql_query("INSERT INTO `Debug` VALUES ('', '".$_SERVER["REMOTE_ADDR"]."', ".time().", '".mysql_real_escape_string($Type)."', '".mysql_real_escape_string($File)."',  '".mysql_real_escape_string($Line)."', '".mysql_real_escape_string($Error)."', '".mysql_real_escape_string(serialize($_SERVER))."', '".mysql_real_escape_string(serialize($_SESSION))."', '".mysql_real_escape_string(serialize($_POST))."', '".mysql_real_escape_string(serialize($_GET))."')") === false) {
 						echo mysql_error();
 					}
 

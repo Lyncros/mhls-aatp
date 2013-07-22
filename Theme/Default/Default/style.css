@@ -421,6 +421,7 @@ input[disabled],select[disabled] {
 .SidebarIconMyAccount						{ background-image:	url("./SidebarIconMyAccount.png"); }
 
 .SidebarIconInstitutions					{ background-image:	url("./SidebarIconInstitutions.png"); }
+.SidebarIconVendors							{ background-image:	url("./SidebarIconInstitutions.png"); }
 .SidebarIconProductSolutions				{ background-image:	url("./SidebarIconProductSolutions.png"); }
 .SidebarIconUsers							{ background-image:	url("./SidebarIconUsers.png"); }
 .SidebarIconUsersGroups						{ background-image:	url("./SidebarIconUsersGroups.png"); }

@@ -102,7 +102,7 @@
 				}
 
 				if($Rows->ExpireMinutes > 0) {
-					$Minutes = ($Rows->Timestamp + ($Rows->ExpireMinutes * 60)) - mktime();
+					$Minutes = ($Rows->Timestamp + ($Rows->ExpireMinutes * 60)) - time();
 					$Minutes = floor($Minutes / 60);
 
 					$BanTimePhrase = "temporarily";
@@ -153,18 +153,20 @@
 			//}
 			//------------------------------------------------------------------
 			// Is this requested Page a module?
-			//------------------------------------------------------------------
+			//------------------------------------------------------------------				
 			if(strlen($this->ModuleName) > 0 && CModule::Exists($this->ModuleName)) {
+			
 				//Set the Module theme to Default
 				if($this->Theme->SetTheme() == false) {
 					$this->OnFatalError("The Default Theme cannot be Found");
 					return false;
 				}
-
+				
 				$this->Module = CModule::LoadObject($this->ModuleName, $this); //If so, try load it
-
+				
 				//Is this a valid Module?
 				if($this->Module === false) {
+					die();
 					if(CSecurity::IsLoggedIn() == false)	$this->LoadModule("Login");
 					else									$this->LoadModule("Dashboard");
 
@@ -278,11 +280,12 @@
 			if($CheckSecurity && !CSecurity::CanAccess($Module)) {
 				return false;
 			}
-
-			if(CModule::Exists($Module)) {
-				if($RedirectJS) {
+			
+			if(CModule::Exists($Module)) {			
+				if($RedirectJS) {					
 					echo "<script language='Javascript' type='text/javascript'>document.location.href = \"".CURL::FormatURL("/$Module", $Parms, $UseGetParms)."\";</script>";
 				}else{
+					die('test2');
 					Header("Location: ".CURL::FormatURL("/$Module", $Parms, $UseGetParms));
 				}
 

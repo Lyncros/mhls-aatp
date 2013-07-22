@@ -77,7 +77,7 @@
 			foreach($Files as $File) {
 				if(is_dir(CData::$PathTemp.$File)) continue;
 
-				if(filemtime(CData::$PathTemp.$File) + $Expire < mktime()) {
+				if(filemtime(CData::$PathTemp.$File) + $Expire < time()) {
 					unlink(CData::$PathTemp.$File);
 				}
 			}

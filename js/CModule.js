@@ -16,7 +16,7 @@ CModule.Load = function(Name, Parms, Extra) {
 			ParmsString += i + "=" + encodeURIComponent(Parms[i]) + "&";
 		}
 	}
-
+	
 	document.location.href = "/" + Name + ParmsString + Extra;
 }
 

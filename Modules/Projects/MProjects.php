@@ -650,8 +650,7 @@
 				"LeadNotes"							=> htmlspecialchars($_POST["LeadNotes"]),
 				"RequestPlant"						=> htmlspecialchars($_POST["RequestPlant"]),
 				"PlantPaid"							=> htmlspecialchars($_POST["PlantPaid"]),
-				"PlantLeft"							=> htmlspecialchars($_POST["PlantLeft"]),
-				"VenderUsed"						=> htmlspecialchars($_POST["VenderUsed"]),
+				"PlantLeft"							=> htmlspecialchars($_POST["PlantLeft"]),				
 				"DatePaid"							=> strtotime($_POST["DatePaid"]),
 				"ISBN10"							=> htmlspecialchars($_POST["ISBN10"]),
 				"ISBN13"							=> htmlspecialchars($_POST["ISBN13"]),
@@ -801,6 +800,24 @@
 				}
 			}
 
+			// Vendors
+			CTable::RunQuery("DELETE FROM `ProjectsVendors` WHERE `ProjectsID` = $ID");
+			if($_POST["VendorsID"] != "null") {
+				$Vendors = json_decode($_POST["VendorsID"]);
+				foreach($Vendors as $VendorID) {
+					CTable::Add("ProjectsVendors", Array("ProjectsID" => $ID, "VendorsID" => intval($VendorID)));
+				}
+			}
+
+			// Product Solutions
+			CTable::RunQuery("DELETE FROM `ProjectsProductSolutions` WHERE `ProjectsID` = $ID");
+			if($_POST["ProductSolutionsID"] != "null") {
+				$ProductSolutions = json_decode($_POST["ProductSolutionsID"]);
+				foreach($ProductSolutions as $ProductSolutionID) {
+					CTable::Add("ProjectsProductSolutions", Array("ProjectsID" => $ID, "ProductSolutionsID" => intval($ProductSolutionID)));
+				}
+			}
+			
 			$User = new CUsers();
 			$User->OnLoad(CSecurity::GetUsersID());
 			$EmailData = Array(

@@ -76,7 +76,7 @@
 					return Array(0, "Unable to add record to database, please try again.");
 				}
 			}else{
-				$Data["Timestamp"] = mktime();
+				$Data["Timestamp"] = time();
 
 				if(($ID = CTable::Add($this->Table, $Data)) === false) {
 					return Array(0, "Unable to add record to database, please try again.");

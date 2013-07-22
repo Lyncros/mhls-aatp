@@ -35,7 +35,7 @@
 				<td colspan='7' style='padding-top:20px; font-size:24px;'>
 					<div style='float:left;'>Project Details</div>";
 					if(CSecurity::$User->CanAccess("ProjectDetails", "Edit")) {
-						echo "<div class='Icon_Edit' style='float:left; margin-left:12px;' onClick=\"$('#ProjectDetailsReadOnly').slideToggle(); $('#ProjectDetailsEdit').slideToggle();\"></div>";
+						echo "<div class='Icon_Edit' style='float:left; margin-left:12px;' onClick=\"$('#ProjectCreativeBudgetDetailsReadOnly').slideToggle();$('#ProjectDetailsReadOnly').slideToggle(); $('#ProjectDetailsEdit').slideToggle();\"></div>";
 					}
 					echo "
 				</td>
@@ -65,12 +65,12 @@
 								<td style='vertical-align:top; padding:22px 11px; width:135px;'>
 									<div style='color:#0685c5; font-weight:bold; font-size:14px;'>Project Details</div>
 									<p><b>LSC:</b> ".$Project->GetUsers("LSCs")."</p>
-										<table style='border-spacing:0px'>
-											<tr>
-												<td style='width:62px'><b>Milestone Template:</b></td>
-												<td>".$Project->GetProductTypesList()."</td>
-											</tr>
-										</table>
+									<table style='border-spacing:0px'>
+										<tr>
+											<td style='width:62px'><b>Milestone Template:</b></td>
+											<td>".$Project->GetProductTypesList()."</td>
+										</tr>
+									</table>
 								</td>
 								<td style='vertical-align:top; padding-top:20px;'><div class='Separator'></div></td>
 								<td style='vertical-align:top; padding:22px 11px; padding-right:0px; width:160px;'>
@@ -206,14 +206,33 @@
 								//End tags
 		
 								echo CForm::AddTextbox("Stat Sponsor Code", "StatSponsorCode", $Project->StatSponsorCode, "", "", "Advanced");
-								echo CForm::AddTextbox("Request Plant", "RequestPlant", $Project->RequestPlant, "", "", "Advanced");
-								echo CForm::AddTextbox("Plant Paid", "PlantPaid", $Project->PlantPaid, "", "", "Advanced");
-								echo CForm::AddTextbox("Plant Left", "PlantLeft", $Project->PlantLeft, "", "", "Advanced");
-								echo CForm::AddTextbox("Vendor", "VenderUsed", $Project->VenderUsed, "", "", "Advanced");
 								echo CForm::AddDatepicker("Date Paid", "DatePaid", ($Project->DatePaid > 0 ? $Project->DatePaid : ""), "", "", "", "Advanced");
 								echo CForm::AddTextbox("ISBN-10", "ISBN10", $Project->ISBN10, "", "", "Advanced");
 								echo CForm::AddTextbox("Spec doc link", "SpecDocLink", $Project->SpecDocLink, "", "", "Advanced");
 								echo CForm::AddTextbox("Connect Request ID link", "ConnectRequestIDLink", $Project->ConnectRequestIDLink, "", "", "Advanced");
+								echo "<tr><td><div style='font-weight:bold; font-size:14px; margin-top:12px; margin-bottom:6px;'>Creative Budget</div></td><td></td></tr>";
+								echo CForm::AddTextbox("Requested Budget", "RequestPlant", $Project->RequestPlant, "", "", "Basic");
+								echo CForm::AddTextbox("Plant Paid", "PlantPaid", $Project->PlantPaid, "", "", "Basic");
+								echo CForm::AddTextbox("Plant Left", "PlantLeft", $Project->PlantLeft, "", "", "Basic");
+								
+								// Vendors
+								$VendorsArray = Array("" => "");
+								$Vendors = new CVendors();
+								$Vendors->OnLoadAll("");								
+								foreach($Vendors->Rows as $Row) {
+									$VendorsArray[$Row->ID] = $Row->Name;
+								}
+								echo CForm::AddListbox("Vendors", "VendorsID", $VendorsArray, $Project->Vendors, "", "", "", "Basic");
+								
+								// Product Solutions
+								$ProductSolutionsArray = Array("" => "");
+								$ProductSolutions = new CProductSolutions();
+								$ProductSolutions->OnLoadAll("WHERE Active = 1");								
+								foreach($ProductSolutions->Rows as $Row) {
+									$ProductSolutionsArray[$Row->ID] = $Row->Name;
+								}
+								echo CForm::AddListbox("Product Solutions", "ProductSolutionsID", $ProductSolutionsArray, $Project->ProductSolutions, "", "", "", "Basic");
+																
 								echo CForm::AddHidden("ID", $Project->ID);
 								echo "								
 								<tr>
@@ -230,6 +249,22 @@
 						</div>";
 					}
 					echo "
+				</td>
+				<td style='width:30px;'></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td colspan='7' style='border-bottom:1px solid #d1d1d1 !important; border-top:1px solid #d1d1d1 !important;padding-bottom: 10px;'>
+					<div id='ProjectCreativeBudgetDetailsReadOnly'>
+						<div style='font-weight:bold; font-size:14px; margin-top:12px; margin-bottom:6px;'>Creative Budget</div>
+						<p><b>Requested Budget:</b> ".$Project->RequestPlant."</p>
+						<p><b>Plant Paid:</b> ".$Project->PlantPaid."</p>
+						<p><b>Plant Left:</b> ".$Project->PlantLeft."</p>
+						<p><b>Vendors:</b> ".$Project->GetVendors()."</p>
+						<p><b>Product Solutions:</b> ".$Project->GetProductSolutions()."</p>
+						<p><b>Date Paid:</b> ".date('n/j/Y', $Project->DatePaid)."</p>".
+						/*<p><div style='margin-top: -32px;margin-right: 50px;'class='Button' value='RequestPO' onClick=\"MProjects.RequestPO('".CForm::GetPrefix()."');\">Request PO</div></p>*/
+					"</div>
 				</td>
 				<td style='width:30px;'></td>
 			</tr>

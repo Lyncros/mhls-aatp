@@ -18,7 +18,7 @@
 
 	if(CURL::GetSubDomain() == "ajax") {
 		require("AJAX.php");
-	}else{
+	}else{		
 		$theApp = new CApp();
 		$theApp->OnExecute();
 	}

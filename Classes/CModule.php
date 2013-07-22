@@ -121,27 +121,27 @@
 			if(file_exists("./Modules/".$Name."/M".$Name.".php") && is_dir("./Modules/".$Name."/M".$Name.".php") == false) {
 				return true;
 			}
-
+			
 			return false;
 		}
 
-		public static function LoadObject($Name, $Parent) {
+		public static function LoadObject($Name, $Parent) {	
 			if(CModule::Exists($Name) == false) return false;
-
+			
 			$IsBusModule = false;
 
 			include_once("./Modules/".$Name."/M".$Name.".php");
-
+			
 			$Classname = "M".$Name;
-
-			if(class_exists($Classname) == false) return false;
-
+			
+			if(class_exists($Classname) == false) return false;			
+			
 			$NewModule			= new $Classname($Name);
 
 			$NewModule->Name		= $Name;
 			$NewModule->Parent		= $Parent;
 			$NewModule->IsBusModule = $IsBusModule;
-
+			
 			return $NewModule;
 		}
 

@@ -71,7 +71,7 @@
 
 			$Data = Array(
 				"IP"			=> mysql_real_escape_string($IP),
-				"Timestamp"		=> mktime(),
+				"Timestamp"		=> time(),
 				"ExpireMinutes"	=> doubleval($ExpireMinutes),
 				"Reason"		=> mysql_real_escape_string($Reason)
 			);

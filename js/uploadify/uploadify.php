@@ -24,7 +24,7 @@ $_SESSION['test_file_id'] = $_SESSION['test_file_id'].$_POST['FILE_ID'];
 if (!empty($_FILES))
 {
     $tempFile = $_FILES['Filedata']['tmp_name'];
-    $timestamp = mktime();
+    $timestamp = time();
     $random = substr(str_shuffle(str_repeat('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', 5)), 0, 5);
     $targetPath = $_SERVER['DOCUMENT_ROOT'] . '/jhadmin/temp_upload/';
     $storage_file_name = $timestamp . $random . str_replace('/','',$_FILES['Filedata']['name']);

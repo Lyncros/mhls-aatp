@@ -86,7 +86,7 @@
 				return false;
 			}
 
-			if(!isset($this)) {
+			if(!isset($this)) {				
 				return new CTableIterator($Res);
 			}else{
 				return ($this->Rows = new CTableIterator($Res));
@@ -161,7 +161,7 @@
 		 */
         public static function SelectFields($Fields, $Table, $Extra) {
             $Query = "SELECT $Fields FROM `$Table` $Extra";
-			
+			//die(var_export($Query));
             if(($Res = mysql_query($Query)) === false) {
                 trigger_error("mySQL Error: ".mysql_error()." - ".$Query, E_USER_WARNING);
                 return false;

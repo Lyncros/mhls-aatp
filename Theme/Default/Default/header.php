@@ -19,6 +19,7 @@
 		"ResourcesCategories"		=> "Resource Categories",
 		"ProductTypes"				=> "Product Types",
 		"Users" 					=> "Users",
+		"Vendors"					=> "Vendors"
 //		"UsersGroups"
 	);
 	
@@ -80,7 +81,6 @@
 
 <div id="CPageNotice"></div>
 <div id="CLoading">Loading</div>
-
 
 <div class="HeaderWrapper">
 	<div class="Header">
