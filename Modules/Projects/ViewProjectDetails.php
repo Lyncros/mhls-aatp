@@ -73,12 +73,14 @@
 									</table>
 								</td>
 								<td style='vertical-align:top; padding-top:20px;'><div class='Separator'></div></td>
-								<td style='vertical-align:top; padding:22px 11px; padding-right:0px; width:160px;'>
-									<div style='color:#0685c5; font-weight:bold; font-size:14px;'>&nbsp;</div>
+								<td style='vertical-align:top; padding:14px 11px; padding-right:0px; width:160px;'>									
 									<p><b>ISBN-10:</b> ".$Project->ISBN10."</p>
 									<p><b>CC:</b> ".$Project->GetUsers("CreativeContacts")."</p>
-									<p style='color:#0685c5; text-decoration:underline; cursor:pointer;' onClick=\"MProjects.ShowPreviewBox(this, 'ProjectLink', ".$Project->ID.");\">Direct Project Link</p>
-								</td>
+									<p style='color:#0685c5; text-decoration:underline; cursor:pointer;' onClick=\"MProjects.ShowPreviewBox(this, 'ProjectLink', ".$Project->ID.");\">Direct Project Link</p>";
+									if ($Project->SpecDocLink) echo '<p><a style="color:#0685c5;" href="'.$Project->GetSpecDocLink().'" target="_blank">Project Spec</a></p>';
+									if ($Project->ConnectRequestIDLink) echo '<p><a style="color:#0685c5;" href="'.$Project->GetConnectRequestIDLink().'" target="_blank">Connect Request ID</a></p>';
+									
+					echo "		</td>
 							</tr>
 						</table>
 					</div>";

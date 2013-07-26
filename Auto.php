@@ -9,10 +9,9 @@
 	ini_set("display_errors", "On");
 	error_reporting(E_ALL);
 
-	//set_include_path(".:Classes");
+	spl_autoload_register('aatp_autoload');
 	
-	function __autoload($Classname) {
-		//die($Classname);
+	function aatp_autoload($Classname) {		
 		include("Classes/".$Classname.".php");
 	}
 

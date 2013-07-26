@@ -440,7 +440,16 @@
 			} else {
 				return "N/A";
 			}
-		}	
+		}
+
+		//----------------------------------------------------------------------
+		function GetSpecDocLink() {			
+			return $this->ParseUrl($this->SpecDocLink);
+		}
+		//----------------------------------------------------------------------
+		function GetConnectRequestIDLink() {
+			return $this->ParseUrl($this->ConnectRequestIDLink);;
+		}		
 		//----------------------------------------------------------------------
 		private function GetUserCompleteNames($UserIDs) {
 			$UserList = Array();
@@ -452,6 +461,18 @@
 			
 			
 			return $UserList;
+		}
+		//----------------------------------------------------------------------
+		private function ParseUrl($link) {
+			if ($url = parse_url($link))
+			{				
+				if(!isset($ret["scheme"]))
+					return "http://" . $link;
+				else
+					return $link;				
+			}		
+			
+			return "";
 		}
 	};
 ?>

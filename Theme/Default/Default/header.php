@@ -11,12 +11,12 @@
 	
 	$SuperToolsActive  = "";
 	$SuperToolsModules = Array(
-		"Institutions" 				=> "Institutions",
+		//"Institutions" 				=> "Institutions",
 		"ProductSolutions" 			=> "Product Solutions",
 		"Milestones"				=> "Milestones",
 		"ToDos"						=> "To Dos",
 		"ToDosLists"				=> "To Do Lists",
-		"ResourcesCategories"		=> "Resource Categories",
+		//"ResourcesCategories"		=> "Resource Categories",
 		"ProductTypes"				=> "Product Types",
 		"Users" 					=> "Users",
 		"Vendors"					=> "Vendors",
@@ -109,7 +109,7 @@
 		<div class="HeaderNav">
 			<a href="/MyAccount" id='MyAccount'></a>
 			<!--<a href="/Messages" id='Messages'><div id='UnreadMessageCount'><?=$NumAlerts;?></div></a>-->
-			<a href="/Institutions" id='SuperTools' rel="<?=$SuperToolsActive;?>"></a>
+			<a href="/ProductSolutions" id='SuperTools' rel="<?=$SuperToolsActive;?>"></a>
 		</div>
 	</div>
 </div>
@@ -134,8 +134,7 @@
 			<?
 				if(array_key_exists($App->GetModuleName(), $SuperToolsModules)) {
 					foreach($SuperToolsModules as $Name => $ReadableName) {
-						echo "<li class='".($App->GetModuleName() == $Name ? "SidebarActive" : "")."'>
-						<div class='SidebarIcon SidebarIcon".$Name."' onClick=\"CModule.Load('".$Name."', {});\" title=\"$ReadableName\"></div></li>";
+						echo "<li class='".($App->GetModuleName() == $Name ? "SidebarActive" : "")."'><div style='text-align:center;line-height: 13px;padding-top: 5px;'>$ReadableName</div><div class='SuperToolsSidebarIcon SidebarIcon".$Name."' onClick=\"CModule.Load('".$Name."', {});\" title=\"$ReadableName\"></div></li>";
 						echo "<li style='padding-left:2px; height:2px;'><div class='SidebarSeparator'></div></li>";					
 					}
 				}else

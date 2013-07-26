@@ -13,33 +13,17 @@
 	//==========================================================================
 	class MMilestoneList extends CTemplateModule {
 		function __construct() {
-			$this->Table		= "Vendors";
-			$this->Classname	= "CVendors";
+			$this->ViewsFolder	= "./Modules/MilestoneList/Views";			
 
-			parent::__construct("./Modules/MilestoneList/Views");
+			parent::__construct();
 		}
 
-		//----------------------------------------------------------------------
-		function OnExecute() {
-			return parent::OnExecute();
-		}
 
 		//----------------------------------------------------------------------
 		function OnRenderJS() { 
 			$this->FileControl->LoadFile("MVendors.js", CFILE_TYPE_JS);
 		}
-
-		//----------------------------------------------------------------------
-		function OnRenderCSS() { 
-			$this->FileControl->LoadFile("style.css", CFILE_TYPE_CSS);
-		}
-
-		//----------------------------------------------------------------------
-		function OnRender() {
-			$Page = $_GET["Page"];
-
-			parent::OnRender();
-		}
+		
 
 		//----------------------------------------------------------------------
 		function OnAJAX($Action) {

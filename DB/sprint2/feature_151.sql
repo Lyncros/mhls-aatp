@@ -1,4 +1,4 @@
-CREATE  TABLE `aatp`.`Tags` (
+CREATE  TABLE `Tags` (
   `ID` INT(10) NOT NULL ,
   `Name` VARCHAR(64) NULL ,
   `Active` TINYINT(1) NOT NULL ,
@@ -10,18 +10,18 @@ CREATE  TABLE `aatp`.`Tags` (
   `ModifiedIPAddress` VARCHAR(64) NOT NULL ,
   PRIMARY KEY (`ID`) );
 
-ALTER TABLE `aatp`.`Tags` 
+ALTER TABLE `Tags` 
 CHANGE COLUMN `ID` `ID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT  ;
 
 
-CREATE  TABLE `aatp`.`ProjectsTags` (
+CREATE  TABLE `ProjectsTags` (
   `ID` INT(10) NOT NULL ,
   `ProjectsID` INT(10) NOT NULL ,
   `TagsID` INT(10) NOT NULL ,
   PRIMARY KEY (`ID`) );
 
 
-ALTER TABLE `aatp`.`ProjectsTags` 
+ALTER TABLE `ProjectsTags` 
 CHANGE COLUMN `ID` `ID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT  , 
 CHANGE COLUMN `ProjectsID` `ProjectsID` INT(10) UNSIGNED NOT NULL  , 
 CHANGE COLUMN `TagsID` `TagsID` INT(10) UNSIGNED NOT NULL  ;
