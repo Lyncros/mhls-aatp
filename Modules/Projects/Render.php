@@ -92,6 +92,18 @@
 	function OnHide($Value) {
 		return "<div style='display:none;'>$Value</div>";
 	}
+	
+	function BuildSortParameters($OrderField, $OrderDirDefault = "0") {
+		$Temp = $_GET;
+		if($Temp["CSearch_OrderBy"] == $OrderField) {
+			$Temp["CSearch_OrderByDir"]	= $Temp["CSearch_OrderByDir"] == "0" ? "1" : "0";
+		} else {
+			$Temp["CSearch_OrderBy"]	= $OrderField;
+			$Temp["CSearch_OrderByDir"]	= $OrderDirDefault;
+		}
+		
+		return $Temp;
+	}
 
 	$Search = new CSearch("Projects");
 	
@@ -105,8 +117,8 @@
 	/* 5 */ $Search->AddColumn("Stat Sponsor Code", "StatSponsorCode", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
 	/* 6 */ $Search->AddColumn("Created", "Created", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
 	/* 7 */ $Search->AddColumn("DueDate", "DueDate", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");	
-	/* 6 */ //$Search->AddColumn("LSC", "LSC", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
-	/* 7 */ //$Search->AddColumn("Product Type", "ProductType", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
+	/* 8 */ //$Search->AddColumn("LSC", "LSC", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
+	/* 9 */ //$Search->AddColumn("Product Type", "ProductType", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
 	
 	// Non-deleted Projects
 	$Search->AddAndRestriction("Deleted", "0");
@@ -401,82 +413,28 @@
 			}
 		}
 		
-		// Sort and SortDir
-		if($_GET["Sort"]) {
-			$OrderColumn = 0;
-			if($_GET["Sort"] == "Name") {
-				$OrderColumn = 1;
-			} else
-			if($_GET["Sort"] == "Date") {
-				$OrderColumn = 6;
-			} else
-			if($_GET["Sort"] == "DueDate") {
-				$OrderColumn = 7;
-			}
-			
-			if($_GET["SortDir"] == "DESC")
-				$Search->SetDefaultColumn($OrderColumn, 1);
-			else 
-				$Search->SetDefaultColumn($OrderColumn, 0);
-		}
-		
 		echo "<div id='SearchResultsContainer' style='position:absolute; top:10px; left:25px; width:4050px;'>";
 		
-		// Sort By Name
-		$Temp = $_GET;
-		if($Temp["Sort"] == "Name") {
-			if($Temp["SortDir"] == "ASC") {
-				$Temp["SortDir"]	= "DESC";
-			} else {
-				$Temp["SortDir"]	= "ASC";
-			}
-		} else {
-			$Temp["Sort"]		= "Name";
-			$Temp["SortDir"]	= "ASC";
-		}
-		echo "<div class='Button' value='SortName' onClick='CModule.Load(\"Projects\", ".json_encode($Temp).")' style='height:28px; line-height:28px; float:left; margin-top:45px; margin-left:0px;width:90px;'>By Name - ".($Temp["SortDir"] == "ASC" ? "A-Z" : "Z-A")."</div>";
-		/*
-		// Sort by LSC 
-		$Temp = $_GET;
-		if($Temp["Sort"] == "LSC") {
-			if($Temp["SortDir"] == "DESC") {
-				$Temp["SortDir"]	= "ASC";
-			} else {
-				$Temp["SortDir"]	= "DESC";
-			}
-		} else {
-			$Temp["Sort"]		= "LSC";
-			$Temp["SortDir"]	= "ASC";
-		}
-		echo "<div class='Button' value='SortLSC' onClick='CModule.Load(\"Projects\", ".json_encode($Temp).")' style='height:28px; line-height:28px; float:left; margin-top:45px; margin-left:-1px;width:90px;'>By LSC - ".($Temp["SortDir"] == "ASC" ? "A-Z" : "Z-A")."</div>";
-		*/
-		// Sort by Date Created
-		$Temp = $_GET;
-		if($Temp["Sort"] == "Date") {
-			if($Temp["SortDir"] == "DESC") {
-				$Temp["SortDir"]	= "ASC";
-			} else {
-				$Temp["SortDir"]	= "DESC";
-			}
-		} else {
-			$Temp["Sort"]		= "Date";
-			$Temp["SortDir"]	= "ASC";
-		}
-		echo "<div class='Button' value='SortDate' onClick='CModule.Load(\"Projects\", ".json_encode($Temp).")' style='height:28px; line-height:28px; float:left; margin-top:45px; margin-left:-1px;width:180px;'>By creation date - ".($Temp["SortDir"] == "ASC" ? "newest" : "oldest")." on top</div>";
+		// Sort By Name (column 1)
+		$OrderByParams = BuildSortParameters("1");
+		$OrderByStyle = "'height:28px; line-height:28px; float:left; margin-top:45px; margin-left:0px;width:90px;'";
 		
-		// Sort by Due Date
-		$Temp = $_GET;
-		if($Temp["Sort"] == "DueDate") {
-			if($Temp["SortDir"] == "DESC") {
-				$Temp["SortDir"]	= "ASC";
-			} else {
-				$Temp["SortDir"]	= "DESC";
-			}
-		} else {
-			$Temp["Sort"]		= "DueDate";
-			$Temp["SortDir"]	= "ASC";
-		}
-		echo "<div class='Button' value='SortDueDate' onClick='CModule.Load(\"Projects\", ".json_encode($Temp).")' style='height:28px; line-height:28px; float:left; margin-top:45px; margin-left:-1px;width:180px;'>By due date - ".($Temp["SortDir"] == "ASC" ? "newest" : "oldest")." on top</div>";
+		echo "<div class='Button' value='SortName' onClick='CModule.Load(\"Projects\", ".json_encode($OrderByParams).")' 
+				style=".$OrderByStyle.">By Name - ".($OrderByParams["CSearch_OrderByDir"] == "0" ? "A-Z" : "Z-A")."</div>";
+
+		// Sort by Date Created (column 6)
+		$OrderByParams = BuildSortParameters("6", "1");
+		$OrderByStyle = "'height:28px; line-height:28px; float:left; margin-top:45px; margin-left:-1px;width:180px;'";
+		
+		echo "<div class='Button' value='SortDate' onClick='CModule.Load(\"Projects\", ".json_encode($OrderByParams).")' 
+				style=".$OrderByStyle.">By creation date - ".($OrderByParams["CSearch_OrderByDir"] == "1" ? "newest" : "oldest")." on top</div>";
+		
+		// Sort by Due Date (column 7)
+		$OrderByParams = BuildSortParameters("7", "1");
+		$OrderByStyle = "'height:28px; line-height:28px; float:left; margin-top:45px; margin-left:-1px;width:180px;'";
+		
+		echo "<div class='Button' value='SortDueDate' onClick='CModule.Load(\"Projects\", ".json_encode($OrderByParams).")' 
+				style=".$OrderByStyle.">By due date - ".($OrderByParams["CSearch_OrderByDir"] == "1" ? "newest" : "oldest")." on top</div>";
 				
 		echo "
 		<form id='SearchForm' method='get' style='top:0px;'>

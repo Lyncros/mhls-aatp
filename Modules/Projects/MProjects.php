@@ -664,6 +664,13 @@
 				"SpecDocLink"						=> htmlspecialchars($_POST["SpecDocLink"]),
 				"ConnectRequestIDLink"				=> htmlspecialchars($_POST["ConnectRequestIDLink"]),			
 			);
+			
+			if ($ID == 0) {
+				//New project, set Creation data.
+				$Data["Created"] = time();
+				$Data["CreatedUsersID"] = CSecurity::GetUsersID();
+				$Data["CreatedIPAddress"] = $_SERVER["REMOTE_ADDR"];
+			}
 
 			// Changes
 			$ProjectInDB = new CProjects();
