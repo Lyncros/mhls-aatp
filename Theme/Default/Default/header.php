@@ -19,12 +19,17 @@
 		"ResourcesCategories"		=> "Resource Categories",
 		"ProductTypes"				=> "Product Types",
 		"Users" 					=> "Users",
-		"Vendors"					=> "Vendors"
+		"Vendors"					=> "Vendors",
+		"MilestoneList" => "MilestoneList",
 //		"UsersGroups"
 	);
 	
 	if(array_key_exists($App->GetModuleName(), $SuperToolsModules)) {
 		$SuperToolsActive = "Active";
+	}
+	
+	function GetActiveInactiveStyle($PageName) {
+		return $_GET["Page"] == $PageName ? "SidebarActive" : "";
 	}
 ?>
 <!DOCTYPE html>
@@ -87,7 +92,6 @@
 		<div class="HeaderLogo" onClick="CModule.Load('Dashboard');"></div>
 		<div class="HeaderWelcome">			
 			<?
-			
 				$NumAlerts = CAlerts::GetNumUnreadAlerts(CSecurity::GetUsersID());
 				$NumAlerts = 2;
 			/*	
@@ -130,7 +134,8 @@
 			<?
 				if(array_key_exists($App->GetModuleName(), $SuperToolsModules)) {
 					foreach($SuperToolsModules as $Name => $ReadableName) {
-						echo "<li class='".($App->GetModuleName() == $Name ? "SidebarActive" : "")."'><div class='SidebarIcon SidebarIcon".$Name."' onClick=\"CModule.Load('".$Name."', {});\" title=\"$ReadableName\"></div></li>";
+						echo "<li class='".($App->GetModuleName() == $Name ? "SidebarActive" : "")."'>
+						<div class='SidebarIcon SidebarIcon".$Name."' onClick=\"CModule.Load('".$Name."', {});\" title=\"$ReadableName\"></div></li>";
 						echo "<li style='padding-left:2px; height:2px;'><div class='SidebarSeparator'></div></li>";					
 					}
 				}else
@@ -144,22 +149,21 @@
 					);
 	
 					foreach($Pages as $PageName => $Name) {
-						echo "<li class='".($_GET["Page"] == $PageName ? "SidebarActive" : "")."'><div class='SidebarIcon SidebarIcon".$Name."' title=\"$Name\" onClick=\"CModule.Load('".$App->GetModuleName()."', {'Page' : '".$PageName."'});\"></div></li>";	// <a href='/".$ModuleName."' style='".($App->GetModuleName() == $ModuleName ? "color: white;" : "")."'>".$Name."</a>
+						echo "<li class='".GetActiveInactiveStyle($PageName)."'><div class='SidebarIcon SidebarIcon".$Name."' title=\"$Name\" onClick=\"CModule.Load('".$App->GetModuleName()."', {'Page' : '".$PageName."'});\"></div></li>";	// <a href='/".$ModuleName."' style='".($App->GetModuleName() == $ModuleName ? "color: white;" : "")."'>".$Name."</a>
 						echo "<li style='padding-left:2px; height:2px;'><div class='SidebarSeparator'></div></li>";
 					}
 				}else
-				if($App->GetModuleName() == "Projects") {
+				if($App->GetModuleName() == "Projects" || $App->GetModuleName() == "MilestoneList") {
 					$Pages = Array(
 						""						=> "Projects",
 					);
 					if(CSecurity::$User->CanAccess("ProjectDetails", "Add")) {
-						//echo "<div class='ButtonAdd' onClick=\"CModule.Load('Projects', {'Page' : 'Add'});\" style='position:absolute; top:0px; right:3500px;'>Add</div>";
 						$Pages["Add"] = "AddProject";
 					}
 	
 					foreach($Pages as $PageName => $Name) {
 						if($PageName == "") {
-							echo "<li class='".($_GET["Page"] == $PageName ? "SidebarActive" : "")."' ".($_GET["ID"] ? "style='height:190px;'" : "")."><div ". ($_GET["Page"] == $PageName ? "id='ProjectListSideBarIcon'" : ""). " class='SidebarIcon SidebarIcon".$Name."' title=\"$Name\" onClick=\"".($_GET["Page"] == $PageName ? "MProjects.MoveToList();" : "CModule.Load('".$App->GetModuleName()."');")."\"></div>";
+							echo "<li class='".GetActiveInactiveStyle($PageName)."' ".($_GET["ID"] ? "style='height:190px;'" : "")."><div ". ($_GET["Page"] == $PageName ? "id='ProjectListSideBarIcon'" : ""). " class='SidebarIcon SidebarIcon".$Name."' title=\"$Name\" onClick=\"".($_GET["Page"] == $PageName ? "MProjects.MoveToList();" : "CModule.Load('".$App->GetModuleName()."');")."\"></div>";
 							//if($PageName == "" && $_GET["ID"]) {
 								echo "<br><br>";
 								echo "<div class='SidebarSubicon SidebarSubiconProjectDetails' title='Project Details' onClick=\"MProjects.MoveToDetails();\"></div>";
@@ -168,14 +172,23 @@
 								echo "<div class='SidebarSubicon SidebarSubiconNotifications' title='Notifications' onClick=\"MProjects.MoveToNotifications();\"></div>";
 							//}
 							echo "</li>";	// <a href='/".$ModuleName."' style='".($App->GetModuleName() == $ModuleName ? "color: white;" : "")."'>".$Name."</a>
-							echo "<li style='padding-left:2px; height:2px;'><div class='SidebarSeparator'></div></li>";
 						} else {
-							echo "<li class='".($_GET["Page"] == $PageName ? "SidebarActive" : "")."'><div class='SidebarIcon SidebarIcon".$Name."' title=\"$Name\" onClick=\"CModule.Load('".$App->GetModuleName()."', {'Page' : '".$PageName."'});\"></div></li>";	// <a href='/".$ModuleName."' style='".($App->GetModuleName() == $ModuleName ? "color: white;" : "")."'>".$Name."</a>
-							echo "<li style='padding-left:2px; height:2px;'><div class='SidebarSeparator'></div></li>";
+							echo "<li class='".GetActiveInactiveStyle($PageName)."'>
+								<div class='SidebarIcon SidebarIcon".$Name."' title=\"$Name\" onClick=\"CModule.Load('".$App->GetModuleName()."', {'Page' : '".$PageName."'});\"></div></li>";
 						}
+						
+						echo "<li style='padding-left:2px; height:2px;'><div class='SidebarSeparator'></div></li>";
+					}
+					if(CSecurity::$User->CanAccess("MilestonsImAssignedTo", "View")) {
+						//$Pages["ViewMilestonesImAssignedTo"] = "MilestonesImAssignedTo";
+						echo "<li class='".GetActiveInactiveStyle("ViewMilestonesImAssignedTo")."'>";
+						echo "<div class='SidebarIcon SidebarIconMilestonesImAssignedTo' title=\"MilestonesImAssignedTo\" onClick=\"CModule.Load('MilestoneList', {'Page' : 'ViewMilestonesImAssignedTo'});\"></div></li>";
+						echo "<li style='padding-left:2px; height:2px;'><div class='SidebarSeparator'></div></li>";
 					}
 				}else{
-					echo "<li class='SidebarActive'><div class='SidebarIcon SidebarIcon".$App->GetModuleName()."' onClick=\"CModule.Load('".$App->GetModuleName()."', {});\"></div></li>";				
+					echo "<li class='SidebarActive'>
+					<div class='SidebarIcon SidebarIcon".$App->GetModuleName()."' onClick=\"CModule.Load('".$App->GetModuleName()."', {});\"></div>
+					</li>";				
 				}
 				
 			?>

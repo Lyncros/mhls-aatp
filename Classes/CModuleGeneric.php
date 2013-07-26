@@ -49,14 +49,16 @@
 		//----------------------------------------------------------------------
 		function OnRender() {
 			$this->ThemeControl->FileControl->LoadFile("header.php");
-
+			$this->OnRenderContent();
+			$this->ThemeControl->FileControl->LoadFile("footer.php");
+		}
+		
+		function OnRenderContent() {
 			if($this->TableObject == null) {
 				$this->FileControl->LoadFile("Render.php");
 			}else{
 				$this->FileControl->LoadFile("View.php");
 			}
-
-			$this->ThemeControl->FileControl->LoadFile("footer.php");
 		}
 
 		//----------------------------------------------------------------------

@@ -434,6 +434,7 @@ input[disabled],select[disabled] {
 
 .SidebarIconProjects						{ background-image: url("./SidebarIconProjects.png"); }
 .SidebarIconAddProject						{ background-image: url("./SidebarIconAddProject.png"); }
+.SidebarIconMilestonesImAssignedTo			{ background-image: url("./SidebarIconViewMilestonesImAssignedTo.png"); }
 .SidebarActive .SidebarIconProjects			{ background-image: url("./SidebarIconProjectsActive.png"); }
 
 .SidebarSubicon {
