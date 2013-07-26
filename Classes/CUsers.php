@@ -151,19 +151,19 @@
 		}
 		
 		public static function GetAllAssignableToMilestone() {
-			$UsersGroups = CTable::Select("UsersGroups", "WHERE `Name` = 'Creative Analyst' OR `Name` = 'Creative Consultant' OR `Name` = 'Junior Creative Analyst' OR `Name` = 'Product Manager'");
+			$UsersGroups = CTable::Select("UsersGroups", "WHERE `AssignableToMilestone` = 1");
 			
 			return CUsers::GetAllUsersOrderedByLastName($UsersGroups);
 		}
 		
 		public static function GetAllAssignableToTodos() {
-			$UsersGroups = CTable::Select("UsersGroups", "WHERE `Name` = 'Creative Analyst' OR `Name` = 'Creative Consultant' OR `Name` = 'Junior Creative Analyst' OR `Name` = 'Product Manager'");
+			$UsersGroups = CTable::Select("UsersGroups", "WHERE `AssignableToTODO` = 1");
 			
 			return CUsers::GetAllUsersOrderedByLastName($UsersGroups);
 		}
 		
 		public static function GetAllAssignableToMilestoneTodos() {
-			$UsersGroups = CTable::Select("UsersGroups", "WHERE `AssignableToTODO` = 1");
+			$UsersGroups = CTable::Select("UsersGroups", "WHERE `AssignableToMilestoneTODO` = 1");
 
 			return CUsers::GetAllUsersOrderedByLastName($UsersGroups);			
 		}
