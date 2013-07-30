@@ -1,14 +1,12 @@
 <?php
 
-/*
- * Class for use Twig template engine.
- */
 	require_once './Libraries/Twig/Autoloader.php';
 	
 	class CTemplateModule extends CModuleGeneric {
 		
 		public $ViewsFolder = "";
-		
+		public $JSFile 		= "";
+
 		function __construct() {
 			parent::__construct();
 						
@@ -19,10 +17,17 @@
 			));
 		}
 		
-		function OnRenderContent() {
-			echo "lLALALLALA";
-		}
+		/* Define this method to show what you need */
+		/* function OnRenderContent() {
+			echo "Hello World!!!";
+		}*/
 		
+		//----------------------------------------------------------------------
+		function OnRenderJS() { 
+			if (!empty($this->JSFile));
+				$this->FileControl->LoadFile($this->JSFile, CFILE_TYPE_JS);
+		}
+				
 		//----------------------------------------------------------------------
 		function OnRenderCSS() { 
 			$this->FileControl->LoadFile("style.css", CFILE_TYPE_CSS);
@@ -48,6 +53,5 @@
 
 			return parent::OnAJAX($Action);
 		}
-
 	}
 ?>

@@ -37,14 +37,13 @@
 		}
 		$MilestoneBarWidth			= round(136 * $MilestonePercentage) - 2 >= 0 ? round(136 * $MilestonePercentage) - 2 : 0;
 
-
 		$Return = "
 		<div class='ProjectWrapper' id='ProjectOverview".$Project->ID."' style='position:relative;'>
 			<div class='ProjectContainer'>
 				<table style='width:100%;' cellpadding='0' cellspacing='0'>
 					<tr>
 						<td style='vertical-align:top; padding:7px 11px; width:135px;'>
-							<div style='font-weight:bold; font-size:14px;'>".$Project->ProductNumber."</div>
+							<a style='text-decoration:none;color:#4e5260;' target='_blank' href='".$Project->GetExternalProjectLinkURL()."'><div style='font-weight:bold; font-size:14px;'>".$Project->ProductNumber."</div></a>
 							<div>".$Project->School."</p>
 							<div style='font-weight:bold; font-size:14px;'>".$Project->PrimaryCustomer."</div>							
 						</td>

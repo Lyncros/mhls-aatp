@@ -449,7 +449,11 @@
 		//----------------------------------------------------------------------
 		function GetConnectRequestIDLink() {
 			return $this->ParseUrl($this->ConnectRequestIDLink);;
-		}		
+		}
+		//----------------------------------------------------------------------
+		function GetExternalProjectLinkURL() {
+			return str_replace("{AATP_PRODUCT_NUMBER}",$this->ProductNumber, Config::$Options["DashboardProjectLink"]);
+		}
 		//----------------------------------------------------------------------
 		private function GetUserCompleteNames($UserIDs) {
 			$UserList = Array();
