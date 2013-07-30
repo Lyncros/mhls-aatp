@@ -620,7 +620,7 @@
 		<div class='ProjectResources' id='ProjectResourcesContainer' style='position:absolute; top:50px; left:2455px;'></div>
 
 		<h1 id='NotificationsHeader' style='position:absolute; text-transform:none; top:0px; left:3265px; line-height:18px;'>Notifications</h1>
-		<div onClick=\"MProjects.MoveToNotifications();\" class='Back' style='top:0px; left:3964px;'></div>
+		<div onClick=\"MProjects.MoveToDetails();\" class='Back' style='top:0px; left:3964px;'></div>
 		<div class='ProjectNotifications' id='ProjectNotificationsContainer' style='position:absolute; top:50px; left:3265px;'></div>
 	</div>
 	<div id='HeightCalculator' style='position:relative; width:756px; height:400px; z-index:-1;'></div>
