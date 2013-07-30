@@ -441,10 +441,11 @@ input[disabled],select[disabled] {
 .SidebarIconToDos							{ background-image:	url("./SidebarIconToDos.png"); }
 .SidebarIconToDosLists						{ background-image:	url("./SidebarIconToDosLists.png"); }
 
-.SidebarIconProjects						{ background-image: url("./SidebarIconProjects.png"); }
-.SidebarIconAddProject						{ background-image: url("./SidebarIconAddProject.png"); }
-.SidebarIconMilestonesImAssignedTo			{ background-image: url("./SidebarIconViewMilestonesImAssignedTo.png"); }
-.SidebarActive .SidebarIconProjects			{ background-image: url("./SidebarIconProjectsActive.png"); }
+.SidebarIconProjects									{ background-image: url("./SidebarIconProjects.png"); }
+.SidebarIconProjectsAdd									{ background-image: url("./SidebarIconAddProject.png"); }
+.SidebarIconMilestoneListViewMilestonesImAssignedTo		{ background-image: url("./SidebarIconViewMilestonesImAssignedTo.png"); }
+.SidebarIconVendorManagement							{ background-image: url("./SidebarIconViewMilestonesImAssignedTo.png"); }
+.SidebarActive .SidebarIconProjects						{ background-image: url("./SidebarIconProjectsActive.png"); }
 
 .SidebarSubicon {
 	display:							none;

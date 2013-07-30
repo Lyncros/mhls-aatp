@@ -1,6 +1,6 @@
 <?php // -*- php -*-
 	$App = $this->Parent->Parent;
-
+	
 	$FileControlTheme	= $this;
 	$ThemePath			= $FileControlTheme->Path;
 
@@ -9,8 +9,21 @@
 		die();
 	}
 	
+	$ProjectsSidebarModules = Array (
+		"Projects"			=> Array ("Add" => "Add Project", "Projects" => "Projects"),
+		"MilestoneList"		=> Array ("ViewMilestonesImAssignedTo" => "Milestones I'm assigned to"),
+		"VendorManagement"	=> Array ("VendorManagement" => "Vendor Management"),
+	);
+	
+	//if(CSecurity::$User->CanAccess("ProjectDetails", "Add")) {
+	//if(CSecurity::$User->CanAccess("MilestonsImAssignedTo", "View")) {
+	$ProjectsSidebarPermissions = Array (
+		"Add"							=> Array ("Name" => "ProjectDetails", "Action" => "Add"),
+		"ViewMilestonesImAssignedTo"	=> Array ("Name" => "MilestonsImAssignedTo", "Action" => "View"),
+	);
+	
 	$SuperToolsActive  = "";
-	$SuperToolsModules = Array(
+	$SuperToolsSidebarModules = Array(
 		//"Institutions" 				=> "Institutions",
 		"ProductSolutions" 			=> "Product Solutions",
 		"Milestones"				=> "Milestones",
@@ -20,17 +33,31 @@
 		"ProductTypes"				=> "Product Types",
 		"Users" 					=> "Users",
 		"Vendors"					=> "Vendors",
-		"MilestoneList" => "MilestoneList",
-//		"UsersGroups"
+		//"UsersGroups"
 	);
-	
-	if(array_key_exists($App->GetModuleName(), $SuperToolsModules)) {
-		$SuperToolsActive = "Active";
+
+	/**
+	 * If current page is equals to the one in GET, page is active.
+	 * If no page is in GET, check if the page is module's default and module is the current to display. 
+	 */
+	function GetActiveInactiveStyle($PageName, $ModuleName = null, $App = null) {
+		if (isset($_GET["Page"])) {
+			return $_GET["Page"] == $PageName ? "SidebarActive" : "";
+		} else {
+			return ($PageName == $ModuleName && $App->GetModuleName() == $ModuleName) ? "SidebarActive": "";
+		}
 	}
 	
-	function GetActiveInactiveStyle($PageName) {
-		return $_GET["Page"] == $PageName ? "SidebarActive" : "";
+	/**
+	 * Class name for sidebar should be
+	 * - Module name, if the page is the default.
+	 * - Module name + Page name otherwise
+	 */
+	function GetSidebarClass($PageName, $ModuleName) {
+		$ClassPrefix = "SidebarIcon";
+		return $ClassPrefix.($PageName == $ModuleName ? $PageName : $ModuleName.$PageName);
 	}
+	
 ?>
 <!DOCTYPE html>
 <html>
@@ -109,7 +136,7 @@
 		<div class="HeaderNav">
 			<a href="/MyAccount" id='MyAccount'></a>
 			<!--<a href="/Messages" id='Messages'><div id='UnreadMessageCount'><?=$NumAlerts;?></div></a>-->
-			<a href="/ProductSolutions" id='SuperTools' rel="<?=$SuperToolsActive;?>"></a>
+			<a href="/ProductSolutions" id='SuperTools' rel='<?= array_key_exists($App->GetModuleName(), $SuperToolsSidebarModules) ? "Active" : "" ?>'></a>
 		</div>
 	</div>
 </div>
@@ -132,9 +159,11 @@
 	<div class="Body">
 		<ul class="Sidebar">
 			<?
-				if(array_key_exists($App->GetModuleName(), $SuperToolsModules)) {
-					foreach($SuperToolsModules as $Name => $ReadableName) {
-						echo "<li class='".($App->GetModuleName() == $Name ? "SidebarActive" : "")."'><div style='text-align:center;line-height: 13px;padding-top: 5px;'>$ReadableName</div><div class='SuperToolsSidebarIcon SidebarIcon".$Name."' onClick=\"CModule.Load('".$Name."', {});\" title=\"$ReadableName\"></div></li>";
+				if(array_key_exists($App->GetModuleName(), $SuperToolsSidebarModules)) {
+					foreach($SuperToolsSidebarModules as $Name => $ReadableName) {
+						echo "<li class='".($App->GetModuleName() == $Name ? "SidebarActive" : "")."'>
+							<div style='text-align:center;line-height: 13px;padding-top: 5px;'>$ReadableName</div>
+							<div class='SuperToolsSidebarIcon SidebarIcon".$Name."' onClick=\"CModule.Load('".$Name."', {});\" title=\"$ReadableName\"></div></li>";
 						echo "<li style='padding-left:2px; height:2px;'><div class='SidebarSeparator'></div></li>";					
 					}
 				}else
@@ -151,40 +180,26 @@
 						echo "<li class='".GetActiveInactiveStyle($PageName)."'><div class='SidebarIcon SidebarIcon".$Name."' title=\"$Name\" onClick=\"CModule.Load('".$App->GetModuleName()."', {'Page' : '".$PageName."'});\"></div></li>";	// <a href='/".$ModuleName."' style='".($App->GetModuleName() == $ModuleName ? "color: white;" : "")."'>".$Name."</a>
 						echo "<li style='padding-left:2px; height:2px;'><div class='SidebarSeparator'></div></li>";
 					}
-				}else
-				if($App->GetModuleName() == "Projects" || $App->GetModuleName() == "MilestoneList") {
-					$Pages = Array(
-						""						=> "Projects",
-					);
-					if(CSecurity::$User->CanAccess("ProjectDetails", "Add")) {
-						$Pages["Add"] = "AddProject";
-					}
-	
-					foreach($Pages as $PageName => $Name) {
-						if($PageName == "") {
-							echo "<li class='".GetActiveInactiveStyle($PageName)."' ".($_GET["ID"] ? "style='height:190px;'" : "")."><div ". ($_GET["Page"] == $PageName ? "id='ProjectListSideBarIcon'" : ""). " class='SidebarIcon SidebarIcon".$Name."' title=\"$Name\" onClick=\"".($_GET["Page"] == $PageName ? "MProjects.MoveToList();" : "CModule.Load('".$App->GetModuleName()."');")."\"></div>";
-							//if($PageName == "" && $_GET["ID"]) {
-								echo "<br><br>";
-								echo "<div class='SidebarSubicon SidebarSubiconProjectDetails' title='Project Details' onClick=\"MProjects.MoveToDetails();\"></div>";
-								echo "<div class='SidebarSubicon SidebarSubiconMilestones' title='Milestones' onClick=\"MProjects.MoveToMilestones();\"></div>";
-								echo "<div class='SidebarSubicon SidebarSubiconMessageBoard' title='Message Board' onClick=\"MProjects.MoveToMessages();\"></div>";
-								echo "<div class='SidebarSubicon SidebarSubiconNotifications' title='Notifications' onClick=\"MProjects.MoveToNotifications();\"></div>";
-							//}
-							echo "</li>";	// <a href='/".$ModuleName."' style='".($App->GetModuleName() == $ModuleName ? "color: white;" : "")."'>".$Name."</a>
-						} else {
-							echo "<li class='".GetActiveInactiveStyle($PageName)."'>
-								<div class='SidebarIcon SidebarIcon".$Name."' title=\"$Name\" onClick=\"CModule.Load('".$App->GetModuleName()."', {'Page' : '".$PageName."'});\"></div></li>";
+				} else if (array_key_exists($App->GetModuleName(), $ProjectsSidebarModules)) {
+					foreach ($ProjectsSidebarModules as $Module => $Pages) {
+						foreach($Pages as $Name => $ReadableName) {
+							
+							$Display = true;
+							if (array_key_exists($Name, $ProjectsSidebarPermissions)) {
+								$SecName = $ProjectsSidebarPermissions[$Name]["Name"];
+								$SecAction = $ProjectsSidebarPermissions[$Name]["Action"];
+								$Display = CSecurity::$User->CanAccess($SecName, $SecAction);
+							}
+								
+							if ($Display) {
+								echo "<li class='".GetActiveInactiveStyle($Name, $Module, $App)."'>
+									<div class='SidebarIcon ".GetSidebarClass($Name, $Module)."' 
+										onClick=\"CModule.Load('".$Module."', {'Page' : '".$Name."'});\" title=\"$ReadableName\"></div></li>";
+								echo "<li style='padding-left:2px; height:2px;'><div class='SidebarSeparator'></div></li>";					
+							}
 						}
-						
-						echo "<li style='padding-left:2px; height:2px;'><div class='SidebarSeparator'></div></li>";
 					}
-					if(CSecurity::$User->CanAccess("MilestonsImAssignedTo", "View")) {
-						//$Pages["ViewMilestonesImAssignedTo"] = "MilestonesImAssignedTo";
-						echo "<li class='".GetActiveInactiveStyle("ViewMilestonesImAssignedTo")."'>";
-						echo "<div class='SidebarIcon SidebarIconMilestonesImAssignedTo' title=\"MilestonesImAssignedTo\" onClick=\"CModule.Load('MilestoneList', {'Page' : 'ViewMilestonesImAssignedTo'});\"></div></li>";
-						echo "<li style='padding-left:2px; height:2px;'><div class='SidebarSeparator'></div></li>";
-					}
-				}else{
+				} else {
 					echo "<li class='SidebarActive'>
 					<div class='SidebarIcon SidebarIcon".$App->GetModuleName()."' onClick=\"CModule.Load('".$App->GetModuleName()."', {});\"></div>
 					</li>";				
