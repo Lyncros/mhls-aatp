@@ -1,26 +1,31 @@
 <?php // -*- php -*-
-	$App = $this->Parent->Parent;
+    $App = $this->Parent->Parent;
 	
-	$FileControlTheme	= $this;
-	$ThemePath			= $FileControlTheme->Path;
+    $FileControlTheme	= $this;
+    $ThemePath			= $FileControlTheme->Path;
 
-	if(!CSecurity::$User) {
-		Header("Location: /");
-		die();
-	}
-	
-	$ProjectsSidebarModules = Array (
-		"Projects"			=> Array ("Add" => "Add Project", "Projects" => "Projects"),
-		"MilestoneList"		=> Array ("ViewMilestonesImAssignedTo" => "Milestones I'm assigned to"),
-		"VendorManagement"	=> Array ("VendorManagement" => "Vendor Management"),
-	);
-	
-	//if(CSecurity::$User->CanAccess("ProjectDetails", "Add")) {
-	//if(CSecurity::$User->CanAccess("MilestonsImAssignedTo", "View")) {
-	$ProjectsSidebarPermissions = Array (
-		"Add"							=> Array ("Name" => "ProjectDetails", "Action" => "Add"),
-		"ViewMilestonesImAssignedTo"	=> Array ("Name" => "MilestonsImAssignedTo", "Action" => "View"),
-	);
+    if(!CSecurity::$User) {
+        Header("Location: /");
+        die();
+    }
+    
+    $ProjectMenu = new CSidebarMenu("Projects");
+    $ProjectMenu->addSubmenu("MProjects.MoveToDetails();", "ProjectDetails", "Project Details");
+    $ProjectMenu->addSubmenu("MProjects.MoveToMilestones();", "Milestones");
+    $ProjectMenu->addSubmenu("MProjects.MoveToMessages();", "MessageBoard", "Message Board");
+    $ProjectMenu->addSubmenu("MProjects.MoveToNotifications();", "Notifications");
+    
+    $ProjectsSidebarModules = Array(
+        "Projects" => Array(
+            new CSidebarMenu("Add", "Add Project", "ProjectDetails", "Add"),
+            $ProjectMenu,
+            ),
+        "MilestoneList" => Array(
+            new CSidebarMenu("MilestonesImAssignedTo", "Milestones I'm assigned to", "MilestonsImAssignedTo", "View")),
+        "VendorManagement" => Array(
+            new CSidebarMenu("VendorManagement", "Vendor Management")
+        )
+    );
 	
 	$SuperToolsActive  = "";
 	$SuperToolsSidebarModules = Array(
@@ -159,14 +164,14 @@
 	<div class="Body">
 		<ul class="Sidebar">
 			<?
-				if(array_key_exists($App->GetModuleName(), $SuperToolsSidebarModules)) {
-					foreach($SuperToolsSidebarModules as $Name => $ReadableName) {
-						echo "<li class='".($App->GetModuleName() == $Name ? "SidebarActive" : "")."'>
-							<div style='text-align:center;line-height: 13px;padding-top: 5px;'>$ReadableName</div>
-							<div class='SuperToolsSidebarIcon SidebarIcon".$Name."' onClick=\"CModule.Load('".$Name."', {});\" title=\"$ReadableName\"></div></li>";
-						echo "<li style='padding-left:2px; height:2px;'><div class='SidebarSeparator'></div></li>";					
-					}
-				}else
+                if(array_key_exists($App->GetModuleName(), $SuperToolsSidebarModules)) {
+                    foreach($SuperToolsSidebarModules as $Name => $ReadableName) {
+                          echo "<li class='".($App->GetModuleName() == $Name ? "SidebarActive" : "")."'>
+                               <div style='text-align:center;line-height: 13px;padding-top: 5px;'>$ReadableName</div>
+                               <div class='SuperToolsSidebarIcon SidebarIcon".$Name."' onClick=\"CModule.Load('".$Name."', {});\" title=\"$ReadableName\"></div></li>";
+                          echo "<li style='padding-left:2px; height:2px;'><div class='SidebarSeparator'></div></li>";					
+                     }
+                }else
 				if($App->GetModuleName() == "AuditBills") {
 					$Pages = Array(
 						""						=> "Dashboard",
@@ -179,24 +184,29 @@
 					foreach($Pages as $PageName => $Name) {
 						echo "<li class='".GetActiveInactiveStyle($PageName)."'><div class='SidebarIcon SidebarIcon".$Name."' title=\"$Name\" onClick=\"CModule.Load('".$App->GetModuleName()."', {'Page' : '".$PageName."'});\"></div></li>";	// <a href='/".$ModuleName."' style='".($App->GetModuleName() == $ModuleName ? "color: white;" : "")."'>".$Name."</a>
 						echo "<li style='padding-left:2px; height:2px;'><div class='SidebarSeparator'></div></li>";
-					}
-				} else if (array_key_exists($App->GetModuleName(), $ProjectsSidebarModules)) {
-					foreach ($ProjectsSidebarModules as $Module => $Pages) {
-						foreach($Pages as $Name => $ReadableName) {
+                    }    
+                } else if (array_key_exists($App->GetModuleName(), $ProjectsSidebarModules)) {
+                    
+                    foreach ($ProjectsSidebarModules as $moduleName => $menus) {
+						foreach($menus as $menu) { /* @var $menu CSidebarMenu */
 							
-							$Display = true;
-							if (array_key_exists($Name, $ProjectsSidebarPermissions)) {
-								$SecName = $ProjectsSidebarPermissions[$Name]["Name"];
-								$SecAction = $ProjectsSidebarPermissions[$Name]["Action"];
-								$Display = CSecurity::$User->CanAccess($SecName, $SecAction);
-							}
-								
-							if ($Display) {
-								echo "<li class='".GetActiveInactiveStyle($Name, $Module, $App)."'>
-									<div class='SidebarIcon ".GetSidebarClass($Name, $Module)."' 
-										onClick=\"CModule.Load('".$Module."', {'Page' : '".$Name."'});\" title=\"$ReadableName\"></div></li>";
-								echo "<li style='padding-left:2px; height:2px;'><div class='SidebarSeparator'></div></li>";					
-							}
+                            if ($menu->canView(CSecurity::$User)) {
+                                echo "<li class='".GetActiveInactiveStyle($menu->name, $moduleName, $App)."'>
+                                        <div class='SidebarIcon ".GetSidebarClass($menu->name, $moduleName)."' 
+                                            onClick=\"CModule.Load('".$moduleName."', {'Page' : '".$menu->name."'});\" 
+                                            title=\"$menu->displayName\"></div>";
+                                
+                                if ($menu->hasChildrens()) {
+                                    foreach ($menu->submenus as $submenu) { /* @var $submenu CSidebarSubmenu */
+                                        echo "<div class='SidebarSubicon SidebarSubicon".$submenu->name."'
+                                                title='".$submenu->displayName."' 
+                                                onClick='".$submenu->jsAction."'></div>";
+                                    }
+                                }
+                                
+                                echo "</li>";
+                                echo "<li style='padding-left:2px; height:2px;'><div class='SidebarSeparator'></div></li>";					
+                            }
 						}
 					}
 				} else {

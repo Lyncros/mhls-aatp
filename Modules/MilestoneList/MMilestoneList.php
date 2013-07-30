@@ -1,31 +1,17 @@
 <?php
-	//==========================================================================
-	/*
-		[Permissions]
-		Customers
-		AddEdit
-		Delete
-		Window_AddEdit
-		Window_Delete
-		GetUserAutocomplete
-		[-]
-	*/
-	//==========================================================================
+
 	class MMilestoneList extends CTemplateModule {
+		
 		function __construct() {
 			$this->ViewsFolder	= "./Modules/MilestoneList/Views";			
 
 			parent::__construct();
 		}
-
-
-		//----------------------------------------------------------------------
-		function OnRenderJS() { 
-			$this->FileControl->LoadFile("MVendors.js", CFILE_TYPE_JS);
-		}
 		
+		function OnRenderJS() { 
+			$this->FileControl->LoadFile("./Modules/Projects/MProjects.js", CFILE_TYPE_JS);
+		}
 
-		//----------------------------------------------------------------------
 		function OnAJAX($Action) {
 			if(parent::CanAccess($Action) == false) {
 				return Array(0, "You do not have permission to perform this action");
@@ -33,39 +19,38 @@
 
 			return parent::OnAJAX($Action);
 		}
-
-		//=====================================================================
-		function AddEdit() {
-			$ID = $_POST["ID"];
-						
-			$Data = Array(
-				"Name"				=> CFormat::SpecialChars($_POST["Name"]),
-				"Modified"				=> time(),
-				"ModifiedUsersID"		=> CSecurity::GetUsersID(),
-				"ModifiedIPAddress"		=> $_SERVER["REMOTE_ADDR"]		
-			);
-
-			if($ID > 0) {				
-				if(CTable::Update($this->Table, $ID, $Data) === false) {
-					return Array(0, "Unable to update record, please try again");
-				}
-			}else{				
-				$Data["Created"]			= time();
-				$Data["CreatedUsersID"]		= CSecurity::GetUsersID();
-				$Data["CreatedIPAddress"]	= $_SERVER["REMOTE_ADDR"];
-
-				if(($ID = CTable::Add($this->Table, $Data)) === false) {
-					return Array(0, "Unable to add record, please try again");
+		
+		function MilestonesImAssignedToParams() {
+			$milestones = new CProjectsMilestones();
+			$userID = CSecurity::GetUsersID();
+			$params = array();
+			
+			//FIXME
+			$userID = 62;
+	
+			if ($milestones->OnLoadAll('WHERE `AssignedTo` = '.$userID.' AND `Deleted` = 0')) {
+				$params["total"] = $milestones->Rows->count();
+				
+				foreach($milestones->Rows as $m) {
+					$params["milestones"][] = array(
+						"id"					=> $m->ID,
+						"projectsId"			=> $m->ProjectsID,
+						"name"					=> $m->Name, 
+						"customerApproval"		=> $m->CustomerApproval,
+						"summary"				=> $m->Summary,
+						"estimatedStartDate"	=> $this->FormatDate($milestone->EstimatedStartDate),
+						"expectedDeliveryDate"	=> $this->FormatDate($milestone->ExpectedDeliveryDate),
+						"actualDeliveryDate"	=> $this->FormatDate($milestone->ActualDeliveryDate),
+						"plantAllocated"		=> $m->PlantAllocated,
+						"status"				=> $m->Status,
+						"completion"			=> 50,
+					);
 				}
 			}
-
-			return Array($ID, "Record successfully entered / updated.");
+				
+			return $params;
 		}
 
-		//----------------------------------------------------------------------
-		function Delete() {
-			return parent::Delete();
-		}
 	};
 
 	//==========================================================================

@@ -1,7 +1,42 @@
-My name is {{ name }}.
-My friends are:
-<ul>
-{% for person in friends %}
-    <li>{{ person.firstname}} {{ person.lastname }}</li>
+<h1 style='position:absolute; top:0px;'>{{total}} Milestones / Todos</h1>
+<br/>
+{% for m in milestones %}
+<div class="ProjectWrapper" style="position:relative;">
+	<div class="ProjectContainer">
+		<table style="width:100%;" cellpadding="0" cellspacing="0">
+			<tr>
+				<td style="vertical-align:top; padding:7px 11px; width:135px;">
+					<div style="font-weight:bold; font-size:14px;">{{m.name}}</div></a>
+					<div>Summary: {{m.summary}}</div>
+					<div style="font-weight:bold; font-size:14px;">{{m.status}}</div>							
+				</td>
+				<td style="vertical-align:top; padding-top:7px; padding-bottom:7px;"><div class="Separator"></div></td>
+				<td style="vertical-align:top; padding:7px 11px; width:250px;">
+					<div style="color:#d74c4c; font-weight:bold; font-size:14px;">Dates</div>
+					<p><b>Start:</b>{{m.estimatedStartDate}}</p>							
+					<p><b>Delivery:</b>{{m.expectedDeliveryDate}}</p>
+					<p><b>Actual Delivery:</b>{{m.actualDeliveryDate}}</p>
+				</td>
+				<td style="vertical-align:top; padding-top:7px; padding-bottom:7px;"><div class="Separator"></div></td>
+				<td style="vertical-align:top; padding:7px 11px; width:160px;">
+					<div style="color:#4f911e; font-weight:bold; font-size:14px; margin-bottom:10px;">Milestone Completion</div>
+					<div class="CompletionWrapper">
+						<div class="CompletionBar" style="width:"50px;"></div>
+						<div class="CompletionPercentage">{{m.completion}}</div>
+					</div>
+				</td>
+				<td style="padding-right:13px;">
+					<div class="ProjectDetailsLink" 
+						onClick="MProjects.ViewDetails('{{m.ProjectsID}}', function() {
+							MProjects.MoveToDetails('{{m.ProjectsID}}');
+						});
+						MProjects.ViewMessages('{{m.ProjectsID}}');
+						MProjects.ViewResources('{{m.ProjectsID}}');
+						MProjects.ViewNotifications('{{m.ProjectsID}}');"
+					 ></div>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
 {% endfor %}
-</ul>
