@@ -69,11 +69,7 @@
 				$this->ThemeControl->FileControl->LoadFile("header.php");
 				$this->FileControl->LoadFile("Add.php");			
 				$this->ThemeControl->FileControl->LoadFile("footer.php");
-			} else if($Page == "ViewMilestonesImAssignedTo" && CSecurity::$User->CanAccess("MilestonsImAssignedTo", "View")) {
-				$this->ThemeControl->FileControl->LoadFile("header.php");
-				$this->FileControl->LoadFile("ViewMilestonesImAssignedTo.php");
-				$this->ThemeControl->FileControl->LoadFile("footer.php");
-			}else{
+			} else{
 				$this->ThemeControl->FileControl->LoadFile("header.php");
 				$this->FileControl->LoadFile("Render.php");
 				$this->ThemeControl->FileControl->LoadFile("footer.php");
