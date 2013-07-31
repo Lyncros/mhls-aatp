@@ -7,14 +7,14 @@
 		const DATE_FORMAT = "n/j/Y";
 		
 		public $JSFile 		= "";
-		private $twig;
+		private $Twig;
 
-		function __construct($viewsFolder) {
+		function __construct($ViewsFolder) {
 			parent::__construct();
 						
 			Twig_Autoloader::register();
-			$loader = new Twig_Loader_Filesystem($viewsFolder);
-			$this->twig = new Twig_Environment($loader, array(
+			$Loader = new Twig_Loader_Filesystem($ViewsFolder);
+			$this->Twig = new Twig_Environment($Loader, array(
 			    //FIXME: 'cache' => './Libraries/Twig/cache',
 			));
 		}
@@ -30,30 +30,30 @@
 			$templateName = $this->GetTemplateName($page);
 			$params = $this->GetTemplateParams($page);
 			
-			$template = $this->twig->loadTemplate($templateName.".phtml");
+			$template = $this->Twig->loadTemplate($templateName.".phtml");
 			$template->display($params);
 		}
 		
-		function GetTemplateName($page) {
-			$templateName = $page;
+		function GetTemplateName($Page) {
+			$TemplateName = $Page;
 
-			$getTemplateName = $page."Template";
+			$getTemplateName = $Page."Template";
 			if (method_exists($this, $getTemplateName)) {
-				$templateName = $this->{$getTemplateName}();
+				$TemplateName = $this->{$getTemplateName}();
 			}
 			
-			return $templateName;
+			return $TemplateName;
 		}
 		
-		function GetTemplateParams($page) {
-			$params = array();
+		function GetTemplateParams($Page) {
+			$Params = array();
 
-			$getParams = $page."Params";
+			$getParams = $Page."Params";
 			if (method_exists($this, $getParams)) {
-				$params = $this->{$getParams}();
+				$Params = $this->{$getParams}();
 			}
 			
-			return $params;
+			return $Params;
 		}
 		
 		//----------------------------------------------------------------------
