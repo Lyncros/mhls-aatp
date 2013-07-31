@@ -1,0 +1,43 @@
+/* 
+    Document   : style
+    Created on : Jul 31, 2013, 11:31:51 AM
+    Author     : juan
+    Description:
+        Stylesheet for MilestoneList module.
+*/
+
+
+.MilestoneListSeparator {
+    vertical-align: top; 
+    padding-top:    7px; 
+    padding-bottom: 7px;
+}
+
+.MilestoneListSection {
+    vertical-align:top; 
+    padding: 7px 11px; 
+    width:25%;
+}
+
+.MilestoneListSummary {
+    vertical-align: top; 
+    padding:        7px 11px; 
+    width:          135px;
+}
+
+.MilestoneListSectionTitle {
+    color:#d74c4c; 
+    font-weight:bold; 
+    font-size:14px;
+}
+
+.MilestoneListTODOCompletionTitle {
+    color:#4f911e; 
+    margin-bottom:10px;
+}
+
+.MilestoneListComplete {
+    float: left;
+    padding-right: 4px;
+}
+

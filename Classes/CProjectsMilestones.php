@@ -37,5 +37,9 @@
 		function AssignedToUser() {
 			return CTable::SelectByID("Users", $this->AssignedTo);
 		}
+        
+        function OnLoadByAssignedTo($AssignedToUserId) {
+            return $this->OnLoadAll('WHERE `AssignedTo` = ' . $AssignedToUserId . ' AND `Deleted` = 0');
+        }
 	};
 ?>
