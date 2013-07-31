@@ -19,7 +19,7 @@
 		"ToDos"						=> "To Dos",
 		"ToDosLists"				=> "To Do Lists",
 		//"ResourcesCategories"		=> "Resource Categories",
-		"ProductTypes"				=> "Product Types",
+		"ProductTypes"				=> "Milestone Templates",
 		"Users" 					=> "Users",
 		"Vendors"					=> "Vendors",
 		//"UsersGroups"
