@@ -9,23 +9,7 @@
         die();
     }
     
-    $ProjectMenu = new CSidebarMenu("Projects");
-    $ProjectMenu->addSubmenu("MProjects.MoveToDetails();", "ProjectDetails", "Project Details");
-    $ProjectMenu->addSubmenu("MProjects.MoveToMilestones();", "Milestones");
-    $ProjectMenu->addSubmenu("MProjects.MoveToMessages();", "MessageBoard", "Message Board");
-    $ProjectMenu->addSubmenu("MProjects.MoveToNotifications();", "Notifications");
-    
-    $ProjectsSidebarModules = Array(
-        "Projects" => Array(
-            new CSidebarMenu("Add", "Add Project", "ProjectDetails", "Add"),
-            $ProjectMenu,
-            ),
-        "MilestoneList" => Array(
-            new CSidebarMenu("MilestonesImAssignedTo", "Milestones I'm assigned to", "MilestonsImAssignedTo", "View")),
-        "VendorManagement" => Array(
-            new CSidebarMenu("VendorManagement", "Vendor Management")
-        )
-    );
+    $ProjectsSidebarModules = CSidebarMenu::BuildProjectsSideMenu();
 	
 	$SuperToolsActive  = "";
 	$SuperToolsSidebarModules = Array(
