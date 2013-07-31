@@ -4,6 +4,8 @@ class MMilestoneList extends CTemplateModule {
 
     function __construct() {
         parent::__construct("./Modules/MilestoneList/Views");
+        
+        $this->JSFile = "MMilestoneList.js";
     }
 
     function OnAJAX($Action) {
@@ -13,7 +15,7 @@ class MMilestoneList extends CTemplateModule {
 
         return parent::OnAJAX($Action);
     }
-
+    
     function MilestonesImAssignedToParams() {
         $UserID = CSecurity::GetUsersID();
         $Params = array();

@@ -1,0 +1,75 @@
+<h1 style='position:absolute; top:0px;'>{{total}} Milestones / Todos</h1>
+<br/>
+
+{% for p in projects %}
+<h2>{{ p.productNumber }}&nbsp;&nbsp;{{ p.school }}</h2>
+
+{% for m in p.milestones %}
+<div id="ProjectWrapper{{m.id}}" class="ProjectWrapper" style="position:relative;">
+    <div class="ProjectContainer">
+        <table style="width:100%;" cellpadding="0" cellspacing="0">
+            <tr>
+                <td class="MilestoneListSummary">
+                    {% if m.complete %}
+                        <div class='Complete MilestoneListComplete'></div>
+                    {% endif %}
+                        <div id="MilestoneLabel{{m.id}}" style="font-weight:bold; font-size:14px;">{{m.name}}</div></a>
+                        <div>Summary: {{m.summary}}</div>
+                    </td>
+                    <td class="MilestoneListSeparator"><div class="Separator"></div></td>
+                    <td class="MilestoneListSection">
+                        <div class="MilestoneListSectionTitle">Dates</div>
+                        <p><b>Start:</b>&nbsp;{{m.estimatedStartDate}}</p>							
+                        <p><b>Delivery:</b>&nbsp;{{m.expectedDeliveryDate}}</p>
+                        <p><b>Actual Delivery:</b>&nbsp;{{m.actualDeliveryDate}}</p>
+                    </td>
+                    <td class="MilestoneListSeparator"><div class="Separator"></div></td>
+                    <td class="MilestoneListSection">
+                        <div class="MilestoneListSectionTitle">Other</div>
+                        <p><b>Plant allocated:</b>&nbsp;{{m.plantAllocated}}</p>							
+                        <p><b>Approval:</b>&nbsp;{{m.customerApproval}}</p>
+                    </td>
+                    <td class="MilestoneListSeparator"><div class="Separator"></div></td>
+                    <td class="MilestoneListSection">
+                    {% if m.todosCompletion >= 0 %}
+                        <div class="MilestoneListSectionTitle MilestoneListTODOCompletionTitle">TODOs Completion</div>
+                        <div class="CompletionWrapper" style='width:152px;'>
+                            <div class="CompletionBar" style='width:{{m.todosCompletion * 150 / 100}}px'></div>
+                            <div class="CompletionPercentage">{{m.todosCompletion}}</div>
+                        </div>
+                    {% else %}
+                        N/A
+                    {% endif %}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+{% include 'EditMilestone.twig' %}
+
+
+<script type='text/javascript'>
+    $('#ProjectWrapper{{m.id}}').toggle(function() {
+        $(this).css('color', '#0685c5');
+        $('#Milestone{{m.id}}').slideDown();
+        //$(this).children('.MilestoneDownArrow').slideDown();
+        ////$('#HeightCalculator').animate({ height : ($('#ProjectDetailsContainer').height() + 1000) + 'px' }, 500, 'swing');
+    }, function() {
+        $(this).css('color', '#222222');
+        $('#Milestone{{m.id}}').slideUp();
+        //$(this).children('.MilestoneDownArrow').slideUp();
+        //$('#HeightCalculator').animate({ height : ($('#ProjectDetailsContainer').height() + 1000) + 'px' }, 500, 'swing');
+    });
+    AdjustHeight = function() {
+        $('#HeightCalculator').animate({height: ($('#ProjectDetailsContainer').height() + 1000) + 'px'}, 500, 'swing');
+    }
+    /*$('#".CForm::GetPrefix()."Status').change(function(){
+        if($('#".CForm::GetPrefix()."Status').val() == 'Complete') {
+            $('#".CForm::GetPrefix()."ActualDeliveryDate').val('".date('F j, Y')."');
+        }
+    });-*/
+</script>
+
+{% endfor %}
+
+{% endfor %}
