@@ -6,15 +6,14 @@
 		
 		const DATE_FORMAT = "n/j/Y";
 		
-		public $ViewsFolder = "";
 		public $JSFile 		= "";
 		private $twig;
 
-		function __construct() {
+		function __construct($viewsFolder) {
 			parent::__construct();
 						
 			Twig_Autoloader::register();
-			$loader = new Twig_Loader_Filesystem($this->ViewsFolder);
+			$loader = new Twig_Loader_Filesystem($viewsFolder);
 			$this->twig = new Twig_Environment($loader, array(
 			    //FIXME: 'cache' => './Libraries/Twig/cache',
 			));
@@ -59,8 +58,9 @@
 		
 		//----------------------------------------------------------------------
 		function OnRenderJS() { 
-			if (!empty($this->JSFile));
+			if (!empty($this->JSFile)) {
 				$this->FileControl->LoadFile($this->JSFile, CFILE_TYPE_JS);
+            }
 		}
 				
 		//----------------------------------------------------------------------
@@ -68,18 +68,6 @@
 			$this->FileControl->LoadFile("style.css", CFILE_TYPE_CSS);
 		}
 		
-		//----------------------------------------------------------------------
-		function OnRender() {
-			$Page = $_GET["Page"];
-
-			parent::OnRender();
-		}
-		
-		//----------------------------------------------------------------------
-		function OnExecute() {
-			return parent::OnExecute();
-		}
-
 		//----------------------------------------------------------------------
 		function OnAJAX($Action) {
 			if(parent::CanAccess($Action) == false) {

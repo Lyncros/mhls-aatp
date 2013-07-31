@@ -3,9 +3,7 @@
 	class MMilestoneList extends CTemplateModule {
 		
 		function __construct() {
-			$this->ViewsFolder	= "./Modules/MilestoneList/Views";			
-
-			parent::__construct();
+			parent::__construct("./Modules/MilestoneList/Views");
 		}
 		
 		function OnRenderJS() { 
