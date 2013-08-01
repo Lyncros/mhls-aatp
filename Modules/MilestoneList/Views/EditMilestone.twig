@@ -1,33 +1,32 @@
-<div class="MilestoneDetails" id="Milestone{{m.id}}" 
-     style="padding-left:58px; display:none; clear:both; margin:12px 0px; position:relative; top:12px;">
-    <table width="100%" cellspacing="0" cellpadding="0">
-        <tr>
-            <td width="100%" valign="top">
-                <table class="CForm_Table TableFormGroup">
+<table width="100%" cellspacing="0" cellpadding="0">
+    <tr>
+        <td width="100%" valign="top">
+            <table class="CForm_Table TableFormGroup">
 
-                    {{ RandomPrefix() }}
-                    {{ AddTextbox("Name", "Name", m.name, "Please enter a Name") | raw }}
-                    {{ AddYesNo("Customer Approval", "CustomerApproval", m.ustomerApproval, "YesNo")  | raw }}
-                    {{ AddTextarea("Summary", "Summary", m.summary) | raw }}
-                    {{ AddDatepicker("Estimated Start Date", "EstimatedStartDate", m.estimatedStartDate, "", "") | raw }}
-                    {{ AddDatepicker("Expected Delivery Date", "ExpectedDeliveryDate", m.expectedDeliveryDate, "", "", "Please enter an Expected Delivery Date") | raw }}
-                    {{ AddDatepicker("Actual Delivery Date", "ActualDeliveryDate", m.actualDeliveryDate, "", "") | raw }}
-                    {{ AddTextbox("Plant Allocated", "PlantAllocated", m.lantAllocated) | raw }}
-                    {{ AddDropdown("Assigned To", "AssignedTo", users, m.assignedTo) | raw }}	
-                    {{ AddYesNo("Complete", "Status", m.complete, "YesNo") | raw }}
-                    {{ AddHidden("ProjectsID", m.projectsID) | raw }}
-                    {{ AddHidden("MilestoneID", m.id) | raw }}
+                {{ RandomPrefix() }}
+                {{ AddTextbox("Name", "Name", m.name, "Please enter a Name") | raw }}
+                {{ AddYesNo("Customer Approval", "CustomerApproval", m.customerApproval, "YesNo")  | raw }}
+                {{ AddTextarea("Summary", "Summary", m.summary) | raw }}
+                {{ AddDatepicker("Estimated Start Date", "EstimatedStartDate", m.estimatedStartDateTS, "", "") | raw }}
+                {{ AddDatepicker("Expected Delivery Date", "ExpectedDeliveryDate", m.expectedDeliveryDateTS, "", "", "Please enter an Expected Delivery Date") | raw }}
+                {{ AddDatepicker("Actual Delivery Date", "ActualDeliveryDate", m.actualDeliveryDateTS, "", "") | raw }}
+                {{ AddTextbox("Plant Allocated", "PlantAllocated", m.plantAllocated) | raw }}
+                {{ AddDropdown("Assigned To", "AssignedTo", users, m.assignedTo) | raw }}	
+                {{ AddYesNo("Complete", "Status", m.complete, "YesNo") | raw }}
+                {{ AddHidden("ProjectsID", m.projectsID) | raw }}
+                {{ AddHidden("MilestoneID", m.id) | raw }}
 
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3" align="right">
-                <input type="hidden" value="0" name="ID" id="ID"/>
-                <div class="Button" value="Save" onClick="MilestoneList.saveMilestone('{{GetPrefix()}}');">save</div>
-                <div class="Button" value="Cancel" onClick="MProjects.ViewDetails();">cancel</div>
-                <div class="Button" value="Delete" onClick="MProjects.DeleteMilestone();">delete</div>
-            </td>
-        </tr>
-    </table>
-</div>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3" align="right">
+            <input type="hidden" value="0" name="ID" id="ID"/>
+            <div class="Button" value="Save" onClick="MMilestoneList.saveMilestone({{m.id}}, '{{GetPrefix()}}');">save</div>
+            <div class="Button" value="Cancel" onClick="MMilestoneList.cancelEditMilestone({{m.id}});">cancel</div>
+            {% if security.canDelete %}
+            <div class="Button" value="Delete" onClick="MMilestoneList.deleteMilestone({{m.id}});">delete</div>
+            {% endif %}
+        </td>
+    </tr>
+</table>

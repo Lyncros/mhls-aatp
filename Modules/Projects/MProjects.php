@@ -304,38 +304,16 @@
 		}
 		//----------------------------------------------------------------------
 		function AddEditMilestone() {
-			$Data = Array(
-				"ProjectsID"			=> intval($_POST["ProjectsID"]),
-				"Name"					=> htmlspecialchars($_POST["Name"]),
-				"CustomerApproval"		=> intval($_POST["CustomerApproval"]),
-				"Summary"				=> htmlspecialchars($_POST["Summary"]),
-				"EstimatedStartDate"	=> strtotime($_POST["EstimatedStartDate"]),
-				"ExpectedDeliveryDate"	=> strtotime($_POST["ExpectedDeliveryDate"]),
-				"ActualDeliveryDate"	=> strtotime($_POST["ActualDeliveryDate"]),
-				"PlantAllocated"		=> htmlspecialchars($_POST["PlantAllocated"]),
-				"AssignedTo"			=> intval($_POST["AssignedTo"]),
-				"Status"				=> (intval($_POST["Status"])==0)?"Active":"Complete",
-			);
-
-			if(intval($_POST["MilestoneID"]) > 0) {
-				$Temp = new CProjectsMilestones();
-				$Temp->OnLoad(intval($_POST["MilestoneID"]));
-				$ChangeData = Array(
-					"ProjectsMilestonesID"		=> intval($_POST["MilestoneID"]),
-					"Timestamp"					=> time(),
-					"UsersID"					=> CSecurity::GetUsersID(),
-					"IPAddress"					=> $_SERVER["REMOTE_ADDR"],
-					"Old"						=> serialize($Temp->Rows->Current),
-					"New"						=> serialize($Data),
-				);
-				CTable::Add("ProjectsMilestonesChanges", $ChangeData);
-				if(CTable::Update("ProjectsMilestones", intval($_POST["MilestoneID"]), $Data) === false) return Array(0, "Error updating Milestone");
-			} else {
-				$Data["Created"]				= time();
-				$Data["CreatedUsersID"]			= CSecurity::GetUsersID();
-				$Data["CreatedIPAddress"]		= $_SERVER["REMOTE_ADDR"];
-				if(CTable::Add("ProjectsMilestones", $Data) === false) return Array(0, "Error adding Milestone");
-			}
+            
+            $IsNew = intval($_POST["MilestoneID"]) <= 0;
+            
+            $CMilestones = new CProjectsMilestones();
+            $Values = $_POST;
+            $Values["REMOTE_ADDR"] = $_SERVER["REMOTE_ADDR"];
+            
+            if (!$CMilestones->Save($Values)) {
+                return Array(0, "Error ".($IsNew ? "adding" : "updating")." milestone.");
+            }
 			
 			$Project = new CProjects();
 			$Project->OnLoad($Data["ProjectsID"]);
@@ -352,12 +330,13 @@
 				"ExpectedDeliveryDate"		=> ($Data["ExpectedDeliveryDate"] ? date('n/j/Y', $Data["ExpectedDeliveryDate"]) : "N/A"),
 				"ActualDeliveryDate"		=> ($Data["ActualDeliveryDate"] ? date('n/j/Y', $Data["ActualDeliveryDate"]) : "N/A"),
 				"PlantAllocated"			=> $Data["PlantAllocated"],
-				"AssignedTo"			=> $Data["AssignedTo"],
+				"AssignedTo"                => $Data["AssignedTo"],
 				"Status"					=> $Data["Status"],
 			);
+            
 			CNotifier::Push("Module", "Projects", "New or Updated Milestone", $EmailData, $Project->ID);
 			
-			return Array(1, "Milestone added successfully.");
+			return Array(1, "Milestone ".($IsNew ? "added" : "saved")." successfully.");
 		}
 		
 		//----------------------------------------------------------------------
@@ -1117,15 +1096,13 @@
 			}
 			
 			$MilestoneID = intval($_POST["MilestoneID"]);
-			
-			$Data = Array(
-				"Deleted"			=> time(),
-				"DeletedUsersID"	=> CSecurity::GetUsersID(),
-				"DeletedIPAddress"	=> $_SERVER["REMOTE_ADDR"],
-			);
-			if(CTable::Update("ProjectsMilestones", $MilestoneID, $Data) === false) return Array(0, "Error deleting Milestone");
-			
-			return Array(1, "Milestone deleted successfully");
+            
+            $CProjectsMilestones = new CProjectsMilestones();
+            if ($CProjectsMilestones->DeleteMilestone($MilestoneID, CSecurity::GetUsersID(), $_SERVER["REMOTE_ADDR"])) {
+                return Array(1, "Milestone deleted successfully");
+            } else {
+                return Array(0, "Error deleting Milestone");
+            }
 		}
 		
 		//----------------------------------------------------------------------

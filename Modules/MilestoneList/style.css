@@ -41,3 +41,14 @@
     padding-right: 4px;
 }
 
+.MilestoneListDetails {
+    font-family:    Helvetica, Arial, sans-serif;
+    font-size:      12px;
+    display:        none; 
+    padding-left:   58px; 
+    clear:          both; 
+    margin:         12px 0px; 
+    position:       relative; 
+    top:            12px;
+}
+

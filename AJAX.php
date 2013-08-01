@@ -29,13 +29,19 @@
 
 	//==========================================================================
 	list($ReturnCode, $ReturnText) = CAJAX::Call($Request, $RequestType, $RequestAction, $_POST);
-
+    
 	//==========================================================================
 	if($ReturnCode >= 0) {
 		echo $ReturnCode."\n";
 	}
 
-	echo $ReturnText;
+    if (is_array($ReturnText)) {
+        foreach ($ReturnText as $value) {
+            echo $value."\n";
+        }
+    } else {
+        echo $ReturnText;
+    }
 
 	//==========================================================================
 ?>

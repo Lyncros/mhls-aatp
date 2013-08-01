@@ -6,7 +6,7 @@ class CTemplateModule extends CModuleGeneric {
 
     const DATE_FORMAT = "n/j/Y";
 
-    public $JSFile = "";
+    protected $JSFile = "";
     private $Twig;
 
     function __construct($ViewsFolder) {
@@ -27,20 +27,23 @@ class CTemplateModule extends CModuleGeneric {
         }
     }
 
-    /*
+    /**
      * Renders a template, passing its parameters.
      * By default, the template name is the same as the page requested.
      * And the params will be built by a function called like the page requested plus string Params.
      */
-
     function OnRenderContent() {
-        $page = $_GET["Page"];
+        $Page = $_GET["Page"];
 
-        $templateName = $this->GetTemplateName($page);
-        $params = $this->GetTemplateParams($page);
+        $Template = $this->LoadTemplate($Page);
+        $Params = $this->GetTemplateParams($Page);
+        $Template->display($Params);
+    }
+    
+    function LoadTemplate($Action) {
+        $TemplateName = $this->GetTemplateName($Action);
 
-        $template = $this->Twig->loadTemplate($templateName . ".twig");
-        $template->display($params);
+        return $this->Twig->loadTemplate($TemplateName . ".twig");
     }
 
     function GetTemplateName($Page) {
@@ -83,6 +86,10 @@ class CTemplateModule extends CModuleGeneric {
             return Array(0, "You do not have permission to perform this action");
         }
 
+        if (method_exists($this, $Action)) {
+            return $this->$Action();
+        }
+        
         return parent::OnAJAX($Action);
     }
 
