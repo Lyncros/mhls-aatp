@@ -15,9 +15,6 @@ class MMilestoneList extends CTemplateModule {
         $UserID = CSecurity::GetUsersID();
         $Params = array();
 
-        //FIXME
-        $UserID = 62;
-
         $Milestones = new CProjectsMilestones();
         if ($Milestones->OnLoadByAssignedTo($UserID)) {
 
