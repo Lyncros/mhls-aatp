@@ -29,6 +29,31 @@
 			return true;
 		}
         
+        function Save($ToDoID, $Data, $Extra) {
+			if($ToDoID > 0) {
+				$Temp = new CProjectsMilestonesToDos();
+				$Temp->OnLoad($ToDoID);
+				$ChangeData = Array(
+					"ToDoID"			=> $ToDoID,
+					"Timestamp"			=> time(),
+					"UsersID"			=> CSecurity::GetUsersID(),
+					"IPAddress"			=> $Extra["REMOTE_ADDR"],
+					"Old"				=> serialize($Temp->Rows->Current),
+					"New"				=> serialize($Data),
+				);
+
+				CTable::Add("ProjectsMilestonesToDosChanges", $ChangeData);
+				
+                return CTable::Update("ProjectsMilestonesToDos", $ToDoID, $Data);
+			} else {
+				$Data["Created"]				= time();
+				$Data["CreatedUsersID"]			= CSecurity::GetUsersID();
+				$Data["CreatedIPAddress"]		= $Extra["REMOTE_ADDR"];
+				
+                return CTable::Add("ProjectsMilestonesToDos", $Data);
+			}
+        }
+        
         /**
          * Returns an array containing every not deleted TODOs that belongs 
          * to the Milestone which ID was received.
@@ -37,8 +62,12 @@
             return $this->OnLoadAll("WHERE `MilestoneID` = ".$MilestoneID." AND `Deleted` = 0");
         }
         
-        public function OnloadByAssignedTo($UserID) {
-            return $this->OnLoadAll("WHERE `AssignedTo` = ".$UserID." AND `Deleted` = 0");
+        public function OnloadByAssignedTo($AssignedToUserId) {
+            return $this->OnLoadByQuery("SELECT T.*, P.ID as ProjectsID, P.ProductNumber, P.School
+                FROM `ProjectsMilestonesToDos` AS T
+                JOIN `ProjectsMilestones` AS PM ON T.MilestoneID = PM.ID
+                JOIN `Projects` as P ON P.ID = PM.ProjectsID
+                WHERE T.`Deleted` = 0 AND T.AssignedTo = ".$AssignedToUserId);
         }
 		
 		//======================================================================

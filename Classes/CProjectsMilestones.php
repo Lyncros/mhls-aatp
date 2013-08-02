@@ -29,22 +29,7 @@
 			return true;
 		}
         
-        function Save($Values) {
-            $MilestoneID = intval($Values["MilestoneID"]);
-            
-			$Data = Array(
-				"ProjectsID"			=> intval($Values["ProjectsID"]),
-				"Name"					=> htmlspecialchars($Values["Name"]),
-				"CustomerApproval"		=> intval($Values["CustomerApproval"]),
-				"Summary"				=> htmlspecialchars($Values["Summary"]),
-				"EstimatedStartDate"	=> strtotime($Values["EstimatedStartDate"]),
-				"ExpectedDeliveryDate"	=> strtotime($Values["ExpectedDeliveryDate"]),
-				"ActualDeliveryDate"	=> strtotime($Values["ActualDeliveryDate"]),
-				"PlantAllocated"		=> htmlspecialchars($Values["PlantAllocated"]),
-				"AssignedTo"			=> intval($Values["AssignedTo"]),
-				"Status"				=> (intval($Values["Status"])==0)?"Active":"Complete",
-			);
-            
+        function Save($MilestoneID, $Data, $Extra) {
 			if($MilestoneID > 0) {
 				$Temp = new CProjectsMilestones();
 				$Temp->OnLoad($MilestoneID);
@@ -52,7 +37,7 @@
 					"ProjectsMilestonesID"		=> $MilestoneID,
 					"Timestamp"					=> time(),
 					"UsersID"					=> CSecurity::GetUsersID(),
-					"IPAddress"					=> $Values["REMOTE_ADDR"],
+					"IPAddress"					=> $Extra["REMOTE_ADDR"],
 					"Old"						=> serialize($Temp->Rows->Current),
 					"New"						=> serialize($Data),
 				);
@@ -63,7 +48,7 @@
 			} else {
 				$Data["Created"]				= time();
 				$Data["CreatedUsersID"]			= CSecurity::GetUsersID();
-				$Data["CreatedIPAddress"]		= $Values["REMOTE_ADDR"];
+				$Data["CreatedIPAddress"]		= $Extra["REMOTE_ADDR"];
 				
                 return CTable::Add("ProjectsMilestones", $Data);
 			}
@@ -88,8 +73,14 @@
 			return CTable::SelectByID("Users", $this->AssignedTo);
 		}
         
+        /**
+         * Returns a list of ProjectsMilestones that are assigned to the received user.
+         */
         function OnLoadByAssignedTo($AssignedToUserId) {
-            return $this->OnLoadAll('WHERE `AssignedTo` = ' . $AssignedToUserId . ' AND `Deleted` = 0');
+            return $this->OnLoadByQuery("SELECT PM.*, P.ProductNumber, P.School  
+                FROM `ProjectsMilestones` AS PM 
+                JOIN `Projects` as P ON P.ID = PM.ProjectsID
+                WHERE PM.`Deleted` = 0 AND PM.AssignedTo = ".$AssignedToUserId);
         }
 	};
 ?>

@@ -4,28 +4,27 @@
             <table class="CForm_Table TableFormGroup">
 
                 {{ RandomPrefix() }}
-                {{ AddTextbox("Name", "Name", m.name, "Please enter a Name") | raw }}
-                {{ AddYesNo("Customer Approval", "CustomerApproval", m.customerApproval, "YesNo")  | raw }}
-                {{ AddTextarea("Summary", "Summary", m.summary) | raw }}
-                {{ AddDatepicker("Estimated Start Date", "EstimatedStartDate", m.estimatedStartDateTS, "", "") | raw }}
-                {{ AddDatepicker("Expected Delivery Date", "ExpectedDeliveryDate", m.expectedDeliveryDateTS, "", "", "Please enter an Expected Delivery Date") | raw }}
-                {{ AddDatepicker("Actual Delivery Date", "ActualDeliveryDate", m.actualDeliveryDateTS, "", "") | raw }}
-                {{ AddTextbox("Plant Allocated", "PlantAllocated", m.plantAllocated) | raw }}
-                {{ AddDropdown("Assigned To", "AssignedTo", users, m.assignedTo) | raw }}	
-                {{ AddYesNo("Complete", "Status", m.complete, "YesNo") | raw }}
-                {{ AddHidden("ProjectsID", m.projectsID) | raw }}
-                {{ AddHidden("MilestoneID", m.id) | raw }}
+                {{ AddTextbox("Name", "Name", M.Name, "Please enter a Name") | raw }}
+                {{ AddYesNo("Customer Approval", "CustomerApproval", M.CustomerApproval, "YesNo")  | raw }}
+                {{ AddTextarea("Summary", "Summary", M.Summary) | raw }}
+                {{ AddDatepicker("Estimated Start Date", "EstimatedStartDate", M.EstimatedStartDate, "", "") | raw }}
+                {{ AddDatepicker("Expected Delivery Date", "ExpectedDeliveryDate", M.ExpectedDeliveryDate, "", "", "Please enter an Expected Delivery Date") | raw }}
+                {{ AddDatepicker("Actual Delivery Date", "ActualDeliveryDate", M.ActualDeliveryDate, "", "") | raw }}
+                {{ AddTextbox("Plant Allocated", "PlantAllocated", M.PlantAllocated) | raw }}
+                {{ AddDropdown("Assigned To", "AssignedTo", Users, M.AssignedTo) | raw }}	
+                {{ AddYesNo("Complete", "Status", M.Complete, "YesNo") | raw }}
+                {{ AddHidden("ProjectsID", M.ProjectsID) | raw }}
+                {{ AddHidden("MilestoneID", M.ID) | raw }}
 
             </table>
         </td>
     </tr>
     <tr>
         <td colspan="3" align="right">
-            <input type="hidden" value="0" name="ID" id="ID"/>
-            <div class="Button" value="Save" onClick="MMilestoneList.saveMilestone({{m.id}}, '{{GetPrefix()}}');">save</div>
-            <div class="Button" value="Cancel" onClick="MMilestoneList.cancelEditMilestone({{m.id}});">cancel</div>
-            {% if security.canDelete %}
-            <div class="Button" value="Delete" onClick="MMilestoneList.deleteMilestone({{m.id}});">delete</div>
+            <div class="Button" value="Save" onClick="MMilestoneList.saveMilestone({{M.ID}}, '{{GetPrefix()}}');">save</div>
+            <div class="Button" value="Cancel" onClick="MMilestoneList.cancelEditMilestone({{M.ID}});">cancel</div>
+            {% if Security.CanDeleteMilestone %}
+            <div class="Button" value="Delete" onClick="MMilestoneList.deleteMilestone({{M.ID}});">delete</div>
             {% endif %}
         </td>
     </tr>

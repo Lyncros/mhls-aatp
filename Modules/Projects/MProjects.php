@@ -304,14 +304,28 @@
 		}
 		//----------------------------------------------------------------------
 		function AddEditMilestone() {
+            $MilestoneID = intval($_POST["MilestoneID"]);
+            $IsNew = $MilestoneID <= 0;
             
-            $IsNew = intval($_POST["MilestoneID"]) <= 0;
+            $Data = Array(
+				"ProjectsID"			=> intval($_POST["ProjectsID"]),
+				"Name"					=> htmlspecialchars($_POST["Name"]),
+				"CustomerApproval"		=> intval($_POST["CustomerApproval"]),
+				"Summary"				=> htmlspecialchars($_POST["Summary"]),
+				"EstimatedStartDate"	=> strtotime($_POST["EstimatedStartDate"]),
+				"ExpectedDeliveryDate"	=> strtotime($_POST["ExpectedDeliveryDate"]),
+				"ActualDeliveryDate"	=> strtotime($_POST["ActualDeliveryDate"]),
+				"PlantAllocated"		=> htmlspecialchars($_POST["PlantAllocated"]),
+				"AssignedTo"			=> intval($_POST["AssignedTo"]),
+				"Status"				=> (intval($_POST["Status"]) == 0) ? "Active" : "Complete",
+			);
+            
+            $Extra = Array(
+                "REMOTE_ADDR"           => $_SERVER["REMOTE_ADDR"],
+            );
             
             $CMilestones = new CProjectsMilestones();
-            $Values = $_POST;
-            $Values["REMOTE_ADDR"] = $_SERVER["REMOTE_ADDR"];
-            
-            if (!$CMilestones->Save($Values)) {
+            if (!$CMilestones->Save($MilestoneID, $Data, $Extra)) {
                 return Array(0, "Error ".($IsNew ? "adding" : "updating")." milestone.");
             }
 			
@@ -341,66 +355,60 @@
 		
 		//----------------------------------------------------------------------
 		function AddEditMilestoneToDo() {
-			$AssignedToID = intval($_POST["AssignedTo"]);
-			$NotifyAssignedTo = isset($AssignedToID) && ($AssignedToID > 0);
+            $ToDoID = intval($_POST["ToDoID"]);
+            $IsNew = $ToDoID <= 0;
 			
-			$Data = Array(
-				"MilestoneID"			=> intval($_POST["MilestoneID"]),
-				"Name"					=> htmlspecialchars($_POST["Name"]),
-				"Complete"				=> intval($_POST["Complete"]),
-				"Comment"				=> htmlspecialchars($_POST["Comment"]),
-				"CommentRequired"		=> intval($_POST["CommentRequired"]),
-				"AssignedTo"			=> $AssignedToID,
-			);
-
-			$ToDoID = intval($_POST["ToDoID"]); 
-			if($ToDoID > 0) {
-				$Temp = new CProjectsMilestonesToDos();
-				$Temp->OnLoad($ToDoID);
-				$ChangeData = Array(
-					"ToDoID"			=> $ToDoID,
-					"Timestamp"			=> time(),
-					"UsersID"			=> CSecurity::GetUsersID(),
-					"IPAddress"			=> $_SERVER["REMOTE_ADDR"],
-					"Old"				=> serialize($Temp->Rows->Current),
-					"New"				=> serialize($Data),
-				);
-
-				$NotifyAssignedTo = $NotifyAssignedTo && ($AssignedToID != $Temp->AssignedTo);
-				
-				CTable::Add("ProjectsMilestonesToDosChanges", $ChangeData);
-				if(CTable::Update("ProjectsMilestonesToDos", $ToDoID, $Data) === false) return Array(0, "Error updating To-Do");
-			} else {
-				$Data["Created"]				= time();
-				$Data["CreatedUsersID"]			= CSecurity::GetUsersID();
-				$Data["CreatedIPAddress"]		= $_SERVER["REMOTE_ADDR"];
-				if(CTable::Add("ProjectsMilestonesToDos", $Data) === false) return Array(0, "Error adding To-Do");
-			}
-
-			$Milestone = new CProjectsMilestones();
-			$Milestone->OnLoad($Data["MilestoneID"]);
-			$Project = new CProjects();
-			$Project->OnLoad($Milestone->ProjectsID);
-			$User = new CUsers();
-			$User->OnLoad(CSecurity::GetUsersID());
-			$EmailData = Array(
-				"ProjectNumber"				=> $Project->ProductNumber,
-				"DateTime"					=> date('n/j/Y g:ia', time()),
-				"User"						=> $User->FirstName . " " . $User->LastName,
-				"Name"						=> $Data["Name"],
-				"Comment"					=> $Data["Comment"],
-				"Complete"					=> ($Data["Complete"] ? "Yes" : "No"),
-			);
+            $AssignedToID = intval($_POST["AssignedTo"]);
+			$NotifyAssignedTo = false;
+            if(is_numeric($AssignedToID) && ($AssignedToID > 0)) {
+                $Temp = new CProjectsMilestonesToDos();
+                if ($Temp->OnLoad($ToDoID)) {
+                    $NotifyAssignedTo = $AssignedToID != $Temp->AssignedTo;
+                }
+            }
+            
+            $Data = Array(
+                "MilestoneID"       => intval($_POST["MilestoneID"]),
+                "Name"              => htmlspecialchars($_POST["Name"]),
+                "Complete"          => intval($_POST["Complete"]),
+                "Comment"           => htmlspecialchars($_POST["Comment"]),
+                "CommentRequired"   => intval($_POST["CommentRequired"]),
+                "AssignedTo"        => $AssignedToID,
+            );
+            
+            $Extra = Array(
+                "REMOTE_ADDR"       => $_SERVER["REMOTE_ADDR"],
+            );
 			
-			//Notify changes in the project
-			CNotifier::Push("Module", "Projects", "New or Updated To-Do", $EmailData, $Project->ID);
-			
-			//Notify the 'assigned to' user
-			if ($NotifyAssignedTo) {
-				CNotifier::PushEmailToUserID($AssignedToID, "Module", "Projects", "Assigned Milestone To-Do", $EmailData);
-			}
-						
-			return Array(1, "To-Do added successfully.");
+			$CToDos = new CProjectsMilestonesToDos();
+            if($CToDos->Save($ToDoID, $Data, $Extra)) {
+                $Milestone = new CProjectsMilestones();
+                $Milestone->OnLoad($Data["MilestoneID"]);
+                $Project = new CProjects();
+                $Project->OnLoad($Milestone->ProjectsID);
+                $User = new CUsers();
+                $User->OnLoad(CSecurity::GetUsersID());
+                $EmailData = Array(
+                    "ProjectNumber"				=> $Project->ProductNumber,
+                    "DateTime"					=> date('n/j/Y g:ia', time()),
+                    "User"						=> $User->FirstName . " " . $User->LastName,
+                    "Name"						=> $Data["Name"],
+                    "Comment"					=> $Data["Comment"],
+                    "Complete"					=> ($Data["Complete"] ? "Yes" : "No"),
+                );
+
+                //Notify changes in the project
+                CNotifier::Push("Module", "Projects", "New or Updated To-Do", $EmailData, $Project->ID);
+
+                //Notify the 'assigned to' user
+                if ($NotifyAssignedTo) {
+                    CNotifier::PushEmailToUserID($AssignedToID, "Module", "Projects", "Assigned Milestone To-Do", $EmailData);
+                }
+
+                return Array(1, "To-Do ".($IsNew ? "added" : "updated")." successfully.");
+            } else {
+                return Array(0, "Error ".($IsNew ? "adding" : "updating")." To-Do.");
+            }
 		}
 		
 		//----------------------------------------------------------------------

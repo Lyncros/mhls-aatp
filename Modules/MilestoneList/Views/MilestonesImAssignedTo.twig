@@ -1,12 +1,22 @@
-<h1 style='position:absolute; top:0px;'>{{total}} Milestones / Todos</h1>
+<h1 style='position:absolute; top:0px;'>{{TotalMilestones}} Milestones / {{TotalToDos}} Todos assigned</h1>
 <br/>
 
-{% for p in projects %}
-<h2>{{ p.productNumber }}&nbsp;&nbsp;{{ p.school }}</h2>
+{% for P in Projects %}
+<h2>{{ P.ProductNumber }}&nbsp;&nbsp;{{ P.School }}</h2>
 
-{% for m in p.milestones %}
+{% for M in P.Milestones %}
 
     {% include 'MilestonesImAssignedToRow.twig' %}
+
+    <div class="MilestoneListToDoListWrapper">
+    {% for ToDo in M.ToDos %}
+        <div id="MilestoneToDoContainer{{ToDo.ID}}">
+        
+            {% include 'MilestonesImAssignedToToDoRow.twig' %}
+            
+        </div>
+    {% endfor %}
+    </div>
 
 {% endfor %}
 

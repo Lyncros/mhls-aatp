@@ -1,35 +1,35 @@
-<div id="MilestoneRowContainer{{m.id}}">
-<div id="ProjectWrapper{{m.id}}" class="ProjectWrapper" style="position:relative;">
-    <div class="ProjectContainer">
+<div id="MilestoneRowContainer{{M.ID}}">
+<div id="MilestoneWrapper{{M.ID}}" class="MilestoneWrapper" style="position:relative;">
+    <div class="MilestoneContainer">
         <table style="width:100%;" cellpadding="0" cellspacing="0">
             <tr>
-                <td class="MilestoneListSummary">
-                    {% if m.complete %}
+                <td class="MilestoneListSection MilestoneListSummary">
+                    {% if M.Complete %}
                         <div class='Complete MilestoneListComplete'></div>
                     {% endif %}
-                        <div id="MilestoneLabel{{m.id}}" style="font-weight:bold; font-size:14px;">{{m.name}}</div></a>
-                        <div>Summary: {{m.summary}}</div>
+                        <div style="font-weight:bold; font-size:14px;">{{M.Name}}</div></a>
+                        <div>Summary: {{M.Summary}}</div>
                 </td>
                 <td class="MilestoneListSeparator"><div class="Separator"></div></td>
                 <td class="MilestoneListSection">
                     <div class="MilestoneListSectionTitle">Dates</div>
-                    <p><b>Start:</b>&nbsp;{{m.estimatedStartDate}}</p>							
-                    <p><b>Delivery:</b>&nbsp;{{m.expectedDeliveryDate}}</p>
-                    <p><b>Actual Delivery:</b>&nbsp;{{m.actualDeliveryDate}}</p>
+                    <p><b>Start:</b>&nbsp;{{M.EstimatedStartDate | FormatDate }}</p>
+                    <p><b>Delivery:</b>&nbsp;{{M.ExpectedDeliveryDate | FormatDate }}</p>
+                    <p><b>Actual Delivery:</b>&nbsp;{{M.ActualDeliveryDate | FormatDate }}</p>
                 </td>
                 <td class="MilestoneListSeparator"><div class="Separator"></div></td>
                 <td class="MilestoneListSection">
                     <div class="MilestoneListSectionTitle">Other</div>
-                    <p><b>Plant allocated:</b>&nbsp;{{m.plantAllocated}}</p>							
-                    <p><b>Approval:</b>&nbsp;{{m.customerApproval}}</p>
+                    <p><b>Plant allocated:</b>&nbsp;{{M.PlantAllocated}}</p>							
+                    <p><b>Customer Approval:</b>&nbsp;{% if M.CustomerApproval %}Yes{% else %}No{% endif %}</p>
                 </td>
                 <td class="MilestoneListSeparator"><div class="Separator"></div></td>
                 <td class="MilestoneListSection">
-                {% if m.todosCompletion >= 0 %}
+                {% if M.ToDosCompletion >= 0 %}
                     <div class="MilestoneListSectionTitle MilestoneListTODOCompletionTitle">TODOs Completion</div>
                     <div class="CompletionWrapper" style='width:152px;'>
-                        <div class="CompletionBar" style='width:{{m.todosCompletion * 150 / 100}}px'></div>
-                        <div class="CompletionPercentage">{{m.todosCompletion}}</div>
+                        <div class="CompletionBar" style='width:{{M.ToDosCompletion * 150 / 100}}px'></div>
+                        <div class="CompletionPercentage">{{M.ToDosCompletion}}</div>
                     </div>
                 {% else %}
                     N/A
@@ -40,14 +40,14 @@
     </div>
 </div>
 
-{% if security.canEdit %}
-<div class="MilestoneListDetails" id="Milestone{{m.id}}"></div>
+{% if Security.CanEditMilestone %}
+<div class="MilestoneListDetails" id="Milestone{{M.ID}}"></div>
 
 <script type='text/javascript'>
-    $('#ProjectWrapper{{m.id}}').toggle(function() {
-        MMilestoneList.editMilestone({{m.id}});
+    $('#MilestoneWrapper{{M.ID}}').toggle(function() {
+        MMilestoneList.editMilestone({{M.ID}});
     }, function() {
-        MMilestoneList.cancelEditMilestone({{m.id}});
+        MMilestoneList.cancelEditMilestone({{M.ID}});
     });
 </script>
 {%endif%}

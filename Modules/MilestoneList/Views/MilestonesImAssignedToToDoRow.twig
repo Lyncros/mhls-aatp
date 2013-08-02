@@ -1,0 +1,28 @@
+<div class="MilestoneListToDoContainer">
+    <table style="vertical-align:top">
+        <tr>
+            <td rowspan="2" style="width: 60px;"> {% if ToDo.Complete %} <div class="TodoComplete" style="top:0px;"></div> {% endif %}</td>
+            <td>
+                <div id="ToDoLabel{{ToDo.ID}}" class="MilestoneListToDoLabel">
+                    <span style="float:left;">To-Do: {{ToDo.Name}}</span> <div class='ToDoDownArrow'></div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="MilestoneListToDoDetails" id="ToDo{{ToDo.ID}}"></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+{% if Security.CanEditMilestoneToDo %}
+
+<script type='text/javascript'>
+    $('#ToDoLabel{{ToDo.ID}}').toggle(function() {
+        MMilestoneList.editToDo({{ToDo.ID}});
+    }, function() {
+        MMilestoneList.cancelEditToDo({{ToDo.ID}});
+    });
+</script>
+{%endif%}

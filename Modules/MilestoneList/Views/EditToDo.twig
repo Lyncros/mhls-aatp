@@ -1,0 +1,27 @@
+<table width="100%" cellspacing="0" cellpadding="0">
+    <tr>
+        <td width="100%" valign="top">
+            <table class="CForm_Table TableFormGroup">
+
+                {{ RandomPrefix() }}
+                {{ AddTextbox("Name", "Name", ToDo.Name, "Please enter a Name") | raw }}
+                {{ AddYesNo("Complete", "Complete", ToDo.Complete, "YesNo") | raw }}
+                {{ AddTextarea("Comment", "Comment", ToDo.Comment) | raw }}
+                {{ AddYesNo("Comment Required", "CommentRequired", ToDo.CommentRequired, "YesNo") | raw }}
+                {{ AddDropdown("Assigned To", "AssignedTo", Users, ToDo.AssignedTo) | raw }}
+                {{ AddHidden("MilestoneID", ToDo.MilestoneID) | raw }}
+                {{ AddHidden("ToDoID", ToDo.ID) | raw }}
+    
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3" align="right">
+            <div class="Button" value="Save" onClick="MMilestoneList.saveMilestoneToDo({{ToDo.ID}}, '{{GetPrefix()}}');">save</div>
+            <div class="Button" value="Cancel" onClick="MMilestoneList.cancelEditToDo({{ToDo.ID}});">cancel</div>
+            {% if Security.CanDeleteMilestoneToDo %}
+            <div class="Button" value="Delete" onClick="MMilestoneList.deleteToDo({{ToDo.ID}});">delete</div>
+            {% endif %}
+        </td>
+    </tr>
+</table>

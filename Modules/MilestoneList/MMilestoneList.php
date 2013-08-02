@@ -14,7 +14,6 @@ class MMilestoneList extends CTemplateModule {
     function MilestonesImAssignedToParams() {
         $UserID = CSecurity::GetUsersID();
         $Params = array();
-        $Params["total"] = 0;
 
         //FIXME
         $UserID = 62;
@@ -22,32 +21,39 @@ class MMilestoneList extends CTemplateModule {
         $Milestones = new CProjectsMilestones();
         if ($Milestones->OnLoadByAssignedTo($UserID)) {
 
-            foreach ($Milestones->Rows as $M) {
-                if (!array_key_exists($M->ProjectsID, $Params["projects"])) {
-                    $Projects = new CProjects();
-                    $Projects->OnLoad($M->ProjectsID);
+            $Milestones = $Milestones->Rows->RowsToArrayAllColumns();
 
-                    $Params["projects"][$M->ProjectsID]["productNumber"] = $Projects->ProductNumber;
-                    $Params["projects"][$M->ProjectsID]["school"] = $Projects->School;
+            foreach ($Milestones as $M) {
+                if (!array_key_exists($M["ProjectsID"], $Params["Projects"])) {
+                    $Params["Projects"][$M["ProjectsID"]]["ProductNumber"] = $M["ProductNumber"];
+                    $Params["Projects"][$M["ProjectsID"]]["School"] = $M["School"];
                 }
 
-                $Params["projects"][$M->ProjectsID]["milestones"][] = $this->BuildMilestoneParams($M);
+                $Params["Projects"][$M["ProjectsID"]]["Milestones"][$M["ID"]] = $M;
+                $Params["Projects"][$M["ProjectsID"]]["Milestones"][$M["ID"]]["ToDosCompletion"] =
+                        $this->CalculateMilestoneTODOsCompletion($M["ID"]);
+                $Params["Projects"][$M["ProjectsID"]]["Milestones"][$M["ID"]]["Complete"] =
+                        $this->IsComplete($M["Status"]);
             }
 
-            $Params["total"] += $Milestones->Rows->count();
+            $Params["TotalMilestones"] = count($Milestones);
         }
+        
+        $Params["Security"]["CanEditMilestone"] = CSecurity::$User->CanAccess("Milestones", "Edit");
 
         $MilestonesTODOs = new CProjectsMilestonesToDos();
         if ($MilestonesTODOs->OnloadByAssignedTo($UserID)) {
+            
+            $MilestonesTODOs = $MilestonesTODOs->Rows->RowsToArrayAllColumns();
 
-            foreach ($MilestonesTODOs->Rows as $MT) {
-                //TODO: Set TODOs data to params array.
+            foreach ($MilestonesTODOs as $MT) {
+                $Params["Projects"][$MT["ProjectsID"]]["Milestones"][$MT["MilestoneID"]]["ToDos"][$MT["ID"]] = $MT;
             }
-            $Params["total"] += $MilestonesTODOs->Rows->count();
+            $Params["TotalToDos"] = count($MilestonesTODOs);
         }
         
-        $Params["security"]["canEdit"] = CSecurity::$User->CanAccess("Milestones", "Edit");
-
+        $Params["Security"]["CanEditMilestoneToDo"] = CSecurity::$User->CanAccess("MilestonesToDos", "Edit");
+        
         return $Params;
     }
 
@@ -57,86 +63,128 @@ class MMilestoneList extends CTemplateModule {
      */
     function EditMilestone() {
         $Milestone = new CProjectsMilestones();
-        if ($Milestone->OnLoadByID($_POST["MilestoneID"])) {
+        $MilestoneID = $_POST["MilestoneID"];
 
-            $Template = $this->LoadTemplate("EditMilestone");
+        if ($Milestone->OnLoadByID($MilestoneID)) {
+
+            $Milestone = $Milestone->Rows->RowsToArrayAllColumns()[$MilestoneID];
+            $Milestone["Complete"] = $this->IsComplete($Milestone["Status"]);
 
             $Users = CUsers::GetAllAssignableToMilestone();
-            
-            $Params["m"] = $this->BuildMilestoneParams($Milestone);
-            $Params["users"] = Array(0 => "Nobody") + $Users->RowsToAssociativeArrayWithMultipleColumns("LastName,FirstName");
-            $Params["security"]["canDelete"] = CSecurity::$User->CanAccess("Milestones", "Delete");
 
+            $Params["M"] = $Milestone;
+            $Params["Users"] = Array(0 => "Nobody") + $Users->RowsToAssociativeArrayWithMultipleColumns("LastName,FirstName");
+            $Params["Security"]["CanDeleteMilestone"] = CSecurity::$User->CanAccess("Milestones", "Delete");
+
+            $Template = $this->LoadTemplate("EditMilestone");
             return Array(1, $Template->render($Params));
         } else {
             return Array(0, "Error loading milestone.");
         }
     }
     
+    /**
+     * Action for start editing a Milestone ToDo.
+     * @return html for milestone ToDo edit form
+     */
+    function EditMilestoneToDo() {
+        $ToDo = new CProjectsMilestonesToDos();
+        $ToDoID = $_POST["MilestoneToDoID"];
+        
+        if ($ToDo->OnLoadByID($ToDoID)) {
+         
+            $ToDo = $ToDo->Rows->RowsToArrayAllColumns()[$ToDoID];
+
+            $Users = CUsers::GetAllAssignableToMilestoneTodos();
+
+            $Params["ToDo"] = $ToDo;
+            $Params["Users"] = Array(0 => "Nobody") + $Users->RowsToAssociativeArrayWithMultipleColumns("LastName,FirstName");
+            $Params["Security"]["CanDeleteMilestoneToDo"] = CSecurity::$User->CanAccess("MilestonesToDos", "Delete");
+
+            $Template = $this->LoadTemplate("EditToDo");
+            return Array(1, $Template->render($Params));
+        } else {
+            return Array(0, "Error loading milestone ToDo.");
+        }
+    }
+
     function SaveMilestone() {
         $MilestoneID = intval($_POST["MilestoneID"]);
         $IsNew = $MilestoneID <= 0;
-            
-        $CMilestones = new CMilestones();
-        $Values = $_POST;
-        $Values["REMOTE_ADDR"] = $_SERVER["REMOTE_ADDR"];
-
-        if (!$CMilestones->Save($Values)) {
-            return Array(0, "Error ".($IsNew ? "adding" : "updating")." milestone.");
-        }
-     
-        $Params["m"] = array(
-            "id"                    => $MilestoneID,
-            "name"                  => htmlspecialchars($_POST["Name"]),
-            "customerApproval"      => intval($_POST["CustomerApproval"]),
-            "summary"               => htmlspecialchars($_POST["Summary"]),
-            "estimatedStartDate"    => $this->FormatDate(strtotime($_POST["EstimatedStartDate"])),
-            "expectedDeliveryDate"  => $this->FormatDate(strtotime($_POST["ExpectedDeliveryDate"])),
-            "actualDeliveryDate"    => $this->FormatDate(strtotime($_POST["ActualDeliveryDate"])),
-            "estimatedStartDateTS"  => strtotime($_POST["EstimatedStartDate"]),
-            "expectedDeliveryDateTS"=> strtotime($_POST["ExpectedDeliveryDate"]),
-            "actualDeliveryDateTS"  => strtotime($_POST["ActualDeliveryDate"]),
-            "plantAllocated"        => htmlspecialchars($_POST["PlantAllocated"]),
-            "complete"              => intval($_POST["Status"]),
-            "todosCompletion"       => $this->CalculateMilestoneTODOsCompletion($MilestoneID),
-            "assignedTo"            => intval($_POST["AssignedTo"]),
-        );
-        $Params["security"]["canEdit"] = CSecurity::$User->CanAccess("Milestones", "Edit");
         
+        $Data = Array(
+            "ProjectsID"			=> intval($_POST["ProjectsID"]),
+            "Name"					=> htmlspecialchars($_POST["Name"]),
+            "CustomerApproval"		=> intval($_POST["CustomerApproval"]),
+            "Summary"				=> htmlspecialchars($_POST["Summary"]),
+            "EstimatedStartDate"	=> strtotime($_POST["EstimatedStartDate"]),
+            "ExpectedDeliveryDate"	=> strtotime($_POST["ExpectedDeliveryDate"]),
+            "ActualDeliveryDate"	=> strtotime($_POST["ActualDeliveryDate"]),
+            "PlantAllocated"		=> htmlspecialchars($_POST["PlantAllocated"]),
+            "AssignedTo"			=> intval($_POST["AssignedTo"]),
+            "Status"				=> (intval($_POST["Status"]) == 0) ? "Active" : "Complete",
+        );
+        
+        $Extra = Array(
+            "REMOTE_ADDR"           => $_SERVER["REMOTE_ADDR"],
+        );            
+
+        $CMilestones = new CProjectsMilestones();
+        if (!$CMilestones->Save($MilestoneID, $Data, $Extra)) {
+            return Array(0, "Error " . ($IsNew ? "adding" : "updating") . " milestone.");
+        }
+
+        $Params["M"] = $Data;
+        $Params["M"]["ID"] = $MilestoneID;
+        $Params["M"]["ToDosCompletion"] = $this->CalculateMilestoneTODOsCompletion($MilestoneID);
+        $Params["M"]["Complete"] = $Data["Status"];
+        $Params["Security"]["CanEditMilestone"] = CSecurity::$User->CanAccess("Milestones", "Edit");
+
         $Template = $this->LoadTemplate("MilestonesImAssignedToRow");
 
-        return Array(1, Array("Milestone ".($IsNew ? "added" : "saved")." successfully.", $Template->render($Params)));
+        return Array(1, Array("Milestone " . ($IsNew ? "added" : "saved") . " successfully.", $Template->render($Params)));
     }
     
+    function SaveMilestoneToDo() {
+        $ToDoID = intval($_POST["ToDoID"]);
+        $IsNew = $ToDoID <= 0;
+
+        $Data = Array(
+            "MilestoneID"       => intval($_POST["MilestoneID"]),
+            "Name"              => htmlspecialchars($_POST["Name"]),
+            "Complete"          => intval($_POST["Complete"]),
+            "Comment"           => htmlspecialchars($_POST["Comment"]),
+            "CommentRequired"   => intval($_POST["CommentRequired"]),
+            "AssignedTo"        => intval($_POST["AssignedTo"]),
+        );
+        
+        $Extra = Array (
+            "REMOTE_ADDR"       => $_SERVER["REMOTE_ADDR"],
+        );
+
+        $CMilestones = new CProjectsMilestonesToDos();
+        if (!$CMilestones->Save($ToDoID, $Data, $Extra)) {
+            return Array(0, "Error " . ($IsNew ? "adding" : "updating") . " milestone.");
+        }
+
+        $Params["ToDo"] = $Data;
+        $Params["ToDo"]["ID"] = $ToDoID;
+        $Params["Security"]["CanEditMilestoneToDo"] = CSecurity::$User->CanAccess("MilestonesToDos", "Edit");
+
+        $Template = $this->LoadTemplate("MilestonesImAssignedToToDoRow");
+
+        return Array(1, Array("Milestone " . ($IsNew ? "added" : "saved") . " successfully.", $Template->render($Params)));
+    }
+
     function DeleteMilestone() {
         $CProjectsMilestones = new CProjectsMilestones();
         $MilestoneID = intval($_POST["MilestoneID"]);
-        
+
         if ($CProjectsMilestones->DeleteMilestone($MilestoneID, CSecurity::GetUsersID(), $_SERVER["REMOTE_ADDR"])) {
             return Array(1, "Milestone deleted successfully");
-        }else {
+        } else {
             return Array(0, "Error deleting Milestone");
         }
-    }
-    
-    public function BuildMilestoneParams($M) {
-        return array(
-            "id"                    => $M->ID,
-            "projectsID"            => $M->ProjectsID,
-            "name"                  => $M->Name,
-            "customerApproval"      => $M->CustomerApproval,
-            "summary"               => $M->Summary,
-            "estimatedStartDate"    => $this->FormatDate($M->EstimatedStartDate),
-            "expectedDeliveryDate"  => $this->FormatDate($M->ExpectedDeliveryDate),
-            "actualDeliveryDate"    => $this->FormatDate($M->ActualDeliveryDate),
-            "estimatedStartDateTS"  => $M->EstimatedStartDate,
-            "expectedDeliveryDateTS"=> $M->ExpectedDeliveryDate,
-            "actualDeliveryDateTS"  => $M->ActualDeliveryDate,
-            "plantAllocated"        => $M->PlantAllocated,
-            "complete"              => $this->IsComplete($M->Status),
-            "todosCompletion"       => $this->CalculateMilestoneTODOsCompletion($M->ID),
-            "assignedTo"            => $M->AssignedTo,
-        );
     }
 
     function CalculateMilestoneTODOsCompletion($MilestoneID) {

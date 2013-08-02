@@ -25,6 +25,10 @@ class CTemplateModule extends CModuleGeneric {
                         return forward_static_call_array("CForm::{$StaticMethod->name}", func_get_args());
                     }));
         }
+        
+        $this->Twig->addFilter(new Twig_SimpleFilter("FormatDate", function($timestamp) {
+            return $this->FormatDate($timestamp);
+        }));
     }
 
     /**

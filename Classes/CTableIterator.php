@@ -107,6 +107,16 @@
 
 			return $Return;
 		}
+        
+        function RowsToArrayAllColumns($IDColumn = "ID") {
+            $Return = Array();
+
+            foreach ($this as $Row) {
+                $Return[$Row->{$IDColumn}] = $Row->Current;
+            }
+            
+			return $Return;
+        }
 		
 		function RowsToArray($Column) {
 			$Return = Array();
