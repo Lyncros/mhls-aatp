@@ -61,7 +61,7 @@ class CSidebarMenu {
                 $ProjectMenu,
             ),
             "MilestoneList" => Array(
-                new CSidebarMenu("MilestonesImAssignedTo", "Milestones I'm assigned to", "MilestonsImAssignedTo", "View")),
+                new CSidebarMenu("MilestonesImAssignedTo", "Milestones I'm assigned to", "MilestonesImAssignedTo", "View")),
             "VendorManagement" => Array(
                 new CSidebarMenu("VendorManagement", "Vendor Management")
             )
