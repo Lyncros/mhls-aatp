@@ -3,11 +3,13 @@
     <div class="MilestoneContainer">
         <table style="width:100%;" cellpadding="0" cellspacing="0">
             <tr>
-                <td class="MilestoneListSection MilestoneListSummary">
+                <td rowspan="2" class="MilestoneListCompleteSection">
                     {% if M.Complete %}
                         <div class='Complete MilestoneListComplete'></div>
                     {% endif %}
-                        <div style="font-weight:bold; font-size:14px;">{{M.Name}}</div></a>
+                </td>
+                <td class="MilestoneListSection MilestoneListSummary">
+                        <div id="MilestoneSection{{M.ID}}" class="MilestoneListTitle">{{M.Name}}</div></a>
                         <div>Summary: {{M.Summary}}</div>
                 </td>
                 <td class="MilestoneListSeparator"><div class="Separator"></div></td>
@@ -36,15 +38,21 @@
                 {% endif %}
                 </td>
             </tr>
+            <tr>
+                <td colspan="8">
+                    {% if Security.CanEditMilestone %}
+                    <div class="MilestoneListDetails" id="Milestone{{M.ID}}"></div>
+                    {% endif %}
+               </td>
+            </tr>
         </table>
     </div>
 </div>
 
 {% if Security.CanEditMilestone %}
-<div class="MilestoneListDetails" id="Milestone{{M.ID}}"></div>
 
 <script type='text/javascript'>
-    $('#MilestoneWrapper{{M.ID}}').toggle(function() {
+    $('#MilestoneSection{{M.ID}}').toggle(function() {
         MMilestoneList.editMilestone({{M.ID}});
     }, function() {
         MMilestoneList.cancelEditMilestone({{M.ID}});

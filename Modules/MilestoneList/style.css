@@ -1,7 +1,7 @@
 /* 
     Document   : style
     Created on : Jul 31, 2013, 11:31:51 AM
-    Author     : juan
+    Author     : jarias
     Description:
         Stylesheet for MilestoneList module.
 */
@@ -33,16 +33,26 @@
 }
 
 .MilestoneListSection {
-    cursor: pointer;
     vertical-align:top; 
     padding: 7px 11px; 
-    width:25%;
+}
+
+.MilestoneListCompleteSection {
+    width:          5%;
+    vertical-align: middle; 
+    padding-left:   5px;
 }
 
 .MilestoneListSummary {
-    vertical-align: top; 
-    padding:        7px 11px; 
-    width:          135px;
+    vertical-align: middle; 
+    padding:        7px 11px;
+    width:          25%;
+}
+
+.MilestoneListTitle {
+    cursor:         pointer;
+    font-weight:    bold;
+    font-size:      14px;
 }
 
 .MilestoneListSectionTitle {
@@ -65,7 +75,8 @@
     font-family:    Helvetica, Arial, sans-serif;
     font-size:      12px;
     display:        none; 
-    padding-left:   58px; 
+    padding-right:  50px;
+    padding-left:   30px;
     clear:          both; 
     margin:         12px 0px; 
     position:       relative;

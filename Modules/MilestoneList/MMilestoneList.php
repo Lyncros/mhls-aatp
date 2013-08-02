@@ -21,16 +21,17 @@ class MMilestoneList extends CTemplateModule {
             $Milestones = $Milestones->Rows->RowsToArrayAllColumns();
 
             foreach ($Milestones as $M) {
-                if (!array_key_exists($M["ProjectsID"], $Params["Projects"])) {
-                    $Params["Projects"][$M["ProjectsID"]]["ProductNumber"] = $M["ProductNumber"];
-                    $Params["Projects"][$M["ProjectsID"]]["School"] = $M["School"];
+                $ProjectID = $M["ProjectsID"];
+                if (!array_key_exists($ProjectID, $Params["Projects"])) {
+                    $Params["Projects"][$ProjectID]["DirectProjectLink"] = "http://".CURL::GetDomain()."/Projects?ID=".$ProjectID;
+                    $Params["Projects"][$ProjectID]["ProductNumber"] = $M["ProductNumber"];
+                    $Params["Projects"][$ProjectID]["School"] = $M["School"];
                 }
 
-                $Params["Projects"][$M["ProjectsID"]]["Milestones"][$M["ID"]] = $M;
-                $Params["Projects"][$M["ProjectsID"]]["Milestones"][$M["ID"]]["ToDosCompletion"] =
+                $Params["Projects"][$ProjectID]["Milestones"][$M["ID"]] = $M;
+                $Params["Projects"][$ProjectID]["Milestones"][$M["ID"]]["ToDosCompletion"] =
                         $this->CalculateMilestoneTODOsCompletion($M["ID"]);
-                $Params["Projects"][$M["ProjectsID"]]["Milestones"][$M["ID"]]["Complete"] =
-                        $this->IsComplete($M["Status"]);
+                $Params["Projects"][$ProjectID]["Milestones"][$M["ID"]]["Complete"] = $this->IsComplete($M["Status"]);
             }
 
             $Params["TotalMilestones"] = count($Milestones);

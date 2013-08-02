@@ -86,10 +86,6 @@ class CTemplateModule extends CModuleGeneric {
 
     //----------------------------------------------------------------------
     function OnAJAX($Action) {
-        if (parent::CanAccess($Action) == false) {
-            return Array(0, "You do not have permission to perform this action");
-        }
-
         if (method_exists($this, $Action)) {
             return $this->$Action();
         }

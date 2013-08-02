@@ -2,7 +2,7 @@
 <br/>
 
 {% for P in Projects %}
-<h2>{{ P.ProductNumber }}&nbsp;&nbsp;{{ P.School }}</h2>
+<h2><a href="{{ P.DirectProjectLink }}">{{ P.ProductNumber }}&nbsp;&nbsp;{{ P.School }}</a></h2>
 
 {% for M in P.Milestones %}
 

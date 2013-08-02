@@ -2,6 +2,8 @@
  * JavaScript file for ModuleList module.
  */
 
+var SLIDE_DURATION = 800;
+
 MMilestoneList = {};
 
 MMilestoneList.editMilestone = function(MilestoneId) {
@@ -13,8 +15,7 @@ MMilestoneList.editMilestone = function(MilestoneId) {
         if (Code == 0) {
             alert(Content);
         } else {
-            $('#Milestone' + MilestoneId).html(Content);
-            $('#Milestone' + MilestoneId).slideDown();
+            MMilestoneList.slideDownAndShow('Milestone' + MilestoneId, Content);
         }
     });
 };
@@ -68,8 +69,7 @@ MMilestoneList.deleteMilestone = function(MilestoneID) {
 };
 
 MMilestoneList.hideEditMilestone = function(MilestoneId) {
-    $('#Milestone' + MilestoneId).slideUp();
-    $('#Milestone' + MilestoneId).empty();
+    this.slideUpAndEmpty('Milestone' + MilestoneId);
 };
 
 MMilestoneList.editToDo = function(MilestoneToDoID) {
@@ -81,8 +81,7 @@ MMilestoneList.editToDo = function(MilestoneToDoID) {
         if (Code == 0) {
             alert(Content);
         } else {
-            $('#ToDo' + MilestoneToDoID).html(Content);
-            $('#ToDo' + MilestoneToDoID).slideDown();
+            MMilestoneList.slideDownAndShow('ToDo' + MilestoneToDoID, Content);
         }
     });
 };
@@ -136,6 +135,16 @@ MMilestoneList.deleteMilestoneToDo = function(MilestoneToDoID) {
 };
 
 MMilestoneList.hideEditToDo = function(MilestoneToDoId) {
-    $('#ToDo' + MilestoneToDoId).slideUp();
-    $('#ToDo' + MilestoneToDoId).empty();
+    this.slideUpAndEmpty('ToDo' + MilestoneToDoId);
+};
+
+MMilestoneList.slideDownAndShow = function (Id, Content) {
+    $('#' + Id).html(Content);
+    $('#' + Id).slideDown(SLIDE_DURATION);
+};
+
+MMilestoneList.slideUpAndEmpty = function(Id) {
+    $('#' + Id).slideUp(SLIDE_DURATION, function () {
+        $('#' + Id).empty();
+    });
 };
