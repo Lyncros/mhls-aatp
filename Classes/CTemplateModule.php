@@ -11,7 +11,7 @@ class CTemplateModule extends CModuleGeneric {
 
     function __construct($ViewsFolder) {
         parent::__construct();
-
+		
         Twig_Autoloader::register();
         $Loader = new Twig_Loader_Filesystem($ViewsFolder);
         $this->Twig = new Twig_Environment($Loader, array(
@@ -27,8 +27,8 @@ class CTemplateModule extends CModuleGeneric {
         }
         
         $this->Twig->addFilter(new Twig_SimpleFilter("FormatDate", function($timestamp) {
-            return $this->FormatDate($timestamp);
-        }));
+            return date(CTemplateModule::DATE_FORMAT, $timestamp);//return $this->FormatDate($timestamp);
+        }));		
     }
 
     /**
@@ -38,16 +38,21 @@ class CTemplateModule extends CModuleGeneric {
      */
     function OnRenderContent() {
         $Page = $_GET["Page"];
-
+		
+		/*if ($Page == null)
+			$Page = "Index";*/
+		
         $Template = $this->LoadTemplate($Page);
+		
         $Params = $this->GetTemplateParams($Page);
         $Template->display($Params);
     }
     
     function LoadTemplate($Action) {
+		
         $TemplateName = $this->GetTemplateName($Action);
-
-        return $this->Twig->loadTemplate($TemplateName . ".twig");
+		
+		return $this->Twig->loadTemplate($TemplateName . ".twig");
     }
 
     function GetTemplateName($Page) {

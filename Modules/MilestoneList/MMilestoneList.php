@@ -6,6 +6,7 @@ class MMilestoneList extends CTemplateModule {
         parent::__construct("./Modules/MilestoneList/Views");
 
         $this->JSFile = "MMilestoneList.js";
+		
     }
 
     /**
@@ -15,6 +16,9 @@ class MMilestoneList extends CTemplateModule {
         $UserID = CSecurity::GetUsersID();
         $Params = array();
 
+        //FIXME
+        //$UserID = 2;
+        
         $Milestones = new CProjectsMilestones();
         if ($Milestones->OnLoadByAssignedTo($UserID)) {
 
@@ -64,8 +68,8 @@ class MMilestoneList extends CTemplateModule {
         $MilestoneID = $_POST["MilestoneID"];
 
         if ($Milestone->OnLoadByID($MilestoneID)) {
-
-            $Milestone = $Milestone->Rows->RowsToArrayAllColumns()[$MilestoneID];
+			$MilestonsArray = $Milestone->Rows->RowsToArrayAllColumns();
+			$Milestone = $MilestonsArray[$MilestoneID];
             $Milestone["Complete"] = $this->IsComplete($Milestone["Status"]);
 
             $Users = CUsers::GetAllAssignableToMilestone();
@@ -75,6 +79,7 @@ class MMilestoneList extends CTemplateModule {
             $Params["Security"]["CanDeleteMilestone"] = CSecurity::$User->CanAccess("Milestones", "Delete");
 
             $Template = $this->LoadTemplate("EditMilestone");
+			
             return Array(1, $Template->render($Params));
         } else {
             return Array(0, "Error loading milestone.");
@@ -90,8 +95,8 @@ class MMilestoneList extends CTemplateModule {
         $ToDoID = $_POST["MilestoneToDoID"];
         
         if ($ToDo->OnLoadByID($ToDoID)) {
-         
-            $ToDo = $ToDo->Rows->RowsToArrayAllColumns()[$ToDoID];
+			$ToDosArray = $ToDo->Rows->RowsToArrayAllColumns(); 
+            $ToDo = $ToDosArray[$ToDoID];
 
             $Users = CUsers::GetAllAssignableToMilestoneTodos();
 
@@ -202,8 +207,12 @@ class MMilestoneList extends CTemplateModule {
                 }
 
                 $Completion = round($Completes * 100 / $TotalToDos);
-            }
+            }			
         }
+		else
+		{
+			$Completion = 0;
+		}			
 
         return $Completion;
     }
@@ -211,7 +220,6 @@ class MMilestoneList extends CTemplateModule {
     public function IsComplete($Status) {
         return strcasecmp($Status, "Complete") == 0;
     }
-
 }
 
 ?>

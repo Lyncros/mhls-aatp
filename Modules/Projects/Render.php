@@ -104,7 +104,7 @@
 		return $Temp;
 	}
 
-	$Search = new CSearch("Projects");
+	$Search = new CSearch("ProjectsView");
 	
 	$Search->SetItemsPerPage(50);
 	
@@ -116,7 +116,7 @@
 	/* 5 */ $Search->AddColumn("Stat Sponsor Code", "StatSponsorCode", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
 	/* 6 */ $Search->AddColumn("Created", "Created", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
 	/* 7 */ $Search->AddColumn("DueDate", "DueDate", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");	
-	/* 8 */ //$Search->AddColumn("LSC", "LSC", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
+	/* 8 */ $Search->AddColumn("LSCs", "LSCs", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
 	/* 9 */ //$Search->AddColumn("Product Type", "ProductType", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
 	
 	// Non-deleted Projects
@@ -434,6 +434,13 @@
 		
 		echo "<div class='Button' value='SortDueDate' onClick='CModule.Load(\"Projects\", ".json_encode($OrderByParams).")' 
 				style=".$OrderByStyle.">By due date - ".($OrderByParams["CSearch_OrderByDir"] == "1" ? "newest" : "oldest")." on top</div>";
+				
+		// Sort by LSCs last name (column 8)
+		$OrderByParams = BuildSortParameters("8");
+		$OrderByStyle = "'height:28px; line-height:28px; float:left; margin-top:45px; margin-left:-1px;width:180px;'";
+		
+		echo "<div class='Button' value='SortLSCs' onClick='CModule.Load(\"Projects\", ".json_encode($OrderByParams).")' 
+				style=".$OrderByStyle.">By LSCs Last Name - ".($OrderByParams["CSearch_OrderByDir"] == "0" ? "A-Z" : "Z-A")."</div>";
 				
 		echo "
 		<form id='SearchForm' method='get' style='top:0px;'>

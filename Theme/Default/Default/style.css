@@ -445,7 +445,7 @@ input[disabled],select[disabled] {
 .SidebarIconProjects									{ background-image: url("./SidebarIconProjects.png"); }
 .SidebarIconProjectsAdd									{ background-image: url("./SidebarIconAddProject.png"); }
 .SidebarIconMilestoneListMilestonesImAssignedTo			{ background-image: url("./SidebarIconViewMilestonesImAssignedTo.png"); }
-.SidebarIconVendorManagement							{ background-image: url("./SidebarIconViewMilestonesImAssignedTo.png"); }
+.SidebarIconVendorsManagementIndex						{ background-image: url("./SidebarIconViewMilestonesImAssignedTo.png"); }
 .SidebarActive .SidebarIconProjects						{ background-image: url("./SidebarIconProjectsActive.png"); }
 
 .SidebarSubicon {

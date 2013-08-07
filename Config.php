@@ -69,6 +69,7 @@
 			),
 
 			"System" => Array(
+				//"BaseURL"		=> "http://localhost/aatp",
 				"Email"			=> "admin@pne.com",
 				"Timezone"		=> "America/Ft_Wayne",
 				"AdminForceSSL"	=> true,
@@ -108,7 +109,10 @@
 			),
 
 			"Template" => Array(
-			)
+			),
+			
+			// The part of the url {AATP_PRODUCT_NUMBER} will be replace with the project number, so you can change the url, but you have to take into account where you add the {AATP_PRODUCT_NUMBER}.
+			"DashboardProjectLink" => 'http://mhhe.mcgraw-hill.com/Applications/CustomProjectTracking/HomePage.cfm?product_number={AATP_PRODUCT_NUMBER}&homepage_action=open_product',			
 		);
 	}
 
