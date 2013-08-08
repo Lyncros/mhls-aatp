@@ -7,13 +7,14 @@ class CTemplateModule extends CModuleGeneric {
     const DATE_FORMAT = "n/j/Y";
 
     protected $JSFile = "";
-    private $Twig;
+    protected $Twig;
 
     function __construct($ViewsFolder) {
         parent::__construct();
 		
         Twig_Autoloader::register();
         $Loader = new Twig_Loader_Filesystem($ViewsFolder);
+		$Loader->addPath('./Views/Shared');
         $this->Twig = new Twig_Environment($Loader, array(
                 //FIXME: 'cache' => './Libraries/Twig/cache',
         ));

@@ -1,0 +1,56 @@
+{# Views/Shared/base.html.twig #}
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>The Almighty App For All Things Project</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<script type="text/javascript" src="/js/Include.php"></script>
+		<link rel="stylesheet" type="text/css" href="/Theme/Default/Default/style.css" />
+		<link rel="stylesheet" type="text/css" media="print" href="/Theme/Default/Default/style-print.css" />
+		<style type='text/css'>
+			.ProjectDetails .ProjectContainer table tbody tr td {
+				border:					none;
+			}
+			.CSearch_Pages {
+				background:				#ffffff !important;
+				font-family:			myriad-pro;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="CPageNotice"></div>
+		<div id="CLoading">Loading</div>
+
+		<div class="HeaderWrapper">
+			<div class="Header">
+				<div class="HeaderLogo" onClick="CModule.Load('Dashboard');"></div>
+				<div class="HeaderNav">{% block headerRightMenu %}{% endblock %}</div>
+			</div>
+		</div>
+		
+		<div class="BodyWrapper">
+			<div class="Body">
+				<ul class="Sidebar">
+					{% block sidebar %} {% endblock %}					
+				</ul>
+				
+				<div class="Content">
+					{% block mainContent %}{% endblock %}
+					<div style="clear: both"></div>
+				</div>
+
+				<div style="clear: both"></div>
+			</div>
+		</div>
+		
+		<div id='Footer'>
+			The Almighty App for All Things Project 2012
+			&nbsp;&nbsp;|&nbsp;&nbsp;
+			{% block footer %}{% endblock %}
+		</div>
+
+		<div id="CWindow_Area"></div>
+		<div id="Blackout"></div>
+	</body>
+</html>
+

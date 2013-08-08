@@ -62,10 +62,17 @@ class CSidebarMenu {
             ),
             "MilestoneList" => Array(
                 new CSidebarMenu("MilestonesImAssignedTo", "Milestones I'm assigned to", "MilestonesImAssignedTo", "View")),
-           /* "VendorsManagement" => Array(
+            "VendorsManagement" => Array(
                 new CSidebarMenu("Index", "Vendors Management Home")
-            )*/
+            )
         );
+    }
+	
+	public static function BuildProjectsFormsSideMenu() {
+        return Array(            
+            new CSidebarMenu("Form", "Private Offers", "PrivateOffers", "Form"),
+            new CSidebarMenu("Form", "Shop Online", "ShopOnline", "Form")
+            );
     }
 
 }
