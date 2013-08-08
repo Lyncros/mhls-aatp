@@ -113,6 +113,16 @@
 		function OnDelete() {
 			return CTable::Delete($this->Table, $this->ID);
 		}
+        
+        function OnDeleteLogic($ID, $UsersID, $RemoteIP) {
+			$Data = Array(
+				"Deleted"			=> time(),
+				"DeletedUsersID"	=> $UsersID,
+				"DeletedIPAddress"	=> $RemoteIP,
+			);
+
+            return CTable::Update($this->Table, $ID, $Data);
+        }
 
 		//=====================================================================
 		// Parses all Data with CDataParser, replaces Iterator with a 

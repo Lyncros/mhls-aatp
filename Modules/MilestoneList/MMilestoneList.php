@@ -16,9 +16,6 @@ class MMilestoneList extends CTemplateModule {
         $UserID = CSecurity::GetUsersID();
         $Params = array();
 
-        //FIXME
-        //$UserID = 2;
-        
         $Milestones = new CProjectsMilestones();
         if ($Milestones->OnLoadByAssignedTo($UserID)) {
 
@@ -27,38 +24,65 @@ class MMilestoneList extends CTemplateModule {
             foreach ($Milestones as $M) {
                 $ProjectID = $M["ProjectsID"];
                 if (!array_key_exists($ProjectID, $Params["Projects"])) {
-                    $Params["Projects"][$ProjectID]["DirectProjectLink"] = "http://".CURL::GetDomain()."/Projects?ID=".$ProjectID;
-                    $Params["Projects"][$ProjectID]["ProductNumber"] = $M["ProductNumber"];
-                    $Params["Projects"][$ProjectID]["School"] = $M["School"];
+                    $Params["Projects"][$ProjectID] = $this->BuildProjectData($M);
                 }
-
-                $Params["Projects"][$ProjectID]["Milestones"][$M["ID"]] = $M;
-                $Params["Projects"][$ProjectID]["Milestones"][$M["ID"]]["ToDosCompletion"] =
-                        $this->CalculateMilestoneTODOsCompletion($M["ID"]);
-                $Params["Projects"][$ProjectID]["Milestones"][$M["ID"]]["Complete"] = $this->IsComplete($M["Status"]);
+                
+                $Params["Projects"][$ProjectID]["Milestones"][$M["ID"]] = $this->BuildMilestoneData($M);
             }
 
             $Params["TotalMilestones"] = count($Milestones);
         }
-        
-        $Params["Security"]["CanEditMilestone"] = CSecurity::$User->CanAccess("Milestones", "Edit");
 
+        
         $MilestonesTODOs = new CProjectsMilestonesToDos();
         if ($MilestonesTODOs->OnloadByAssignedTo($UserID)) {
             
             $MilestonesTODOs = $MilestonesTODOs->Rows->RowsToArrayAllColumns();
 
             foreach ($MilestonesTODOs as $MT) {
+                $ProjectID = $MT["ProjectsID"];
+                if (!array_key_exists($ProjectID, $Params["Projects"])) {
+                    $Params["Projects"][$ProjectID] = $this->BuildProjectData($MT);
+                }
+                
+                $MilestoneID = $MT["MilestoneID"];
+                if (!array_key_exists($MilestoneID, $Params["Projects"][$ProjectID]["Milestones"])) {
+                    $Milestones = new CProjectsMilestones();
+                    $Milestones->OnLoadByID($MilestoneID);
+                    $MDataArray = $Milestones->Rows->RowsToArrayAllColumns();
+                    $MData = $MDataArray[$MilestoneID];
+                    
+                    $Params["Projects"][$ProjectID]["Milestones"][$MilestoneID] = $this->BuildMilestoneData($MData);
+                }
+                
                 $Params["Projects"][$MT["ProjectsID"]]["Milestones"][$MT["MilestoneID"]]["ToDos"][$MT["ID"]] = $MT;
             }
             $Params["TotalToDos"] = count($MilestonesTODOs);
         }
         
+        $Params["Security"]["CanEditMilestone"] = CSecurity::$User->CanAccess("Milestones", "Edit");
         $Params["Security"]["CanEditMilestoneToDo"] = CSecurity::$User->CanAccess("MilestonesToDos", "Edit");
         
         return $Params;
     }
-
+    
+    function BuildProjectData($Data) {
+        return Array(
+            "DirectProjectLink" => "http://".CURL::GetDomain()."/Projects?ID=".$Data["ProjectsID"],
+            "ProductNumber" => $Data["ProductNumber"],
+            "School" => $Data["School"],
+            );
+    }
+    
+    function BuildMilestoneData($MData) {
+        $Extra = Array(
+            "ToDosCompletion" => $this->CalculateMilestoneTODOsCompletion($MData["ID"]),
+            "Complete" => $this->IsComplete($MData["Status"]),
+        );
+        
+        return array_merge($MData, $Extra);
+    }
+    
     /**
      * Action for start editing a Milestone.
      * @return html for milestone edit form
@@ -140,7 +164,7 @@ class MMilestoneList extends CTemplateModule {
         $Params["M"] = $Data;
         $Params["M"]["ID"] = $MilestoneID;
         $Params["M"]["ToDosCompletion"] = $this->CalculateMilestoneTODOsCompletion($MilestoneID);
-        $Params["M"]["Complete"] = $Data["Status"];
+        $Params["M"]["Complete"] = ($Data["Status"] == 1);
         $Params["Security"]["CanEditMilestone"] = CSecurity::$User->CanAccess("Milestones", "Edit");
 
         $Template = $this->LoadTemplate("MilestonesImAssignedToRow");
@@ -183,10 +207,21 @@ class MMilestoneList extends CTemplateModule {
         $CProjectsMilestones = new CProjectsMilestones();
         $MilestoneID = intval($_POST["MilestoneID"]);
 
-        if ($CProjectsMilestones->DeleteMilestone($MilestoneID, CSecurity::GetUsersID(), $_SERVER["REMOTE_ADDR"])) {
+        if ($CProjectsMilestones->OnDeleteLogic($MilestoneID, CSecurity::GetUsersID(), $_SERVER["REMOTE_ADDR"])) {
             return Array(1, "Milestone deleted successfully");
         } else {
             return Array(0, "Error deleting Milestone");
+        }
+    }
+    
+     function DeleteMilestoneToDo() {
+        $CProjectsMilestonesToDos = new CProjectsMilestonesToDos();
+        $MilestoneToDoID = intval($_POST["MilestoneToDoID"]);
+
+        if ($CProjectsMilestonesToDos->OnDeleteLogic($MilestoneToDoID, CSecurity::GetUsersID(), $_SERVER["REMOTE_ADDR"])) {
+            return Array(1, "Milestone ToDo deleted successfully");
+        } else {
+            return Array(0, "Error deleting Milestone ToDo");
         }
     }
 

@@ -20,7 +20,7 @@
             <div class="Button" value="Save" onClick="MMilestoneList.saveMilestoneToDo({{ToDo.ID}}, '{{GetPrefix()}}');">save</div>
             <div class="Button" value="Cancel" onClick="MMilestoneList.cancelEditToDo({{ToDo.ID}});">cancel</div>
             {% if Security.CanDeleteMilestoneToDo %}
-            <div class="Button" value="Delete" onClick="MMilestoneList.deleteToDo({{ToDo.ID}});">delete</div>
+            <div class="Button" value="Delete" onClick="MMilestoneList.deleteMilestoneToDo({{ToDo.ID}});">delete</div>
             {% endif %}
         </td>
     </tr>

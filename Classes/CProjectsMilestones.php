@@ -54,16 +54,6 @@
 			}
         }
         
-        function DeleteMilestone($MilestoneID, $UsersID, $RemoteIP) {
-			$Data = Array(
-				"Deleted"			=> time(),
-				"DeletedUsersID"	=> $UsersID,
-				"DeletedIPAddress"	=> $RemoteIP,
-			);
-
-            return CTable::Update("ProjectsMilestones", $MilestoneID, $Data);
-        }
-		
 		//======================================================================
 		function IsComplete() {
 			return $this->Status && $this->Status == "Complete";

@@ -2,7 +2,7 @@
  * JavaScript file for ModuleList module.
  */
 
-var SLIDE_DURATION = 800;
+var EFFECT_DURATION = 800;
 
 MMilestoneList = {};
 
@@ -56,7 +56,7 @@ MMilestoneList.deleteMilestone = function(MilestoneID) {
 	if(confirm("Are you sure you want to delete this Milestone?")) {
 		if(CForm.Submit('MilestoneList', 'Module', 'DeleteMilestone', '', function(Code, Content) {
             MMilestoneList.hideEditMilestone(MilestoneID);
-            $('#MilestoneRowContainer' + MilestoneID).empty();
+            MMilestoneList.fadeOutAndEmpty('MilestoneRowContainer' + MilestoneID);
             
 			return true;
 		}, Params) == false) {
@@ -121,8 +121,8 @@ MMilestoneList.deleteMilestoneToDo = function(MilestoneToDoID) {
 	
 	if(confirm("Are you sure you want to delete this Milestone ToDo?")) {
 		if(CForm.Submit('MilestoneList', 'Module', 'DeleteMilestoneToDo', '', function(Code, Content) {
-            MMilestoneList.hideEditMilestone(MilestoneToDoID);
-            $('#MilestoneToDoContainer' + MilestoneToDoID).empty();
+            MMilestoneList.hideEditToDo(MilestoneToDoID);
+            MMilestoneList.fadeOutAndEmpty('MilestoneToDoContainer' + MilestoneToDoID);
             
 			return true;
 		}, Params) == false) {
@@ -140,11 +140,17 @@ MMilestoneList.hideEditToDo = function(MilestoneToDoId) {
 
 MMilestoneList.slideDownAndShow = function (Id, Content) {
     $('#' + Id).html(Content);
-    $('#' + Id).slideDown(SLIDE_DURATION);
+    $('#' + Id).slideDown(EFFECT_DURATION);
 };
 
 MMilestoneList.slideUpAndEmpty = function(Id) {
-    $('#' + Id).slideUp(SLIDE_DURATION, function () {
+    $('#' + Id).slideUp(EFFECT_DURATION, function () {
+        $('#' + Id).empty();
+    });
+};
+
+MMilestoneList.fadeOutAndEmpty = function (Id) {
+    $('#' + Id).fadeOut(EFFECT_DURATION, function () {
         $('#' + Id).empty();
     });
 };
