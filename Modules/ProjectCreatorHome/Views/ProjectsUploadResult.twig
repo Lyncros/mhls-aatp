@@ -6,11 +6,12 @@
     </tr>
 </table>
 
+{% if errors %}
 <p class="ShopOnlineResultSubtitle">Errors</p>
 <table class="ShopOnlineErrorTable" width="50%">
     <tr><th>Project ISBN</th><th>Errors</th></tr>
     {% for project in errors %}
-    <tr class="ShopOnlineErrorRowEven">
+    <tr class="{{ loop.index is even ? 'ShopOnlineErrorRowEven' : 'ShopOnlineErrorRowOdd'}}">
         <td><p>{{project.ISBN}}</p></td>
         <td>
             <ul>
@@ -22,5 +23,6 @@
     </tr>
     {% endfor %}
 </table>
+{% endif %}
 
 <div class="Button" style="margin-top: 5px; margin-bottom: 20px" value="close" onClick="MProjectCreator.hideUploadResults();">close</div>

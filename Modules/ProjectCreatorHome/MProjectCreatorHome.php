@@ -27,9 +27,8 @@ class MProjectCreatorHome extends CUnauthorizedModule {
     function IndexParams() {
         $data = array();
         $data['activeSidebarNode'] = '';
-        $data['menuItems'] = CSidebarMenu::BuildProjectsFormsSideMenu();
 
-        return $data;
+        return array_merge($data, $this->BuildDefaultParams());
     }
 
     function ShopOnlineParams() {
@@ -37,6 +36,7 @@ class MProjectCreatorHome extends CUnauthorizedModule {
 
         $Users = CUsers::GetAllAssignableToMilestone();
         $UsersArray = Array(0 => "Nobody") + $Users->RowsToAssociativeArrayWithMultipleColumns("LastName,FirstName");
+        
         $data["Users"] = $UsersArray;
         $data["ISBNTypes"] = CProjectsShopOnline::GetISBNTypes();
         $data['activeSidebarNode'] = 'ShopOnline';

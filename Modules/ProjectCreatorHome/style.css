@@ -7,7 +7,7 @@
 
 th {
     text-align:         center;
-    background-color:   #ffcccc;
+    background-color:   #d1d1d1;
 }
 
 .ShopOnlineResultTitle {
@@ -39,12 +39,12 @@ th {
 }
 
 .ShopOnlineErrorRowOdd {
-    background-color:   #ff3333;
+    background-color:   #ffcccc;
     border-spacing:     0px;
 }
 
 .ShopOnlineErrorRowEven {
-    background-color:   #ff6666;
+    background-color:   #ff9999;
     border-bottom:      1px solid #d1d1d1;
 }
 
