@@ -4,10 +4,6 @@
 		// CModule Overrides //
 		//-------------------//
 		
-		function OnAJAX($Action) {			
-			return Array(1, "");
-		}
-		
 		function OnRender() {
 			$Action = $this->GetActionName();
 			

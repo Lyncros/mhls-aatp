@@ -200,6 +200,11 @@
 	padding-right:		20px;
 }
 
+.CForm_Upload_Textbox {
+    width:              30%;
+    vertical-align:     top;
+}
+
 .CForm_Upload_Icon_Done {
 	float:				right;
 

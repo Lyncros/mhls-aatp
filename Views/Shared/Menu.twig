@@ -1,9 +1,14 @@
-{% for menuItem in menuItems %}
+{% for moduleName, actions in menuItems %}
 
-<li class="{{ activeSidebarNode == 'PrivateOffers'?'SidebarActive':''}}">
-	<div style="text-align:center;line-height: 13px;padding-top: 5px;">Private Offers</div>
-    <div class="SuperToolsSidebarIcon SidebarIcon" onClick="CModule.Load('PrivateOffers', {'Page'='Form'});" title="Private Offers"></div>
+{% for action in actions %}
+
+<li class="{{ activeSidebarNode == action.name ? 'SidebarActive' : ''}}">
+	<div style="text-align:center;line-height: 13px;padding-top: 5px;">{{action.displayName}}</div>
+    <div class="SuperToolsSidebarIcon SidebarIcon" 
+         onClick="CModule.Load('{{moduleName}}', {'Page' : '{{action.name}}'});" title="{{action.displayName}}"></div>
 </li>
 <li style='padding-left:2px; height:2px;'><div class='SidebarSeparator'></div></li>
+
+{% endfor %}
 
 {% endfor %}

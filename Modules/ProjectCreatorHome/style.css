@@ -1,0 +1,50 @@
+/* 
+    Document   : style
+    Created on : Aug 9, 2013, 1:50:15 PM
+    Author     : jarias
+    Description: Style sheet for ProjectCreatorHome pages and templates.
+*/
+
+th {
+    text-align:         center;
+    background-color:   #ffcccc;
+}
+
+.ShopOnlineResultTitle {
+    font-size:          24px;
+}
+
+.ShopOnlineResultSubtitle {
+    font-size:          18px;
+}
+
+.ShopOnlineButton {
+    margin-top:         5px;
+    margin-bottom:      20px;
+}
+
+.ShopOnlineUploadResultsContainer {
+    border:             1px solid #e1e1e1;
+    background-color:   #ffffff;
+    padding:            5px;
+}
+
+.ShopOnlineSuccess {
+    color:              #48B01C;
+    font-weight:        bold;
+}
+
+.ShopOnlineErrorTable {
+    border-spacing:     0px;
+}
+
+.ShopOnlineErrorRowOdd {
+    background-color:   #ff3333;
+    border-spacing:     0px;
+}
+
+.ShopOnlineErrorRowEven {
+    background-color:   #ff6666;
+    border-bottom:      1px solid #d1d1d1;
+}
+

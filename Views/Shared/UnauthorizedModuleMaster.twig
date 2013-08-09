@@ -5,9 +5,23 @@
 		<title>The Almighty App For All Things Project</title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8">
 		<script type="text/javascript" src="/js/Include.php"></script>
-		<link rel="stylesheet" type="text/css" href="/Theme/Default/Default/style.css" />
+        
+        {% for js in jsFiles %}
+        <script type="text/javascript" src="{{js}}"></script>
+        {% endfor %}
+		
+        <link rel="stylesheet" type="text/css" href="/Theme/Default/Default/style.css" />
+        <link rel="stylesheet" type="text/css" href="/Theme/Default/Default/CForm.css" />
+        <link rel="stylesheet" type="text/css" href="/Theme/Default/Default/CPageNotice.css" />
+        <link rel="stylesheet" type="text/css" href="/Theme/Default/Default/jqueryui/ui.all.css" />
+        <link rel="stylesheet" type="text/css" href="/Theme/Default/Default/Select2.css" />
 		<link rel="stylesheet" type="text/css" media="print" href="/Theme/Default/Default/style-print.css" />
-		<style type='text/css'>
+        
+        {% for css in cssFiles %}
+        <link rel="stylesheet" type="text/css" href="{{css}}" />
+        {% endfor %}
+		
+        <style type='text/css'>
 			.ProjectDetails .ProjectContainer table tbody tr td {
 				border:					none;
 			}
@@ -31,7 +45,7 @@
 		<div class="BodyWrapper">
 			<div class="Body">
 				<ul class="Sidebar">
-					{% block sidebar %} {% endblock %}					
+					{% block sidebar %}{% include 'Menu.twig' %}{% endblock %}					
 				</ul>
 				
 				<div class="Content">

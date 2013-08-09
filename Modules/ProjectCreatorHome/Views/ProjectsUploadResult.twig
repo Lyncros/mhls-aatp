@@ -1,0 +1,26 @@
+<p class="ShopOnlineResultTitle">Upload results</p>
+
+<table width="100%">
+    <tr>
+        <td style="border-bottom: 1px solid #d1d1d1;"><p class="ShopOnlineSuccess">{{created}} projects from CSV file created successfully.</p></td>
+    </tr>
+</table>
+
+<p class="ShopOnlineResultSubtitle">Errors</p>
+<table class="ShopOnlineErrorTable" width="50%">
+    <tr><th>Project ISBN</th><th>Errors</th></tr>
+    {% for project in errors %}
+    <tr class="ShopOnlineErrorRowEven">
+        <td><p>{{project.ISBN}}</p></td>
+        <td>
+            <ul>
+            {% for detail in project.details %}
+                <li>{{detail}}</li>
+            {% endfor %}
+            </ul>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<div class="Button" style="margin-top: 5px; margin-bottom: 20px" value="close" onClick="MProjectCreator.hideUploadResults();">close</div>

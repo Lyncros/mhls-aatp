@@ -73,14 +73,14 @@
 		"CKeyboard.js",
 		"CModule.js",
 		"CRefresh.js",
-		"CWindow.js"
+		"CWindow.js",
+		"CPageNotice.js"
 	);
 
 	if(CSecurity::IsLoggedIn()) {
 		$Files[] = "CSecurity.js";
 		$Files[] = "CBannedIPs.js";
 		$Files[] = "CMenu.js";
-		$Files[] = "CPageNotice.js";
 		$Files[] = "CPlugin.js";
 		$Files[] = "CSearch.js";
 		$Files[] = "CSideBar.js";

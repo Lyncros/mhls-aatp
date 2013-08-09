@@ -171,5 +171,10 @@
 		public static function GetAllUsersOrderedByLastName($UsersGroups) {
 			return CTable::Select("Users","WHERE `UsersGroupsID` IN (".implode(",", $UsersGroups->RowsToArray("ID")).") && `Active` = 1 ORDER BY `LastName`");
 		}
+        
+        public static function GetIdUserWithName($Fullname) {
+            //TODO: Search for the full name in the database and return the ID of the user or 0 if not found.
+            return 1;
+        }
 	};
 ?>

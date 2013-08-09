@@ -138,12 +138,13 @@
 			return $Return;
 		}
 		
-		function RowsToAssociativeArrayWithMultipleColumns($Columns, $IDColumn = "ID") {
+		function RowsToAssociativeArrayWithMultipleColumns($Columns, $IDColumns = "ID") {
 			$Return = Array();
 
+            $IDColumnsArray = explode(",", $IDColumns);
 			$ColumnsArray = explode(",",$Columns);
 			foreach($this as $Row) {
-				$Return[$Row->{$IDColumn}] = $this->ConcatColumnValues($Row, $ColumnsArray);
+				$Return[$this->ConcatColumnValues($Row, $IDColumnsArray)] = $this->ConcatColumnValues($Row, $ColumnsArray);
 			}
 
 			return $Return;

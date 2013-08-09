@@ -44,13 +44,13 @@
                 
 				CTable::Add("ProjectsMilestonesChanges", $ChangeData);
 				
-                return CTable::Update("ProjectsMilestones", $MilestoneID, $Data);
+                return CTable::Update($this->Table, $MilestoneID, $Data);
 			} else {
 				$Data["Created"]				= time();
 				$Data["CreatedUsersID"]			= CSecurity::GetUsersID();
 				$Data["CreatedIPAddress"]		= $Extra["REMOTE_ADDR"];
 				
-                return CTable::Add("ProjectsMilestones", $Data);
+                return CTable::Add($this->Table, $Data);
 			}
         }
         

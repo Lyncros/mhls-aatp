@@ -1143,10 +1143,10 @@
 			}
 
 			$Content .= "
-				<div id='".self::$Prefix.$FormName."_SWFUpload_Icon' class='CForm_Upload_Icon'></div>
+				<input type='text' readonly='true' class='CForm_Textbox CForm_Upload_Textbox' name='".self::$Prefix.$FormName."Original' id='".self::$Prefix.$FormName."Original'/>
 				<span class='CForm_Upload_Button' id='".self::$Prefix.$FormName."_SWFUpload' rel='SWFUpload'></span>
+				<div id='".self::$Prefix.$FormName."_SWFUpload_Icon' class='CForm_Upload_Icon'></div>
 				<input type='hidden' name='".self::$Prefix.$FormName."' id='".self::$Prefix.$FormName."' title='".$Error."'/>
-				<input type='hidden' name='".self::$Prefix.$FormName."Original' id='".self::$Prefix.$FormName."Original'/>
 
 				<script language='Javascript'>CForm.AddUploadControl('".self::$Prefix.$FormName."_SWFUpload', '".self::$Prefix.$FormName."', '$Location');</script>
 			";

@@ -67,12 +67,14 @@ class CSidebarMenu {
             ),*/
         );
     }
-	
-	public static function BuildProjectsFormsSideMenu() {
-        return Array(            
-            new CSidebarMenu("Form", "Private Offers", "PrivateOffers", "Form"),
-            new CSidebarMenu("Form", "Shop Online", "ShopOnline", "Form")
-            );
+
+    public static function BuildProjectsFormsSideMenu() {
+        return Array(
+            "ProjectCreatorHome" => Array(
+                new CSidebarMenu("PrivateOffers", "Private Offers"),
+                new CSidebarMenu("ShopOnline", "Shop Online"),
+            )
+        );
     }
 
 }
