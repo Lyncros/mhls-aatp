@@ -33,7 +33,7 @@
 				}
 
 				if(move_uploaded_file($TempFile, CData::$PathTemp.$Filename) == false) {
-					return Array(0, "");
+					return Array(0, "Cannot save the uploaded file. Contact your server adminstrator.");
 				}
 
 				return Array(1, $Filename);
