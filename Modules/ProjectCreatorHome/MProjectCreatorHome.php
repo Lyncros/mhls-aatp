@@ -19,7 +19,7 @@ class MProjectCreatorHome extends CUnauthorizedModule {
     function BuildDefaultParams() {
         return Array(
             "menuItems" => CSidebarMenu::BuildProjectsFormsSideMenu(),
-            "jsFiles" => Array("./Modules/ProjectCreatorHome/MProjectCreator.js"),
+            "jsFiles" => Array("./Modules/ProjectCreatorHome/MProjectCreatorHome.js"),
             "cssFiles" => Array("./Modules/ProjectCreatorHome/style.css"),
         );
     }
