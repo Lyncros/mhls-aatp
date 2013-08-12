@@ -1,14 +1,29 @@
-<p class="ShopOnlineResultTitle">Upload results</p>
-
-<table width="100%">
+<div id="UploadResultContainer" class="ShopOnlineUploadResultsContainer">
+<table>
     <tr>
-        <td style="border-bottom: 1px solid #d1d1d1;"><p class="ShopOnlineSuccess">{{created}} projects from CSV file created successfully.</p></td>
+        <td class="UploadResultDataTitle">File:&nbsp;</td>
+        <td>{{filename}}</td>
+    </tr>
+    <tr>
+        <td class="UploadResultDataTitle">File size:&nbsp;</td>
+        <td>{{filesize}}&nbsp;bytes</td>
+    </tr>
+    <tr>
+        <td class="UploadResultDataTitle">Total rows processed:&nbsp;</td>
+        <td>{{processed}}</td>
+    </tr>
+    <tr>
+        <td class="UploadResultDataTitle">Projects with errors (details below):&nbsp;</td>
+        <td>{{errors | length}}</td>
+    </tr>
+    <tr>
+        <td colspan="2" style="border-bottom: 1px solid #d1d1d1;">
+            <p class="ShopOnlineSuccess">{{created}} projects from CSV file created successfully.</p></td>
     </tr>
 </table>
-
 {% if errors %}
 <p class="ShopOnlineResultSubtitle">Errors</p>
-<table class="ShopOnlineErrorTable" width="50%">
+<table class="ShopOnlineErrorTable">
     <tr><th>Project ISBN</th><th>Errors</th></tr>
     {% for project in errors %}
     <tr class="{{ loop.index is even ? 'ShopOnlineErrorRowEven' : 'ShopOnlineErrorRowOdd'}}">
@@ -23,6 +38,7 @@
     </tr>
     {% endfor %}
 </table>
+{% else %}
+No errors.
 {% endif %}
-
-<div class="Button" style="margin-top: 5px; margin-bottom: 20px" value="close" onClick="MProjectCreator.hideUploadResults();">close</div>
+</div>

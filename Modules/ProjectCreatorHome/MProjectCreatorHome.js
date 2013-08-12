@@ -1,8 +1,6 @@
 /* 
  * JavaScript file for ProjectCreator module.
  */
-var EFFECT_DURATION = 800;
-
 MProjectCreator = {};
 
 MProjectCreator.createShopOnline = function(Prefix) {
@@ -16,13 +14,10 @@ MProjectCreator.createShopOnline = function(Prefix) {
 };
 
 MProjectCreator.uploadShopOnlineFile = function(Prefix) {
-    MProjectCreator.setEnableUploadButton(false);
-   
     if (CForm.Submit("ProjectCreatorHome", "Module", "UploadShopOnlineFile", Prefix, function(Code, Response) {
 
         var Parts = explode("\n", Response, 2);
-        $('#UploadResultContainer').html(Parts[1]);
-        $('#UploadResultContainer').slideDown(EFFECT_DURATION);
+        CWindow.New('Upload results', Parts[1], 400, 400);
         
         // We handle the display of success message
         return false;
@@ -32,15 +27,3 @@ MProjectCreator.uploadShopOnlineFile = function(Prefix) {
     }
     return true;
 };
-
-MProjectCreator.hideUploadResults = function() {
-    $('#UploadResultContainer').slideUp(EFFECT_DURATION, function() {
-        $('#UploadResultContainer').empty();
-        MProjectCreator.setEnableUploadButton(true);
-    });
-};
-
-MProjectCreator.setEnableUploadButton = function(value) {
-  //set enable or disable upload button  
-};
-

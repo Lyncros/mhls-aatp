@@ -5,33 +5,33 @@
     Description: Style sheet for ProjectCreatorHome pages and templates.
 */
 
-th {
-    text-align:         center;
-    background-color:   #d1d1d1;
-}
-
-.ShopOnlineResultTitle {
-    font-size:          24px;
-}
-
-.ShopOnlineResultSubtitle {
-    font-size:          18px;
-}
-
 .ShopOnlineButton {
     margin-top:         5px;
     margin-bottom:      20px;
 }
 
 .ShopOnlineUploadResultsContainer {
-    border:             1px solid #e1e1e1;
-    background-color:   #ffffff;
-    padding:            5px;
+    font-family:        Helvetica;
+    text-align:         left;
+    padding:            25px;
+}
+
+th {
+    text-align:         center;
+    background-color:   #d1d1d1;
+}
+
+.UploadResultDataTitle {
+    font-weight:        bold;
 }
 
 .ShopOnlineSuccess {
     color:              #48B01C;
     font-weight:        bold;
+}
+
+.ShopOnlineResultSubtitle {
+    font-size:          18px;
 }
 
 .ShopOnlineErrorTable {
@@ -41,6 +41,7 @@ th {
 .ShopOnlineErrorRowOdd {
     background-color:   #ffcccc;
     border-spacing:     0px;
+    text-align:         left;
 }
 
 .ShopOnlineErrorRowEven {

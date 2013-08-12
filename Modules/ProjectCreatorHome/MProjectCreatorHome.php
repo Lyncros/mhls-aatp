@@ -70,11 +70,13 @@ class MProjectCreatorHome extends CUnauthorizedModule {
     }
 
     function UploadShopOnlineFile() {
-        $Filename = $_POST["Filename"];
+        $FilenameOriginal = $_POST["FilenameOriginal"];
+        $Filepath = CData::$PathTemp.$_POST["Filename"];
 
-        $FileContents = file(CData::$PathTemp . $Filename, FILE_IGNORE_NEW_LINES);
+        $FileContents = file($Filepath, FILE_IGNORE_NEW_LINES);
         $ErrorDetails = Array();
         $CreatedProjects = 0;
+        $RowsProcessed = 0;
 
         foreach ($FileContents as $Line) {
             $Values = $this->ParseCSVLine($Line);
@@ -82,6 +84,8 @@ class MProjectCreatorHome extends CUnauthorizedModule {
             $ISBN = $Values[self::ISBN10_COL];
             //Ignore the titles line
             if (strripos($ISBN, "ISBN") === FALSE) {
+                
+                $RowsProcessed++;
 
                 $Errors = Array();
 
@@ -145,6 +149,9 @@ class MProjectCreatorHome extends CUnauthorizedModule {
         $Template = $this->LoadTemplate("ProjectsUploadResult");
 
         $Params = Array();
+        $Params["filename"] = $FilenameOriginal;
+        $Params["filesize"] = filesize($Filepath);
+        $Params["processed"] = $RowsProcessed;
         $Params["created"] = $CreatedProjects;
         $Params["errors"] = $ErrorDetails;
 
