@@ -12,6 +12,7 @@
 
 .ShopOnlineUploadResultsContainer {
     font-family:        Helvetica;
+    font-size:          12px;
     text-align:         left;
     padding:            25px;
 }
@@ -23,6 +24,11 @@ th {
 
 .UploadResultDataTitle {
     font-weight:        bold;
+}
+
+.UploadResultsBottomTD {
+    border-bottom:  1px solid #d1d1d1;    
+    text-align:         center;
 }
 
 .ShopOnlineSuccess {

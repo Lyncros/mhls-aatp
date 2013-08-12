@@ -17,8 +17,13 @@
         <td>{{errors | length}}</td>
     </tr>
     <tr>
-        <td colspan="2" style="border-bottom: 1px solid #d1d1d1;">
-            <p class="ShopOnlineSuccess">{{created}} projects from CSV file created successfully.</p></td>
+        <td colspan="2" class="UploadResultsBottomTD">
+        {% if created > 0 %}
+            <p class="ShopOnlineSuccess">{{created}} projects from CSV file created successfully.</p>
+        {% else %}
+            <p>No projects created.</p>
+        {% endif %}
+        </td>
     </tr>
 </table>
 {% if errors %}

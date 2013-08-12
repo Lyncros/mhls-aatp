@@ -130,7 +130,7 @@ class MProjectCreatorHome extends CUnauthorizedModule {
                     );
 
                     $ProjectShop = new CProjectsShopOnline();
-                    if (true) {//$ProjectShop->Save(0, $Data, $Extra)) {
+                    if ($ProjectShop->Save(0, $Data, $Extra)) {
                         $CreatedProjects++;
                     } else {
                         $Errors[] = "Could not save project in database.";
