@@ -30,7 +30,7 @@
 
 			$ID = isset($_GET["ID"]) ? intval($_GET["ID"]) : intval(@$_POST["ID"]);
 
-			if($ID > 0 && strlen($this->Classname) >= 0) {
+			if($ID > 0 && strlen($this->Classname) > 0) {
 				$this->TableObject = new $this->Classname();
 
 				if($this->TableObject->OnLoad($ID) === false) {

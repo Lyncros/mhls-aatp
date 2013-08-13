@@ -1,0 +1,42 @@
+<h1>{{projects|length}} Projects Shop Online</h1>
+<br/>
+<div id="ProjectListContainer">
+
+{% for p in projects %}
+<div class="ProjectWrapper">
+    <div class="ProjectContainer">
+        <table style="width:100%;" cellpadding="0" cellspacing="0">
+            <tr>
+                <td class="ProjectListSection">
+                    <p class="ProjectListISBN">ISBN:&nbsp;{{p.ISBN10}}</p>
+                    <p><b>Requester:</b>&nbsp;{{p.RequesterName}}</p>
+                    <p><b>e-Mail:</b>&nbsp;{{p.RequesterEmail}}</p>
+                </td>
+                <td class="ProjectListSeparator"><div class="Separator"></div></td>
+                <td class="ProjectListSection">
+                    <div class="ProjectListSectionDatesTitle">Dates</div>
+                    <p><b>Date needed:</b>&nbsp;{{ p.DateNeeded | FormatDate }}</p>
+                </td>
+                <td class="ProjectListSeparator"><div class="Separator"></div></td>
+                <td class="ProjectListSection">
+                    <div class="ProjectListSectionDetailsTitle">Project Details</div>
+                    <p><b>CA:</b>&nbsp;{{ p.ContactName }}</p>
+                </td>
+                <td class="ProjectListSeparator"><div class="Separator"></div></td>
+                <td class="ProjectListSection">
+                    <div class="ProjectListSectionMilestonesTitle">Milestones</div>
+                    <p><b>Status:</b>&nbsp;{{ GetStatusName(p.Status) }}</p>
+                </td>
+                <td class="ProjectListDetailsLink">
+                    <div onClick="MProjectsShopOnline.showProjectDetails({{p.ID}})" class='ProjectDetailsLink'></div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+{% endfor %}
+
+</div>
+
+<div id="ProjectDetailsContainer" style="display: none">
+</div>

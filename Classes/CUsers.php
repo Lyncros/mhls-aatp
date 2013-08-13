@@ -180,9 +180,26 @@
 			return CTable::Select("Users","WHERE `UsersGroupsID` IN (".implode(",", $UsersGroups->RowsToArray("ID")).") && `Active` = 1 ORDER BY `LastName`");
 		}
         
-        public static function GetIdUserWithName($Fullname) {
-            //TODO: Search for the full name in the database and return the ID of the user or 0 if not found.
-            return 1;
+        /**
+         * Searches the database for user with FirstName and LastName like the received.
+         * 
+         * @param string $FirstName first name of the user
+         * @param string $LastName last name of the user
+         * @return int ID of the unique found user, 0 if no user found, -1 if multiple users match the criteria
+         */
+        public function GetIdUserWithName($FirstName, $LastName) {
+            $this->OnLoadByQuery("SELECT `ID` FROM `$this->Table` 
+                WHERE UPPER(`FirstName`) LIKE '%".strtoupper($FirstName)."%'
+                    AND UPPER(`LastName`) LIKE '%".  strtoupper($LastName)."%'
+                    AND `Active` = 1");
+            
+            if (count($this->Rows) === 0) {
+                return 0;
+            } else if (count($this->Rows) > 1) {
+                return -1;
+            } else {
+                return intval($this->ID);
+            }
         }
 	};
 ?>

@@ -6,6 +6,11 @@
         Stylesheet for MilestoneList module.
 */
 
+h1 {
+    position: absolute; 
+    top: 0px;
+}
+
 .MilestoneWrapper {
 	position:							relative;
 	width:								756px;

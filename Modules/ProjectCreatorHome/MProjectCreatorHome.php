@@ -2,34 +2,34 @@
 
 class MProjectCreatorHome extends CUnauthorizedModule {
 
-	// Shop Online Columns
-    const SO_ISBN10_COL 			= 0;
-    const SO_AUTHOR_COL 			= 1;
-    const SO_REQUESTER_NAME_COL 	= 2;
-    const SO_REQUESTER_EMAIL_COL 	= 3;
-    const SO_DATE_NEEDED_COL 		= 4;
-    const SO_CREATIVE_USER_COL 		= 5;
-    const SO_COMMENTS_COL 			= 6;
-    const SO_CUSTOM_COVER_URL_COL 	= 7;
-    const SO_ISBN_TYPE_COL 			= 8;
+    // Shop Online Columns
+    const SO_ISBN10_COL = 0;
+    const SO_AUTHOR_COL = 1;
+    const SO_REQUESTER_NAME_COL = 2;
+    const SO_REQUESTER_EMAIL_COL = 3;
+    const SO_DATE_NEEDED_COL = 4;
+    const SO_CREATIVE_USER_COL = 5;
+    const SO_COMMENTS_COL = 6;
+    const SO_CUSTOM_COVER_URL_COL = 7;
+    const SO_ISBN_TYPE_COL = 8;
 
-	// Private Offer Columns
-	const PO_PROJECT_NUMBER_COL 	= 0;
-	const PO_ISBN_COL 				= 1;
-	const PO_CONNECT_PLUS_ISBN_COL 	= 2;
-	const PO_REQUESTER_NAME_COL 	= 3;
-    const PO_REQUESTER_EMAIL_COL 	= 4;
-	const PO_LSC_COL				= 5;
-	const PO_DATE_NEEDED_COL 		= 6;
-	const PO_CREATIVE_CONTACT_COL 	= 7;
-	const PO_CONNECTION_TYPE_COL	= 8;
-	const PO_SCHOOL_NAME_COL		= 9;
-	const PO_SCHOOL_CITY_COL		= 10;
-	const PO_CAMPUS_NAME_COL		= 11;
-	const PO_DURATION_COL			= 12;
-	const PO_PRICE_TYPE_COL			= 13;
-	const PO_PRICE_COL				= 14;
-	
+    // Private Offer Columns
+    const PO_PROJECT_NUMBER_COL = 0;
+    const PO_ISBN_COL = 1;
+    const PO_CONNECT_PLUS_ISBN_COL = 2;
+    const PO_REQUESTER_NAME_COL = 3;
+    const PO_REQUESTER_EMAIL_COL = 4;
+    const PO_LSC_COL = 5;
+    const PO_DATE_NEEDED_COL = 6;
+    const PO_CREATIVE_CONTACT_COL = 7;
+    const PO_CONNECTION_TYPE_COL = 8;
+    const PO_SCHOOL_NAME_COL = 9;
+    const PO_SCHOOL_CITY_COL = 10;
+    const PO_CAMPUS_NAME_COL = 11;
+    const PO_DURATION_COL = 12;
+    const PO_PRICE_TYPE_COL = 13;
+    const PO_PRICE_COL = 14;
+
     function __construct() {
         parent::__construct("./Modules/ProjectCreatorHome/Views");
     }
@@ -49,16 +49,16 @@ class MProjectCreatorHome extends CUnauthorizedModule {
         return array_merge($data, $this->BuildDefaultParams());
     }
 
-	///////////////////////////////////////////////
-	////////         SHOP ONLINE      /////////////
-	///////////////////////////////////////////////
-	
+    ///////////////////////////////////////////////
+    ////////         SHOP ONLINE      /////////////
+    ///////////////////////////////////////////////
+
     function ShopOnlineParams() {
         $data = array();
 
         $Users = CUsers::GetAllAssignableToMilestone();
         $UsersArray = Array(0 => "Nobody") + $Users->RowsToAssociativeArrayWithMultipleColumns("LastName,FirstName");
-        
+
         $data["Users"] = $UsersArray;
         $data["ISBNTypes"] = CProjectsShopOnline::GetISBNTypes();
         $data['activeSidebarNode'] = 'ShopOnline';
@@ -93,7 +93,7 @@ class MProjectCreatorHome extends CUnauthorizedModule {
 
     function UploadShopOnlineFile() {
         $FilenameOriginal = $_POST["FilenameOriginal"];
-        $Filepath = CData::$PathTemp.$_POST["Filename"];
+        $Filepath = CData::$PathTemp . $_POST["Filename"];
 
         $FileContents = file($Filepath, FILE_IGNORE_NEW_LINES);
         $ErrorDetails = Array();
@@ -106,33 +106,15 @@ class MProjectCreatorHome extends CUnauthorizedModule {
             $ISBN = $Values[self::SO_ISBN10_COL];
             //Ignore the titles line
             if (strripos($ISBN, "ISBN") === FALSE) {
-                
-                $RowsProcessed++;
 
+                $RowsProcessed++;
                 $Errors = Array();
 
-                $Email = $Values[self::SO_REQUESTER_EMAIL_COL];
-                if (!CValidate::Email($Email)) {
-                    $Errors[] = "Invalid e-mail address: '$Email'.\n";
-                }
-
-                $DateNeededStr = $Values[self::SO_DATE_NEEDED_COL];
-                $DateNeeded = strtotime($DateNeededStr);
-                if ($DateNeeded === FALSE) {
-                    $Errors[] = "Invalid date needed: '$DateNeededStr'.\n";
-                }
-
-                $Fullname = $Values[self::SO_CREATIVE_USER_COL];
-                $UsersID = CUsers::GetIdUserWithName($Fullname);
-
-                if (!is_int($UsersID) || (is_int($UsersID) && $UsersID < 1)) {
-                    $Errors[] = "Creative Analyst not found for name: '$Fullname'.\n";
-                }
-
-                $ISBNType = $Values[self::SO_ISBN_TYPE_COL];
-                if (array_search($ISBNType, CProjectsShopOnline::GetISBNTypes()) === FALSE) {
-                    $Errors[] = "Invalid ISBN Type: '$ISBNType'.\n";
-                }
+                $this->ValidateISBN($ISBN, $Errors);
+                $Email = $this->ValidateEmail($Values, $Errors);
+                $DateNeeded = $this->ValidateDateNeeded($Values, $Errors);
+                $UsersID = $this->ValidateUsersID($Values, $Errors);
+                $ISBNType = $this->ValidateISBNType($Values, $Errors);
 
                 if (empty($Errors)) {
                     $Data = Array(
@@ -179,22 +161,22 @@ class MProjectCreatorHome extends CUnauthorizedModule {
 
         return Array(1, Array("", $Template->render($Params)));
     }
-	
-	///////////////////////////////////////////////
-	////////       PRIVATE OFFER      /////////////
-	///////////////////////////////////////////////
-	
-	function PrivateOfferParams() {
+
+    ///////////////////////////////////////////////
+    ////////       PRIVATE OFFER      /////////////
+    ///////////////////////////////////////////////
+
+    function PrivateOfferParams() {
         $data = array();
-		
-		$LSCs = new CUsers();
+
+        $LSCs = new CUsers();
         $LSCs->LoadAllOfGroup('Learning Solutions Consultant');
         $data["LSCs"] = Array(0 => "Nobody") + $LSCs->Rows->RowsToAssociativeArrayWithMultipleColumns("LastName,FirstName");
-        
-		$CreativeContacts = new CUsers();
-		$CreativeContacts->LoadAllOfGroup('Creative Contact');
+
+        $CreativeContacts = new CUsers();
+        $CreativeContacts->LoadAllOfGroup('Creative Contact');
         $data["CreativeContacts"] = Array(0 => "Nobody") + $CreativeContacts->Rows->RowsToAssociativeArrayWithMultipleColumns("LastName,FirstName");
-		        
+
         $data['activeSidebarNode'] = 'PrivateOffer';
 
         return array_merge($data, $this->BuildDefaultParams());
@@ -203,24 +185,24 @@ class MProjectCreatorHome extends CUnauthorizedModule {
     function CreatePrivateOffer() {
         $Data = Array(
             "ProjectNumber" => intval($_POST["ProjectNumber"]),
-			"ISBN" => htmlspecialchars($_POST["ISBN"]),
-			"ConnectPlusISBN" => htmlspecialchars($_POST["ConnectPlusISBN"]),            
+            "ISBN" => htmlspecialchars($_POST["ISBN"]),
+            "ConnectPlusISBN" => htmlspecialchars($_POST["ConnectPlusISBN"]),
             "RequesterName" => htmlspecialchars($_POST["RequesterName"]),
             "RequesterEmail" => htmlspecialchars($_POST["RequesterEmail"]),
-			"LscID" => intval($_POST["LscID"]),
+            "LscID" => intval($_POST["LscID"]),
             "DateNeeded" => strtotime($_POST["DateNeeded"]),
             "CreativeContactID" => intval($_POST["CreativeContactID"]),
-			"ConnectionType" => htmlspecialchars($_POST["ConnectionType"]),
+            "ConnectionType" => htmlspecialchars($_POST["ConnectionType"]),
             "SchoolName" => htmlspecialchars($_POST["SchoolName"]),
-			"SchoolCity" => htmlspecialchars($_POST["SchoolCity"]),
-			"CampusName" => htmlspecialchars($_POST["CampusName"]),
-			"Duration" => intval($_POST["Duration"]),
+            "SchoolCity" => htmlspecialchars($_POST["SchoolCity"]),
+            "CampusName" => htmlspecialchars($_POST["CampusName"]),
+            "Duration" => intval($_POST["Duration"]),
             "PriceType" => htmlspecialchars($_POST["PriceType"]),
-			"Price" => floatval($_POST["Price"]),			
+            "Price" => floatval($_POST["Price"]),
         );
 
         $Extra = Array(
-            "REMOTE_ADDR" => $_SERVER["REMOTE_ADDR"],			
+            "REMOTE_ADDR" => $_SERVER["REMOTE_ADDR"],
         );
 
         $ProjectPrivateOffer = new CProjectsPrivateOffer();
@@ -237,7 +219,7 @@ class MProjectCreatorHome extends CUnauthorizedModule {
         $FileContents = file(CData::$PathTemp . $Filename, FILE_IGNORE_NEW_LINES);
         $ErrorDetails = Array();
         $CreatedProjects = 0;
-		
+
         foreach ($FileContents as $Line) {
             $Values = $this->ParseCSVLine($Line);
 
@@ -246,33 +228,33 @@ class MProjectCreatorHome extends CUnauthorizedModule {
             if (is_numeric($ProjectNumber)) {
 
                 $Errors = $this->ProjectPrivateOfferCheckMandatoryFields($Values);
-				
-				if(CProjectsPrivateOffer::ExistsWithProjectNumber($ProjectNumber)){
-				    $Errors[] = "Duplicated project Number: '$ProjectNumber'.\n";
-				}
-					
-				$ISBN = $Values[self::PO_ISBN_COL];
-				if(CProjectsPrivateOffer::ExistsWithISBN($ISBN)){
-				    $Errors[] = "Duplicated ISBN: '$ISBN'.\n";
-				}
-				
-				$ConnectPlusISBN = $Values[self::PO_CONNECT_PLUS_ISBN_COL];
-				if(CProjectsPrivateOffer::ExistsWithConnectPlusISBN($ConnectPlusISBN)){
-				    $Errors[] = "Duplicated Connect Plus ISBN: '$ConnectPlusISBN'.\n";
-				}
-				
-				$Email = $Values[self::PO_REQUESTER_EMAIL_COL];
+
+                if (CProjectsPrivateOffer::ExistsWithProjectNumber($ProjectNumber)) {
+                    $Errors[] = "Duplicated project Number: '$ProjectNumber'.\n";
+                }
+
+                $ISBN = $Values[self::PO_ISBN_COL];
+                if (CProjectsPrivateOffer::ExistsWithISBN($ISBN)) {
+                    $Errors[] = "Duplicated ISBN: '$ISBN'.\n";
+                }
+
+                $ConnectPlusISBN = $Values[self::PO_CONNECT_PLUS_ISBN_COL];
+                if (CProjectsPrivateOffer::ExistsWithConnectPlusISBN($ConnectPlusISBN)) {
+                    $Errors[] = "Duplicated Connect Plus ISBN: '$ConnectPlusISBN'.\n";
+                }
+
+                $Email = $Values[self::PO_REQUESTER_EMAIL_COL];
                 if (!CValidate::Email($Email)) {
                     $Errors[] = "Invalid e-mail address: '$Email'.\n";
                 }
 
-				$LSCFullname = $Values[self::PO_LSC_COL];
+                $LSCFullname = $Values[self::PO_LSC_COL];
                 $LscID = CUsers::GetIdUserWithName($LSCFullname);
 
                 if (!is_int($LscID) || (is_int($LscID) && $LscID < 1)) {
                     $Errors[] = "User not found for name: '$LSCFullname'.\n";
                 }
-				
+
                 $DateNeededStr = $Values[self::PO_DATE_NEEDED_COL];
                 $DateNeeded = strtotime($DateNeededStr);
                 if ($DateNeeded === FALSE) {
@@ -290,39 +272,39 @@ class MProjectCreatorHome extends CUnauthorizedModule {
                 if (array_search($ConnectionType, CProjectsPrivateOffer::GetConnectionTypes()) === FALSE) {
                     $Errors[] = "Invalid Connection Type: '$ConnectionType'.\n";
                 }
-				
-				$Duration = intval($Values[self::PO_DURATION_COL]);
-				if (!is_int($Duration) || (is_int($Duration) && $Duration < 0)) {
+
+                $Duration = intval($Values[self::PO_DURATION_COL]);
+                if (!is_int($Duration) || (is_int($Duration) && $Duration < 0)) {
                     $Errors[] = "Duration must be expressed in day numbers, not as: '$Duration'.\n";
                 }
 
-				$PriceType = $Values[self::PO_PRICE_TYPE_COL];
+                $PriceType = $Values[self::PO_PRICE_TYPE_COL];
                 if (array_search($PriceType, CProjectsPrivateOffer::GetPriceTypes()) === FALSE) {
                     $Errors[] = "Invalid Price Type: '$PriceType'.\n";
                 }
-				
-				$Price = floatval($Values[self::PO_PRICE_COL]);
-				if (!is_float($Price) || (is_float($Price) && $Price < 0)) {
+
+                $Price = floatval($Values[self::PO_PRICE_COL]);
+                if (!is_float($Price) || (is_float($Price) && $Price < 0)) {
                     $Errors[] = "Price must be a number equal or greater than 0, can't parse: '$Duration'.\n";
                 }
-				
+
                 if (empty($Errors)) {
                     $Data = Array(
-						"ProjectNumber" => $ProjectNumber,
+                        "ProjectNumber" => $ProjectNumber,
                         "ISBN" => $ISBN,
-						"ConnectPlusISBN" => $ConnectPlusISBN,
-						"RequesterName" => $Values[self::PO_REQUESTER_NAME_COL],
+                        "ConnectPlusISBN" => $ConnectPlusISBN,
+                        "RequesterName" => $Values[self::PO_REQUESTER_NAME_COL],
                         "RequesterEmail" => $Email,
-						"LscID" => $LscID,
+                        "LscID" => $LscID,
                         "DateNeeded" => $DateNeeded,
-						"CreativeContactID" => $CreativeContactID,
-						"ConnectionType" => $ConnectionType,
-						"SchoolName" => $Values[self::PO_SCHOOL_NAME_COL],
-						"SchoolCity" => $Values[self::PO_SCHOOL_CITY_COL],
-						"CampusName" => $Values[self::PO_CAMPUS_NAME_COL],
+                        "CreativeContactID" => $CreativeContactID,
+                        "ConnectionType" => $ConnectionType,
+                        "SchoolName" => $Values[self::PO_SCHOOL_NAME_COL],
+                        "SchoolCity" => $Values[self::PO_SCHOOL_CITY_COL],
+                        "CampusName" => $Values[self::PO_CAMPUS_NAME_COL],
                         "Duration" => $Duration,
                         "PriceType" => $PriceType,
-                        "Price" => $Price                        
+                        "Price" => $Price
                     );
 
                     $Extra = Array(
@@ -333,7 +315,7 @@ class MProjectCreatorHome extends CUnauthorizedModule {
                     if ($ProjectPrivateOffer->Save(0, $Data, $Extra)) {
                         $CreatedProjects++;
                     } else {
-                        $Errors[] = "Could not save project with project number: ".$ProjectNumber." in database.";
+                        $Errors[] = "Could not save project with project number: " . $ProjectNumber . " in database.";
                     }
                 }
 
@@ -354,10 +336,10 @@ class MProjectCreatorHome extends CUnauthorizedModule {
 
         return Array(1, Array("", $Template->render($Params)));
     }
-	
-	///////////////////////////////////////////////////
-	////////         PRIVATE FUNCTIONS      ///////////
-	///////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////
+    ////////         PRIVATE FUNCTIONS      ///////////
+    ///////////////////////////////////////////////////
     private function ParseCSVLine($Line) {
         $Values = str_getcsv($Line);
         $Return = Array();
@@ -368,40 +350,94 @@ class MProjectCreatorHome extends CUnauthorizedModule {
 
         return $Return;
     }
-	
-	private function ProjectPrivateOfferCheckMandatoryFields($Values)
-	{
-		$Errors = Array();
-		
-		if ($Values[self::PO_PROJECT_NUMBER_COL] == null)
-			$Errors[] = "Product Number is required.";
-		
-		if ($Values[self::PO_ISBN_COL] == null)
-			$Errors[] = "ISBN is required.";
-		
-		if ($Values[self::PO_REQUESTER_NAME_COL] == null)
-			$Errors[] = "Requester name is required.";
-		
-		if ($Values[self::PO_REQUESTER_EMAIL_COL] == null)
-			$Errors[] = "Requester email is required.";
-		
-		if ($Values[self::PO_LSC_COL] == null)
-			$Errors[] = "LSC is required.";
-		
-		if ($Values[self::PO_DATE_NEEDED_COL] == null)
-			$Errors[] = "Date needed is required.";
-		
-		if ($Values[self::PO_CREATIVE_CONTACT_COL] == null)
-			$Errors[] = "Creative Contact is required.";
-		
-		if ($Values[self::PO_PRICE_TYPE_COL] == null)
-			$Errors[] = "Price type is required.";
-		
-		if ($Values[self::PO_PRICE_COL] == null)
-			$Errors[] = "Price is required.";
-		
-		return $Errors;
-	}
+
+    private function ProjectPrivateOfferCheckMandatoryFields($Values) {
+        $Errors = Array();
+
+        if ($Values[self::PO_PROJECT_NUMBER_COL] == null)
+            $Errors[] = "Product Number is required.";
+
+        if ($Values[self::PO_ISBN_COL] == null)
+            $Errors[] = "ISBN is required.";
+
+        if ($Values[self::PO_REQUESTER_NAME_COL] == null)
+            $Errors[] = "Requester name is required.";
+
+        if ($Values[self::PO_REQUESTER_EMAIL_COL] == null)
+            $Errors[] = "Requester email is required.";
+
+        if ($Values[self::PO_LSC_COL] == null)
+            $Errors[] = "LSC is required.";
+
+        if ($Values[self::PO_DATE_NEEDED_COL] == null)
+            $Errors[] = "Date needed is required.";
+
+        if ($Values[self::PO_CREATIVE_CONTACT_COL] == null)
+            $Errors[] = "Creative Contact is required.";
+
+        if ($Values[self::PO_PRICE_TYPE_COL] == null)
+            $Errors[] = "Price type is required.";
+
+        if ($Values[self::PO_PRICE_COL] == null)
+            $Errors[] = "Price is required.";
+
+        return $Errors;
+    }
+
+    private function ValidateISBN($ISBN, &$Errors) {
+        $CProjectsShop = new CProjectsShopOnline();
+
+        if ($CProjectsShop->ISBNExists($ISBN)) {
+            $Errors[] = "ISBN already exists in database.";
+        }
+    }
+
+    private function ValidateEmail($Values, &$Errors) {
+        $Email = $Values[self::REQUESTER_EMAIL_COL];
+        if (CValidate::Email($Email)) {
+            return $Email;
+        } else {
+            $Errors[] = "Invalid e-mail address: '$Email'.";
+            return null;
+        }
+    }
+
+    private function ValidateDateNeeded($Values, &$Errors) {
+        $DateNeededStr = $Values[self::DATE_NEEDED_COL];
+        $DateNeeded = strtotime($DateNeededStr);
+        if ($DateNeeded === FALSE) {
+            $Errors[] = "Invalid date needed: '$DateNeededStr'.";
+            return null;
+        } else {
+            return $DateNeeded;
+        }
+    }
+
+    private function ValidateUsersID($Values, &$Errors) {
+        $FullnameArray = explode(" ", $Values[self::CREATIVE_USER_COL]);
+        $CUsers = new CUsers();
+        $UsersID = $CUsers->GetIdUserWithName($FullnameArray[0], $FullnameArray[1]);
+
+        if ($UsersID === 0) {
+            $Errors[] = "Creative Analyst not found for name: '" . implode(" ", $FullnameArray) . "'.";
+        } else if ($UsersID === -1) {
+            $Errors[] = "Multiple Creative Analyst found for name: '" . implode(" ", $FullnameArray) . "'.";
+        } else {
+            return $UsersID;
+        }
+
+        return null;
+    }
+
+    private function ValidateISBNType($Values, &$Errors) {
+        $ISBNType = $Values[self::ISBN_TYPE_COL];
+        if (array_search($ISBNType, CProjectsShopOnline::GetISBNTypes()) === FALSE) {
+            $Errors[] = "Invalid ISBN Type: '$ISBNType'.";
+            return null;
+        } else {
+            return $ISBNType;
+        }
+    }
 
 }
 

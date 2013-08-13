@@ -1,0 +1,73 @@
+<div class="ProjectContainer" style="padding-bottom:45px;">
+    <div id='MoveBackButton' onClick="MProjectsShopOnline.moveToList();" class='Back' style='top: 10px; left: 715px;'></div>
+    <table style="width:100%;" cellpadding="0" cellspacing="0">
+        <tr>
+            <td style="width:33px; padding-top:17px;"></td>
+            <td colspan="7" style="padding-top:20px; font-size:24px;">
+                <div style="float:left;">Project Details</div>
+                {% if canEdit %}
+                <div class="Icon_Edit" style="float:left; margin-left:12px;" onClick="MProjectsShopOnline.toggleDetailsEdit();"></div>
+                {% endif %}
+            </td>
+            <td style="width:33px;"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <div id="ProjectDetailsReadOnly">
+                    <table width="100%">
+                        <tr>
+                            <td style="vertical-align:top; padding:22px 11px; padding-left:0px; width:40%;">
+                                <div style="font-weight:bold; font-size:18px;">{{project.ISBN10}}</div>
+                                <p><b>Author:</b>&nbsp;{{project.Author}}</p>
+                                <p><b>Requester name:</b>&nbsp;{{project.RequesterName}}</p>
+                                <p><b>e-mail:</b>&nbsp;{{project.RequesterEmail}}</p>
+                            </td>
+                            <td style="vertical-align:top; padding-top:20px;"><div class="Separator"></div></td>
+                            <td style="vertical-align:top; padding:22px 11px; width:30%;">
+                                <div style="color:#d74c4c; font-weight:bold; font-size:14px;">Dates</div>
+                                <p><b>Submit date:</b>&nbsp;{{ project.Created | FormatDate }}</p>
+                                <p><b>Date needed:</b>&nbsp;{{ project.DateNeeded | FormatDate }}</p>
+                                <p><b>Complete date:</b>&nbsp;{{ project.CompleteDate | FormatDate }}</p>
+                            </td>
+                            <td style="vertical-align:top; padding-top:20px;"><div class="Separator"></div></td>
+                            <td style="vertical-align:top; padding:22px 11px; width:30%">
+                                <div style="color:#0685c5; font-weight:bold; font-size:14px;">Project Details</div>
+                                <p><b>Status:</b>&nbsp;{{ GetStatusName(project.Status) }}</p>
+                                <p><b>CA:</b>&nbsp;{{project.ContactName}}</p>
+                                <p><b>ISBN type:</b>&nbsp;{{project.ISBNType}}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><p><b>Comments:</b>&nbsp;{{ project.Comments }}</p></td>
+                        </tr>
+                    </table>
+                </div>
+                {% if canEdit %}
+                <div id="ProjectDetailsEdit" style="display:none;">
+                    <table class="CForm_Table">
+                        
+                        {{ RandomPrefix() }}
+						{{ AddTextbox("ISBN10", "ISBN-10", project.ISBN10, "", "", "Basic") | raw }}
+                        {{ AddTextbox("RequesterName", "Requester name", project.RequesterName, "", "", "Basic") | raw }}
+                        
+                        <tr>
+                            <td></td>
+                            <td>
+                                <div class="Button" value="Save" onClick="alert('Not implemented. Prefix: {{ GetPrefix() }}');">save</div>
+                                <div class="Button" value="Cancel" onClick="MProjectsShopOnline.toggleDetailsEdit();">cancel</div>
+                                {% if canDelete %}
+                                <div class="Button" value="Delete" onClick="alert('Not implemented. Prefix: {{ GetPrefix() }}');">delete</div>
+                                {% endif %}
+                                <br style="clear:both;"><br>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                {% endif %}
+            </td>
+			<td style="width:30px;"></td>
+        </tr>
+    </table>
+</div>
+							

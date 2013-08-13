@@ -11,10 +11,10 @@ class CTemplateModule extends CModuleGeneric {
 
     function __construct($ViewsFolder) {
         parent::__construct();
-		
+
         Twig_Autoloader::register();
         $Loader = new Twig_Loader_Filesystem($ViewsFolder);
-		$Loader->addPath('./Views/Shared');
+        $Loader->addPath('./Views/Shared');
         $this->Twig = new Twig_Environment($Loader, array(
                 //FIXME: 'cache' => './Libraries/Twig/cache',
         ));
@@ -26,10 +26,12 @@ class CTemplateModule extends CModuleGeneric {
                         return forward_static_call_array("CForm::{$StaticMethod->name}", func_get_args());
                     }));
         }
-        
+
         $this->Twig->addFilter(new Twig_SimpleFilter("FormatDate", function($timestamp) {
-            return date(CTemplateModule::DATE_FORMAT, $timestamp);//return $this->FormatDate($timestamp);
-        }));		
+            //WHY are we using the first line (now commented) instead of the second?
+            //return date(CTemplateModule::DATE_FORMAT, $timestamp);
+            return $this->FormatDate($timestamp);
+        }));
     }
 
     /**
@@ -39,21 +41,17 @@ class CTemplateModule extends CModuleGeneric {
      */
     function OnRenderContent() {
         $Page = $_GET["Page"];
-		
-		/*if ($Page == null)
-			$Page = "Index";*/
-		
+
         $Template = $this->LoadTemplate($Page);
-		
+
         $Params = $this->GetTemplateParams($Page);
         $Template->display($Params);
     }
-    
+
     function LoadTemplate($Action) {
-		
         $TemplateName = $this->GetTemplateName($Action);
-		
-		return $this->Twig->loadTemplate($TemplateName . ".twig");
+
+        return $this->Twig->loadTemplate($TemplateName . ".twig");
     }
 
     function GetTemplateName($Page) {
@@ -95,12 +93,12 @@ class CTemplateModule extends CModuleGeneric {
         if (method_exists($this, $Action)) {
             return $this->$Action();
         }
-        
+
         return parent::OnAJAX($Action);
     }
 
     function FormatDate($timestamp) {
-        return date(self::DATE_FORMAT, $timestamp);
+        return is_null($timestamp) ? "-" : date(self::DATE_FORMAT, $timestamp);
     }
 
 }
