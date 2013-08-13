@@ -343,7 +343,25 @@ class MProjectCreatorHome extends CUnauthorizedModule {
         
         return Array(1, Array("", $Template->render($Params)));
     }
-
+	
+	public function ProjectNumberExists() {
+		$ProjectNumber = intval($_POST["ProjectNumber"]);
+		
+		return Array(CProjectsPrivateOffer::ExistsWithProjectNumber($ProjectNumber),'');
+	}
+	
+	public function ISBNExists() {
+		$ISBN = htmlspecialchars($_POST["ISBN"]);
+		
+		return Array(CProjectsPrivateOffer::ExistsWithISBN($ISBN),'');
+	}
+	
+	public function ConnectPlusISBNExists() {
+		$ConnectPlusISBN = htmlspecialchars($_POST["ConnectPlusISBN"]);
+		
+		return Array(CProjectsPrivateOffer::ExistsWithConnectPlusISBN($ConnectPlusISBN),'');
+	}
+	
     ///////////////////////////////////////////////////
     ////////         PRIVATE FUNCTIONS      ///////////
     ///////////////////////////////////////////////////

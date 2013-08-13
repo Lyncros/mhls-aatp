@@ -3,26 +3,13 @@
 {% block mainContent %}
 
 <script type="text/javascript">
-  var RecaptchaOptions = {
-    theme : 'clean'
-  };
- 
-  // Validate Captcha
-  var checkCaptcha = function() {
-	var Parms = { 	
-					recaptcha_challenge_field: $('input#recaptcha_challenge_field').val(),
-					recaptcha_response_field: $('input#recaptcha_response_field').val(),
-					async: false
-				};
-	var Response = CAJAX.ExecuteAsync('ProjectCreatorHome','Module','CheckCaptcha',Parms);
-	
-	if(Response[0] != 0) {
-		return true;
-	} else {
-		Recaptcha.reload();
-		return false;
-	}
-  };
+	{{ RandomPrefix() }}
+	{% set uploadPrefix = GetPrefix() %}
+	MProjectCreator.InitPrivateOfferUpload('{{uploadPrefix}}');
+  
+	{{ RandomPrefix() }}
+	{% set formPrefix = GetPrefix() %}
+	MProjectCreator.InitPrivateOfferForm('{{formPrefix}}');
 </script>
  
 <h2>Product page setup for Private Offers at a Connect site</h2>
@@ -30,147 +17,83 @@
 <table width="100%" cellspacing="0" cellpadding="0">
     <tr>
         <td width="100px" valign="top">
-			<form id="UploadForm" >
-			{{ RandomPrefix() }}
-			<script type="text/javascript">
-				$(document).ready(function() {
-					$("#UploadForm").validate({
-						ignore: '',
-						rules: { '{{GetPrefix()}}Filename': { required:true,  }},
-						messages: { '{{GetPrefix()}}Filename': { required: "Select a file with the upload button."} }
-					});					
-				});
-			</script>		
-							
-			<div class="TableFormGroup" align="center">
-				<table class="CForm_Table">
-					{{ AddUpload("Filename", "Filename","Temp","ProjectCreatorUploadButton") | raw }}
-				</table>
-			</div>
+			<form id="UploadForm" >							
+				<div class="TableFormGroup" align="center">
+					<table class="CForm_Table">
+						{{ AddUpload("Filename", "Filename","Temp","ProjectCreatorUploadButton") | raw }}
+					</table>
+				</div>
 			</form>
         </td>
     </tr>
     <tr>
         <td align="right">
             <div id="UploadButton" class="Button ShopOnlineButton" value="create" 
-                 onClick="MProjectCreator.uploadPrivateOfferFile('{{GetPrefix()}}');">upload</div>
+                 onClick="MProjectCreator.uploadPrivateOfferFile('{{uploadPrefix}}');">upload</div>
         </td>
     </tr>
     <tr><td><div id="UploadResultContainer" class="ShopOnlineUploadResultsContainer" style="display: none"></div></td></tr>
     <tr>
         <td width="100%" valign="top">			
-			<form id="CreationForm" >
-			{{ RandomPrefix() }}
-			{% set formPrefix = GetPrefix() %}
-
-			<script type="text/javascript">
-				$(document).ready(function() {
-					$('.PriceType').change(function(){
-						$('#{{formPrefix}}PriceType').attr('value',$(this).val());
-					});
-					$('.ConnectionType').change(function(){
-						$('#{{formPrefix}}ConnectionType').attr('value',$(this).val());
-					});
+			<form id="CreationForm" >			
+				<div class="TableFormGroup" align="center">
+				<table class="CForm_Table" >			
 					
-					jQuery.validator.addMethod("checkCaptcha", checkCaptcha, " (*) Invalid Captcha");
-					$.validator.setDefaults({ onkeyup: false, onfocusout: false });
-					
-					$("#CreationForm").validate({
-						ignore: '',
-						rules: {
-							'{{formPrefix}}ProjectNumber': { required:true, maxlength: 10, number: true },
-							'{{formPrefix}}ISBN': { required:true, maxlength: 10 },
-							'{{formPrefix}}ConnectPlusISBN': { maxlength: 10 },
-							'{{formPrefix}}RequesterName': { required:true, maxlength: 50 },
-							'{{formPrefix}}RequesterEmail': { required:true, maxlength: 50, email: true },							
-							'{{formPrefix}}LscID': { min: 1, number: true },
-							'{{formPrefix}}DateNeeded': { required:true, date: true },
-							'{{formPrefix}}CreativeContactID': { min: 1, number: true },
-							'{{formPrefix}}ConnectionType': { required:true },
-							'{{formPrefix}}Duration': { number: true },				
-							'{{formPrefix}}PriceType': { required:true },
-							'{{formPrefix}}Price': { required:true, number: true },
-							'recaptcha_response_field': { checkCaptcha: true }
-						},
-						messages: {
-							'{{formPrefix}}ProjectNumber': { required: " (*) Project number is required.", 
-															 maxlength: " (*) Max length is 10 digits.", 
-															 number: " (*) Project number must be a number." },
-							'{{formPrefix}}ISBN': { required: " (*) ISBN is required.", 
-													maxlength: " (*) Max length is 10 digits."},
-							'{{formPrefix}}ConnectPlusISBN': 	{ maxlength: " (*) Max length is 10 digits."},						
-							'{{formPrefix}}RequesterName': 	{ required: " (*) Requester Name is required.", 
-															  maxlength: " (*) Max length is 50 digits."},
-							'{{formPrefix}}RequesterEmail': 	{	required: " (*) Requester Email is required.", 
-																	maxlength: " (*) Max length is 50 digits.",
-																	email: " (*) Invalid email."},
-							'{{formPrefix}}DateNeeded': { 	required: " (*) Date Needed is required.", 
-															date: " (*) Invalid date."},
-							'{{formPrefix}}Duration': { number: " (*) Duration must be a number." },							
-							'{{formPrefix}}Price': { required: " (*) Price is required.", 
-													 number: " (*) Price must be a number."}
-						}
-					});		
-				});
-			</script>
-			<div class="TableFormGroup" align="center">
-			<table class="CForm_Table TableFormGroup" >			
-				
-				{{ AddTextbox("Project Number", "ProjectNumber", "") | raw }}
-                {{ AddTextbox("ISBN", "ISBN", "") | raw }}
-                {{ AddTextbox("Connect Plus ISBN", "ConnectPlusISBN", "") | raw }}
-                {{ AddTextbox("Requester name", "RequesterName", "") | raw }}
-                {{ AddTextbox("Requester e-mail", "RequesterEmail", "") | raw }}
-                {{ AddDropdown("LSC", "LscID", LSCs, "") | raw }}
-				<tr>
-					<td class="CForm_Name" style="line-height:0px;">&nbsp;</td>
-					<td><label for="{{formPrefix}}LscID" class="error" style="display:none;">LSC is required.</label></td>
-				</tr>
-				{{ AddDatepicker("Date needed", "DateNeeded", "") | raw }}
-                {{ AddDropdown("Creative Contact", "CreativeContactID", CreativeContacts, "") | raw }}
-				<tr>
-					<td class="CForm_Name" style="line-height:0px;">&nbsp;</td>
-					<td><label for="{{formPrefix}}CreativeContactID" class="error" style="display:none;">Creative Contact is required.</label></td>
-				</tr>
-                <tr>
-                    <td align="right" class="CForm_Name" valign="top"><b>Connection Type:</b>&nbsp;</td>
-                    <td class="CForm_Value" valign="center">
-                        <input type="radio" name="ConnectionType" class="ConnectionType" value="Connect" title="Connect">Connect</input>
-                        <input type="radio" name="ConnectionType" class="ConnectionType" value="ConnectPlus" title="Connect Plus">Connect Plus</input>
-						<input type="radio" name="ConnectionType" class="ConnectionType" value="Both" title="Both">Both</input>
-						{{ AddHidden("ConnectionType", "") | raw }}
-                    </td>
-                </tr>
-				<tr>
-					<td class="CForm_Name" style="line-height:0px;">&nbsp;</td>
-					<td><label for="{{formPrefix}}ConnectionType" class="error" style="display:none;"> (*) Connection Type is required.</label></td>
-				</tr>
-                {{ AddTextbox("School Name", "SchoolName", "") | raw }}
-				{{ AddTextbox("School City", "SchoolCity", "") | raw }}
-				{{ AddTextbox("Campus Name", "CampusName", "") | raw }}
-                {{ AddTextbox("Duration (in days)", "Duration", "") | raw }}
-				<tr>
-                    <td align="right" class="CForm_Name" valign="top"><b>Price Type:</b>&nbsp;</td>
-                    <td class="CForm_Value" valign="center">
-                        <input type="radio" name="PriceType" class="PriceType" title="Connect" value="Connect">Connect</input>
-                        <input type="radio" name="PriceType" class="PriceType" title="Connect Plus" value="ConnectPlus">Connect Plus</input>						
-						{{ AddHidden("PriceType", "") | raw }}
-                    </td>
-                </tr>
-				<tr>
-					<td class="CForm_Name" style="line-height:0px;">&nbsp;</td>
-					<td><label for="{{formPrefix}}PriceType" class="error" style="display:none;"> (*) Price Type is required.</label></td>
-				</tr>
-				{{ AddTextbox("Price", "Price", "") | raw }}
-				<tr>
-					<td colspan="2" style="text-align:center;">
-						<div align="center" style="margin-top:30px;">
-						{{ AddRecatpcha() | raw }}					
-						</div>
-					</td>
-				</tr>
-			</table>
-			<div>
+					{{ AddTextbox("Project Number", "ProjectNumber", "") | raw }}
+					{{ AddTextbox("ISBN", "ISBN", "") | raw }}
+					{{ AddTextbox("Connect Plus ISBN", "ConnectPlusISBN", "") | raw }}
+					{{ AddTextbox("Requester name", "RequesterName", "") | raw }}
+					{{ AddTextbox("Requester e-mail", "RequesterEmail", "") | raw }}
+					{{ AddDropdown("LSC", "LscID", LSCs, "") | raw }}
+					<tr>
+						<td class="CForm_Name" style="line-height:0px;">&nbsp;</td>
+						<td><label for="{{formPrefix}}LscID" class="error" style="display:none;">LSC is required.</label></td>
+					</tr>
+					{{ AddDatepicker("Date needed", "DateNeeded", "") | raw }}
+					{{ AddDropdown("Creative Contact", "CreativeContactID", CreativeContacts, "") | raw }}
+					<tr>
+						<td class="CForm_Name" style="line-height:0px;">&nbsp;</td>
+						<td><label for="{{formPrefix}}CreativeContactID" class="error" style="display:none;">Creative Contact is required.</label></td>
+					</tr>
+					<tr>
+						<td align="right" class="CForm_Name" valign="top"><b>Connection Type:</b>&nbsp;</td>
+						<td class="CForm_Value" valign="center">
+							<input type="radio" name="ConnectionType" class="ConnectionType" value="Connect" title="Connect">Connect</input>
+							<input type="radio" name="ConnectionType" class="ConnectionType" value="ConnectPlus" title="Connect Plus">Connect Plus</input>
+							<input type="radio" name="ConnectionType" class="ConnectionType" value="Both" title="Both">Both</input>
+							{{ AddHidden("ConnectionType", "") | raw }}
+						</td>
+					</tr>
+					<tr>
+						<td class="CForm_Name" style="line-height:0px;">&nbsp;</td>
+						<td><label for="{{formPrefix}}ConnectionType" class="error" style="display:none;"> (*) Connection Type is required.</label></td>
+					</tr>
+					{{ AddTextbox("School Name", "SchoolName", "") | raw }}
+					{{ AddTextbox("School City", "SchoolCity", "") | raw }}
+					{{ AddTextbox("Campus Name", "CampusName", "") | raw }}
+					{{ AddTextbox("Duration (in days)", "Duration", "") | raw }}
+					<tr>
+						<td align="right" class="CForm_Name" valign="top"><b>Price Type:</b>&nbsp;</td>
+						<td class="CForm_Value" valign="center">
+							<input type="radio" name="PriceType" class="PriceType" title="Connect" value="Connect">Connect</input>
+							<input type="radio" name="PriceType" class="PriceType" title="Connect Plus" value="ConnectPlus">Connect Plus</input>						
+							{{ AddHidden("PriceType", "") | raw }}
+						</td>
+					</tr>
+					<tr>
+						<td class="CForm_Name" style="line-height:0px;">&nbsp;</td>
+						<td><label for="{{formPrefix}}PriceType" class="error" style="display:none;"> (*) Price Type is required.</label></td>
+					</tr>
+					{{ AddTextbox("Price", "Price", "") | raw }}
+					<tr>
+						<td colspan="2" style="text-align:center;">
+							<div align="center" style="margin-top:30px;">
+							{{ AddRecatpcha() | raw }}					
+							</div>
+						</td>
+					</tr>
+				</table>
+				</div>
 			</form>
         </td>
     </tr>
