@@ -125,6 +125,13 @@
 			$a .= ' - '.$_POST["recaptcha_response_field"];
 			return Array(($resp->is_valid) ? 1 : 0,$a);
 		}
+        
+        public function BuildSaveParameters() {
+            return Array(
+                "UsersID"    => CSecurity::$User->ID,
+                "IPAddress"  => $_SERVER["REMOTE_ADDR"],
+            );
+        }
 	};
 
 	//==========================================================================

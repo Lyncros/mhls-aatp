@@ -6,12 +6,24 @@
 <table width="100%" cellspacing="0" cellpadding="0">
     <tr>
         <td width="100px" valign="top">
-            <table class="CForm_Table TableFormGroup">
-                
-                {{ RandomPrefix() }}
-                {{ AddUpload("Filename", "Filename") | raw }}
-
-            </table>
+            <form id="UploadForm" >
+			{{ RandomPrefix() }}
+			<script type="text/javascript">
+				$(document).ready(function() {
+					$("#UploadForm").validate({
+						ignore: '',
+						rules: { '{{GetPrefix()}}Filename': { required:true,  }},
+						messages: { '{{GetPrefix()}}Filename': { required: "Select a file with the upload button."} }
+					});					
+				});
+			</script>		
+							
+			<div class="TableFormGroup" align="center">
+				<table class="CForm_Table">
+					{{ AddUpload("Filename", "Filename","Temp","ProjectCreatorUploadButton") | raw }}
+				</table>
+			</div>
+			</form>
         </td>
     </tr>
     <tr>
@@ -22,27 +34,29 @@
     </tr>
     <tr>
         <td width="100%" valign="top">
-            <table class="CForm_Table TableFormGroup">
-                
-                {{ RandomPrefix() }}
-                {{ AddTextbox("ISBN-10", "ISBN10", "") | raw }}
-                {{ AddTextbox("Author", "Author", "") | raw }}
-                {{ AddTextbox("Requester name", "RequesterName", "") | raw }}
-                {{ AddTextbox("Requester e-mail", "RequesterEmail", "") | raw }}
-                {{ AddDatepicker("Date needed", "DateNeeded", "") | raw }}
-                {{ AddDropdown("Creative Analyst", "UsersID", Users, "") | raw }}
-                {{ AddTextarea("Comments", "Comments", "") | raw }}
-                <tr>
-                    <td align="right" class="CForm_Name" valign="top"><b>Cover:</b>&nbsp;</td>
-                    <td class="CForm_Value" valign="top">
-                        <input type="radio" name="cover" title="National cover">National cover</input>
-                        <input type="radio" name="cover" title="Custom cover">Custom cover</input>
-                    </td>
-                </tr>
-                {{ AddTextbox("Custom cover URL", "CustomCoverURL", "") | raw }}
-                {{ AddDropdown("ISBN Type", "ISBNType", ISBNTypes, "") | raw }}
+            <div class="TableFormGroup" align="center">
+                <table class="CForm_Table TableFormGroup">
 
-            </table>
+                    {{ RandomPrefix() }}
+                    {{ AddTextbox("ISBN-10", "ISBN10", "") | raw }}
+                    {{ AddTextbox("Author", "Author", "") | raw }}
+                    {{ AddTextbox("Requester name", "RequesterName", "") | raw }}
+                    {{ AddTextbox("Requester e-mail", "RequesterEmail", "") | raw }}
+                    {{ AddDatepicker("Date needed", "DateNeeded", "") | raw }}
+                    {{ AddDropdown("Creative Analyst", "UsersID", Users, "") | raw }}
+                    {{ AddTextarea("Comments", "Comments", "") | raw }}
+                    <tr>
+                        <td align="right" class="CForm_Name" valign="top"><b>Cover:</b>&nbsp;</td>
+                        <td class="CForm_Value" valign="top">
+                            <input type="radio" name="cover" title="National cover">National cover</input>
+                            <input type="radio" name="cover" title="Custom cover">Custom cover</input>
+                        </td>
+                    </tr>
+                    {{ AddTextbox("Custom cover URL", "CustomCoverURL", "") | raw }}
+                    {{ AddDropdown("ISBN Type", "ISBNType", ISBNTypes, "") | raw }}
+
+                </table>
+            </div>
         </td>
     </tr>
     <tr>

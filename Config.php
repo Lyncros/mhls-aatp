@@ -105,7 +105,11 @@
 						<b>Password:</b> [[Data Name=\"Password\"]]<br/><br/>
 						Please keep this information in a safe place and do not give it out to anyone."
 					)
-				)
+				),
+                "ProjectCreatorHome" => Array (
+                    "ShopOnlineMilestones"      => Array(),//"Cover", "Flags Flipped", "Email sent"),
+                    "PrivateOfferMilestones"    => Array(),
+                ),
 			),
 
 			"Template" => Array(

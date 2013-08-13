@@ -1,8 +1,8 @@
 <?php
 
 class MProjectCreatorHome extends CUnauthorizedModule {
-
     // Shop Online Columns
+
     const SO_ISBN10_COL = 0;
     const SO_AUTHOR_COL = 1;
     const SO_REQUESTER_NAME_COL = 2;
@@ -34,7 +34,7 @@ class MProjectCreatorHome extends CUnauthorizedModule {
         parent::__construct("./Modules/ProjectCreatorHome/Views");
     }
 
-    private function BuildDefaultParams() {
+    private function BuildTemplateDefaultParams() {
         return Array(
             "menuItems" => CSidebarMenu::BuildProjectsFormsSideMenu(),
             "jsFiles" => Array("./Modules/ProjectCreatorHome/MProjectCreatorHome.js"),
@@ -46,7 +46,7 @@ class MProjectCreatorHome extends CUnauthorizedModule {
         $data = array();
         $data['activeSidebarNode'] = '';
 
-        return array_merge($data, $this->BuildDefaultParams());
+        return array_merge($data, $this->BuildTemplateDefaultParams());
     }
 
     ///////////////////////////////////////////////
@@ -63,7 +63,7 @@ class MProjectCreatorHome extends CUnauthorizedModule {
         $data["ISBNTypes"] = CProjectsShopOnline::GetISBNTypes();
         $data['activeSidebarNode'] = 'ShopOnline';
 
-        return array_merge($data, $this->BuildDefaultParams());
+        return array_merge($data, $this->BuildTemplateDefaultParams());
     }
 
     function CreateShopOnline() {
@@ -79,15 +79,21 @@ class MProjectCreatorHome extends CUnauthorizedModule {
             "ISBNType" => htmlspecialchars($_POST["ISBNType"]),
         );
 
-        $Extra = Array(
-            "REMOTE_ADDR" => $_SERVER["REMOTE_ADDR"],
-        );
-
         $ProjectShop = new CProjectsShopOnline();
-        if ($ProjectShop->Save(0, $Data, $Extra)) {
-            return Array(1, "Project Shop Online created successfully.");
+        $Extra = $this->BuildSaveParameters();
+        $NewProjectID = $ProjectShop->Save(0, $Data, $Extra);
+
+        if ($NewProjectID === FALSE) {
+            return Array(0, "Error saving Project Shop Online in database.");
         } else {
-            return Array(0, "Error creating Project Shop Online.");
+            $MilestonesNames = Config::$Options["Module"]["ProjectCreatorHome"]["ShopOnlineMilestones"];
+
+            if (!empty($MilestonesNames)) {
+                if ($ProjectShop->AddMilestonesAndTodoListsToProject($NewProjectID, $MilestonesNames, $Extra) === FALSE) {
+                    return Array(0, "Error adding automatic milestones to project.");
+                }
+            }
+            return Array(1, "Project Shop Online created successfully.");
         }
     }
 
@@ -112,8 +118,8 @@ class MProjectCreatorHome extends CUnauthorizedModule {
 
                 $this->ValidateISBN($ISBN, $Errors);
                 $Email = $this->ValidateEmail($Values, $Errors);
-                $DateNeeded = $this->ValidateDateNeeded($Values, $Errors);
-                $UsersID = $this->ValidateUsersID($Values, $Errors);
+                $DateNeeded = $this->ValidateDateNeeded($Values[self::SO_DATE_NEEDED_COL], $Errors);
+                $UsersID = $this->ValidateUsersID($Values[self::SO_CREATIVE_USER_COL], $Errors);
                 $ISBNType = $this->ValidateISBNType($Values, $Errors);
 
                 if (empty($Errors)) {
@@ -129,15 +135,24 @@ class MProjectCreatorHome extends CUnauthorizedModule {
                         "ISBNType" => $ISBNType,
                     );
 
-                    $Extra = Array(
-                        "REMOTE_ADDR" => $_SERVER["REMOTE_ADDR"],
-                    );
-
                     $ProjectShop = new CProjectsShopOnline();
-                    if ($ProjectShop->Save(0, $Data, $Extra)) {
-                        $CreatedProjects++;
-                    } else {
+                    $Extra = $this->BuildSaveParameters();
+                    $NewProjectID = $ProjectShop->Save(0, $Data, $Extra);
+
+                    if ($NewProjectID === FALSE) {
                         $Errors[] = "Could not save project in database.";
+                    } else {
+                        $MilestonesNames = Config::$Options["Module"]["ProjectCreatorHome"]["ShopOnlineMilestones"];
+
+                        if (empty($MilestonesNames)) {
+                            $CreatedProjects++;
+                        } else {
+                            if ($ProjectShop->AddMilestonesAndTodoListsToProject($NewProjectID, $MilestonesNames, $Extra)) {
+                                $CreatedProjects++;
+                            } else {
+                                $Errors[] = "Could not add automatic milestones to project.";
+                            }
+                        }
                     }
                 }
 
@@ -179,7 +194,7 @@ class MProjectCreatorHome extends CUnauthorizedModule {
 
         $data['activeSidebarNode'] = 'PrivateOffer';
 
-        return array_merge($data, $this->BuildDefaultParams());
+        return array_merge($data, $this->BuildTemplateDefaultParams());
     }
 
     function CreatePrivateOffer() {
@@ -201,26 +216,32 @@ class MProjectCreatorHome extends CUnauthorizedModule {
             "Price" => floatval($_POST["Price"]),
         );
 
-        $Extra = Array(
-            "REMOTE_ADDR" => $_SERVER["REMOTE_ADDR"],
-        );
-
         $ProjectPrivateOffer = new CProjectsPrivateOffer();
-        if ($ProjectPrivateOffer->Save(0, $Data, $Extra)) {
-            return Array(1, "Project Private Offer created successfully.");
-        } else {
+        $Extra = $this->BuildSaveParameters();
+        $NewProjectID = $ProjectPrivateOffer->Save(0, $Data, $Extra);
+
+        if ($NewProjectID === FALSE) {
             return Array(0, "Error creating Project Private Offer.");
+        } else {
+            $MilestonesNames = Config::$Options["Module"]["ProjectCreatorHome"]["PrivateOfferMilestones"];
+
+            if (!empty($MilestonesNames)) {
+                if ($ProjectPrivateOffer->AddMilestonesAndTodoListsToProject($NewProjectID, $MilestonesNames, $Extra) === FALSE) {
+                    return Array(0, "Error adding automatic milestones to project.");
+                }
+            }
+            return Array(1, "Project Private Offer created successfully.");
         }
     }
 
     function UploadPrivateOfferFile() {
-		$FilenameOriginal = $_POST["FilenameOriginal"];
-        $Filepath = CData::$PathTemp.$_POST["Filename"];
+        $FilenameOriginal = $_POST["FilenameOriginal"];
+        $Filepath = CData::$PathTemp . $_POST["Filename"];
 
         $FileContents = file($Filepath, FILE_IGNORE_NEW_LINES);
-		
+
         $ErrorDetails = Array();
-        $CreatedProjects = 0;		
+        $CreatedProjects = 0;
         $RowsProcessed = 0;
 
         foreach ($FileContents as $Line) {
@@ -228,68 +249,52 @@ class MProjectCreatorHome extends CUnauthorizedModule {
 
             $ProjectNumber = $Values[self::PO_PROJECT_NUMBER_COL];
             //Ignore the titles line
-            if (is_numeric($ProjectNumber)) {				
-				$RowsProcessed++;
-				
+            if (is_numeric($ProjectNumber)) {
+                $RowsProcessed++;
+
                 $Errors = $this->ProjectPrivateOfferCheckMandatoryFields($Values);
 
                 if (CProjectsPrivateOffer::ExistsWithProjectNumber($ProjectNumber)) {
-                    $Errors[] = "Duplicated project Number: '$ProjectNumber'.\n";
+                    $Errors[] = "Duplicated project Number: '$ProjectNumber'.";
                 }
 
                 $ISBN = $Values[self::PO_ISBN_COL];
                 if (CProjectsPrivateOffer::ExistsWithISBN($ISBN)) {
-                    $Errors[] = "Duplicated ISBN: '$ISBN'.\n";
+                    $Errors[] = "Duplicated ISBN: '$ISBN'.";
                 }
 
                 $ConnectPlusISBN = $Values[self::PO_CONNECT_PLUS_ISBN_COL];
                 if (CProjectsPrivateOffer::ExistsWithConnectPlusISBN($ConnectPlusISBN)) {
-                    $Errors[] = "Duplicated Connect Plus ISBN: '$ConnectPlusISBN'.\n";
+                    $Errors[] = "Duplicated Connect Plus ISBN: '$ConnectPlusISBN'.";
                 }
 
                 $Email = $Values[self::PO_REQUESTER_EMAIL_COL];
                 if (!CValidate::Email($Email)) {
-                    $Errors[] = "Invalid e-mail address: '$Email'.\n";
+                    $Errors[] = "Invalid e-mail address: '$Email'.";
                 }
 
-                $LSCFullname = $Values[self::PO_LSC_COL];
-                $LscID = CUsers::GetIdUserWithName($LSCFullname);
-
-                if (!is_int($LscID) || (is_int($LscID) && $LscID < 1)) {
-                    $Errors[] = "User not found for name: '$LSCFullname'.\n";
-                }
-
-                $DateNeededStr = $Values[self::PO_DATE_NEEDED_COL];
-                $DateNeeded = strtotime($DateNeededStr);
-                if ($DateNeeded === FALSE) {
-                    $Errors[] = "Invalid date needed: '$DateNeededStr'.\n";
-                }
-
-                $CreativeContactFullname = $Values[self::PO_CREATIVE_CONTACT_COL];
-                $CreativeContactID = CUsers::GetIdUserWithName($CreativeContactFullname);
-
-                if (!is_int($CreativeContactID) || (is_int($CreativeContactID) && $CreativeContactID < 1)) {
-                    $Errors[] = "User not found for name: '$CreativeContactFullname'.\n";
-                }
+                $LscID = $this->ValidateUsersID($Values[self::PO_LSC_COL], $Errors);
+                $DateNeeded = $this->ValidateDateNeeded($Values[self::PO_DATE_NEEDED_COL], $Errors);
+                $CreativeContactID = $this->ValidateUsersID($Values[self::PO_CREATIVE_CONTACT_COL], $Errors);
 
                 $ConnectionType = $Values[self::PO_CONNECTION_TYPE_COL];
                 if (array_search($ConnectionType, CProjectsPrivateOffer::GetConnectionTypes()) === FALSE) {
-                    $Errors[] = "Invalid Connection Type: '$ConnectionType'.\n";
+                    $Errors[] = "Invalid Connection Type: '$ConnectionType'.";
                 }
 
                 $Duration = intval($Values[self::PO_DURATION_COL]);
                 if (!is_int($Duration) || (is_int($Duration) && $Duration < 0)) {
-                    $Errors[] = "Duration must be expressed in day numbers, not as: '$Duration'.\n";
+                    $Errors[] = "Duration must be expressed in day numbers, not as: '$Duration'.";
                 }
 
                 $PriceType = $Values[self::PO_PRICE_TYPE_COL];
                 if (array_search($PriceType, CProjectsPrivateOffer::GetPriceTypes()) === FALSE) {
-                    $Errors[] = "Invalid Price Type: '$PriceType'.\n";
+                    $Errors[] = "Invalid Price Type: '$PriceType'.";
                 }
 
                 $Price = floatval($Values[self::PO_PRICE_COL]);
                 if (!is_float($Price) || (is_float($Price) && $Price < 0)) {
-                    $Errors[] = "Price must be a number equal or greater than 0, can't parse: '$Duration'.\n";
+                    $Errors[] = "Price must be a number equal or greater than 0, can't parse: '$Duration'.";
                 }
 
                 if (empty($Errors)) {
@@ -311,15 +316,24 @@ class MProjectCreatorHome extends CUnauthorizedModule {
                         "Price" => $Price
                     );
 
-                    $Extra = Array(
-                        "REMOTE_ADDR" => $_SERVER["REMOTE_ADDR"],
-                    );
-
                     $ProjectPrivateOffer = new CProjectsPrivateOffer();
-                    if ($ProjectPrivateOffer->Save(0, $Data, $Extra)) {
-                        $CreatedProjects++;
+                    $Extra = $this->BuildSaveParameters();
+                    $NewProjectID = $ProjectPrivateOffer->Save(0, $Data, $Extra);
+
+                    if ($NewProjectID === FALSE) {
+                        $Errors[] = "Error saving project in database.";
                     } else {
-                        $Errors[] = "Could not save project with project number: " . $ProjectNumber . " in database.";
+                        $MilestonesNames = Config::$Options["Module"]["ProjectCreatorHome"]["PrivateOfferMilestones"];
+
+                        if (empty($MilestonesNames)) {
+                            $CreatedProjects++;
+                        } else {
+                            if ($ProjectPrivateOffer->AddMilestonesAndTodoListsToProject($NewProjectID, $MilestonesNames, $Extra)) {
+                                $CreatedProjects++;
+                            } else {
+                                $Errors[] = "Error adding automatic milestones to project.";
+                            }
+                        }
                     }
                 }
 
@@ -333,14 +347,14 @@ class MProjectCreatorHome extends CUnauthorizedModule {
         }
 
         $Template = $this->LoadTemplate("ProjectsUploadResult");
-		
-		$Params = Array();
+
+        $Params = Array();
         $Params["filename"] = $FilenameOriginal;
         $Params["filesize"] = filesize($Filepath);
         $Params["processed"] = $RowsProcessed;
         $Params["created"] = $CreatedProjects;
         $Params["errors"] = $ErrorDetails;
-        
+
         return Array(1, Array("", $Template->render($Params)));
     }
 	
@@ -418,7 +432,7 @@ class MProjectCreatorHome extends CUnauthorizedModule {
     }
 
     private function ValidateEmail($Values, &$Errors) {
-        $Email = $Values[self::REQUESTER_EMAIL_COL];
+        $Email = $Values[self::SO_REQUESTER_EMAIL_COL];
         if (CValidate::Email($Email)) {
             return $Email;
         } else {
@@ -427,8 +441,7 @@ class MProjectCreatorHome extends CUnauthorizedModule {
         }
     }
 
-    private function ValidateDateNeeded($Values, &$Errors) {
-        $DateNeededStr = $Values[self::DATE_NEEDED_COL];
+    private function ValidateDateNeeded($DateNeededStr, &$Errors) {
         $DateNeeded = strtotime($DateNeededStr);
         if ($DateNeeded === FALSE) {
             $Errors[] = "Invalid date needed: '$DateNeededStr'.";
@@ -438,15 +451,15 @@ class MProjectCreatorHome extends CUnauthorizedModule {
         }
     }
 
-    private function ValidateUsersID($Values, &$Errors) {
-        $FullnameArray = explode(" ", $Values[self::CREATIVE_USER_COL]);
+    private function ValidateUsersID($UserFullname, &$Errors) {
+        $FullnameArray = explode(" ", $UserFullname);
         $CUsers = new CUsers();
-        $UsersID = $CUsers->GetIdUserWithName($FullnameArray[0], $FullnameArray[1]);
+        $UsersID = $CUsers->GetIdUserWithName($FullnameArray[1], $FullnameArray[0]);
 
         if ($UsersID === 0) {
-            $Errors[] = "Creative Analyst not found for name: '" . implode(" ", $FullnameArray) . "'.";
+            $Errors[] = "Creative Analyst not found for name: '$UserFullname'.";
         } else if ($UsersID === -1) {
-            $Errors[] = "Multiple Creative Analyst found for name: '" . implode(" ", $FullnameArray) . "'.";
+            $Errors[] = "Multiple Creative Analyst found for name: '$UserFullname'.";
         } else {
             return $UsersID;
         }
@@ -455,7 +468,7 @@ class MProjectCreatorHome extends CUnauthorizedModule {
     }
 
     private function ValidateISBNType($Values, &$Errors) {
-        $ISBNType = $Values[self::ISBN_TYPE_COL];
+        $ISBNType = $Values[self::SO_ISBN_TYPE_COL];
         if (array_search($ISBNType, CProjectsShopOnline::GetISBNTypes()) === FALSE) {
             $Errors[] = "Invalid ISBN Type: '$ISBNType'.";
             return null;

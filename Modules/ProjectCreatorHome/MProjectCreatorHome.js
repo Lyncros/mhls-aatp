@@ -44,17 +44,11 @@ MProjectCreator.createPrivateOffer = function(Prefix) {
 };
 
 MProjectCreator.uploadPrivateOfferFile = function(Prefix) {
-    if($('#UploadForm').valid())
-	{
-		MProjectCreator.setEnableUploadButton(false);
-	   
+    if($('#UploadForm').valid()) {
 		if (CForm.Submit("ProjectCreatorHome", "Module", "UploadPrivateOfferFile", Prefix, function(Code, Response) {		
-			if(Code == 0)
-			{
+			if(Code == 0) {
 				alert(Response);
-			}
-			else
-			{			
+			} else {			
 				var Parts = explode("\n", Response, 2);
 				CWindow.New('Upload results', Parts[1], 460, 600);
 			}

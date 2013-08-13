@@ -3,10 +3,10 @@
 /**
  * Class for table ProjectsShopOnline
  */
-class CProjectsShopOnline extends CTable {
+class CProjectsShopOnline extends CProjectsBase {
 
     function __construct() {
-        $this->Table = "ProjectsShopOnline";
+        parent::__construct("ProjectsShopOnline", "CProjectsShopOnlineMilestones", "CProjectsShopOnlineMilestonesToDos");
     }
 
     public static function GetISBNTypes() {
@@ -22,18 +22,6 @@ class CProjectsShopOnline extends CTable {
         return (array_key_exists($StatusId, $StatusList)) ? $StatusList[$StatusId] : "";
     }
 
-    public function Save($ProjectsID, $Data, $Extra) {
-        if ($ProjectsID > 0) {
-            return CTable::Update($this->Table, $ProjectsID, $Data);
-        } else {
-            $Data["Created"] = time();
-            $Data["CreatedIPAddress"] = $Extra["REMOTE_ADDR"];
-
-            return CTable::Add($this->Table, $Data);
-        }
-        return false;
-    }
-
     public function GetStatusName() {
         return self::GetStatusNameById($this->Status);
     }
@@ -43,13 +31,13 @@ class CProjectsShopOnline extends CTable {
 
         return intval($Count) > 0;
     }
-    
+
     public function OnLoadByID($ID, $Extra = "") {
         return $this->OnLoadByQuery("
             SELECT P.*, CONCAT(U.`LastName`, ', ', U.`FirstName`) as `ContactName` 
             FROM `ProjectsShopOnline` as P 
                 JOIN `Users` as U ON P.UsersID = U.ID 
-            WHERE P.`ID` = $ID AND `Deleted` = 0");
+            WHERE P.`ID` = $ID AND `Deleted` IS NULL");
     }
 
     public function OnLoadAllActive() {
@@ -57,7 +45,7 @@ class CProjectsShopOnline extends CTable {
             SELECT P.*, CONCAT(U.`LastName`, ', ', U.`FirstName`) as `ContactName` 
             FROM `ProjectsShopOnline` as P 
                 JOIN `Users` as U ON P.UsersID = U.ID 
-            WHERE `Deleted` = 0");
+            WHERE `Deleted` IS NULL");
     }
 
 }

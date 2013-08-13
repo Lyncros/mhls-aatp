@@ -116,6 +116,30 @@
 		 */
 		function OnSave() {
 		}
+        
+        function Save($ID, $Data, $Extra) {
+            if ($ID > 0) {
+                $Data["Modified"] = time();
+                $Data["ModifiedUsersID"] = $Extra["UsersID"];
+                $Data["ModifiedIPAddress"] = $Extra["IPAddress"];
+                
+                return $this->UpdateExistent($ID, $Data);
+            } else {
+                $Data["Created"] = time();
+                $Data["CreatedUsersID"] = $Extra["UsersID"];
+                $Data["CreatedIPAddress"] = $Extra["IPAddress"];
+
+                return $this->AddNew($Data);
+            }
+        }
+        
+        function AddNew($Data) {
+            return self::Add($this->Table, $Data);
+        }
+        
+        function UpdateExistent($ID, $Data) {
+            return self::Update($this->Table, $ID, $Data);
+        }
 
 		//---------------------------------------------------------------------
 		/**

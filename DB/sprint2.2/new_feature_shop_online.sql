@@ -1,13 +1,16 @@
+CREATE DATABASE IF NOT EXISTS `aatp`;
+USE `aatp`;
+
 DROP TABLE IF EXISTS `ProjectsShopOnline`;
 
 CREATE TABLE `ProjectsShopOnline` (
-  `ID` int(10) NOT NULL AUTO_INCREMENT,
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `ISBN10` varchar(10) DEFAULT NULL,
   `Author` varchar(255) DEFAULT NULL,
   `RequesterName` varchar(255) DEFAULT NULL,
   `RequesterEmail` varchar(255) DEFAULT NULL,
   `DateNeeded` int(10) DEFAULT NULL,
-  `UsersID` int(10) DEFAULT NULL,
+  `UsersID` int(10) unsigned DEFAULT NULL,
   `Comments` text,
   `CustomCoverURL` varchar(255) DEFAULT NULL,
   `ISBNType` enum('PPK','Physical','COMBO','Virtual/ECOM') NOT NULL,
@@ -15,9 +18,15 @@ CREATE TABLE `ProjectsShopOnline` (
   `VirtualECOMInstructionsEmail` varchar(255) DEFAULT NULL,
   `Status` tinyint NOT NULL DEFAULT 1,
   `CompleteDate` int(10) NULL,
-  `Created` int(10) NOT NULL,
+  `Created` int(10) unsigned NOT NULL,
+  `CreatedUsersID` int(10) unsigned NOT NULL,
   `CreatedIPAddress` varchar(64) NOT NULL,
-  `Deleted` int(10) NOT NULL DEFAULT 0,
+  `Modified` int(10) unsigned DEFAULT NULL,
+  `ModifiedUsersID` int(10) unsigned DEFAULT NULL,
+  `ModifiedIPAddress` varchar(64) DEFAULT NULL,
+  `Deleted` int(10) unsigned DEFAULT NULL,
+  `DeletedUsersID` int(10) unsigned DEFAULT NULL,
+  `DeletedIPAddress` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`ID`)
 );
 
@@ -38,9 +47,35 @@ CREATE TABLE `ProjectsShopOnlineMilestones` (
   `Created` int(10) unsigned NOT NULL,
   `CreatedUsersID` int(10) unsigned NOT NULL,
   `CreatedIPAddress` varchar(64) NOT NULL,
-  `Deleted` int(10) unsigned NOT NULL,
-  `DeletedUsersID` int(10) unsigned NOT NULL,
-  `DeletedIPAddress` varchar(64) NOT NULL,
+  `Modified` int(10) unsigned DEFAULT NULL,
+  `ModifiedUsersID` int(10) unsigned DEFAULT NULL,
+  `ModifiedIPAddress` varchar(64) DEFAULT NULL,
+  `Deleted` int(10) unsigned DEFAULT NULL,
+  `DeletedUsersID` int(10) unsigned DEFAULT NULL,
+  `DeletedIPAddress` varchar(64) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+);
+
+DROP TABLE IF EXISTS `ProjectsShopOnlineMilestonesToDos`;
+
+CREATE TABLE `ProjectsShopOnlineMilestonesToDos` (
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `MilestoneID` int(10) unsigned NOT NULL,
+  `Name` varchar(255) NOT NULL,
+  `Comment` text NOT NULL,
+  `CommentRequired` tinyint(1) NOT NULL,
+  `Complete` int(10) unsigned NOT NULL,
+  `Active` tinyint(1) NOT NULL,
+  `Created` int(10) unsigned NOT NULL,
+  `CreatedUsersID` int(10) unsigned NOT NULL,
+  `CreatedIPAddress` varchar(64) NOT NULL,
+  `Modified` int(10) unsigned DEFAULT NULL,
+  `ModifiedUsersID` int(10) unsigned DEFAULT NULL,
+  `ModifiedIPAddress` varchar(64) DEFAULT NULL,
+  `Deleted` int(10) unsigned DEFAULT NULL,
+  `DeletedUsersID` int(10) unsigned DEFAULT NULL,
+  `DeletedIPAddress` varchar(64) DEFAULT NULL,
+  `AssignedTo` int(10) DEFAULT NULL,
   PRIMARY KEY (`ID`)
 );
 
