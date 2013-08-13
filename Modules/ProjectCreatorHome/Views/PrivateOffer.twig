@@ -1,19 +1,53 @@
 {% extends 'UnauthorizedModuleMaster.twig' %}
-
-
+    
 {% block mainContent %}
 
+<script type="text/javascript">
+  var RecaptchaOptions = {
+    theme : 'clean'
+  };
+ 
+  // Validate Captcha
+  var checkCaptcha = function() {
+	var Parms = { 	
+					recaptcha_challenge_field: $('input#recaptcha_challenge_field').val(),
+					recaptcha_response_field: $('input#recaptcha_response_field').val(),
+					async: false
+				};
+	var Response = CAJAX.ExecuteAsync('ProjectCreatorHome','Module','CheckCaptcha',Parms);
+	
+	if(Response[0] != 0) {
+		return true;
+	} else {
+		Recaptcha.reload();
+		return false;
+	}
+  };
+</script>
+ 
 <h2>Product page setup for Private Offers at a Connect site</h2>
 
 <table width="100%" cellspacing="0" cellpadding="0">
     <tr>
         <td width="100px" valign="top">
-            <table class="CForm_Table TableFormGroup">
-                
-                {{ RandomPrefix() }}
-                {{ AddUpload("Filename", "Filename") | raw }}
-
-            </table>
+			<form id="UploadForm" >
+			{{ RandomPrefix() }}
+			<script type="text/javascript">
+				$(document).ready(function() {
+					$("#UploadForm").validate({
+						ignore: '',
+						rules: { '{{GetPrefix()}}Filename': { required:true,  }},
+						messages: { '{{GetPrefix()}}Filename': { required: "Select a file with the upload button."} }
+					});					
+				});
+			</script>		
+							
+			<div class="TableFormGroup" align="center">
+				<table class="CForm_Table">
+					{{ AddUpload("Filename", "Filename","Temp","ProjectCreatorUploadButton") | raw }}
+				</table>
+			</div>
+			</form>
         </td>
     </tr>
     <tr>
@@ -25,7 +59,7 @@
     <tr><td><div id="UploadResultContainer" class="ShopOnlineUploadResultsContainer" style="display: none"></div></td></tr>
     <tr>
         <td width="100%" valign="top">			
-			<form id="Form" >
+			<form id="CreationForm" >
 			{{ RandomPrefix() }}
 			{% set formPrefix = GetPrefix() %}
 
@@ -38,7 +72,10 @@
 						$('#{{formPrefix}}ConnectionType').attr('value',$(this).val());
 					});
 					
-					$("#Form").validate({
+					jQuery.validator.addMethod("checkCaptcha", checkCaptcha, " (*) Invalid Captcha");
+					$.validator.setDefaults({ onkeyup: false, onfocusout: false });
+					
+					$("#CreationForm").validate({
 						ignore: '',
 						rules: {
 							'{{formPrefix}}ProjectNumber': { required:true, maxlength: 10, number: true },
@@ -52,7 +89,8 @@
 							'{{formPrefix}}ConnectionType': { required:true },
 							'{{formPrefix}}Duration': { number: true },				
 							'{{formPrefix}}PriceType': { required:true },
-							'{{formPrefix}}Price': { required:true, number: true }
+							'{{formPrefix}}Price': { required:true, number: true },
+							'recaptcha_response_field': { checkCaptcha: true }
 						},
 						messages: {
 							'{{formPrefix}}ProjectNumber': { required: " (*) Project number is required.", 
@@ -75,7 +113,7 @@
 					});		
 				});
 			</script>
-
+			<div class="TableFormGroup" align="center">
 			<table class="CForm_Table TableFormGroup" >			
 				
 				{{ AddTextbox("Project Number", "ProjectNumber", "") | raw }}
@@ -123,14 +161,22 @@
 					<td class="CForm_Name" style="line-height:0px;">&nbsp;</td>
 					<td><label for="{{formPrefix}}PriceType" class="error" style="display:none;"> (*) Price Type is required.</label></td>
 				</tr>
-				{{ AddTextbox("Price", "Price", "") | raw }}				
-			</table>			
+				{{ AddTextbox("Price", "Price", "") | raw }}
+				<tr>
+					<td colspan="2" style="text-align:center;">
+						<div align="center" style="margin-top:30px;">
+						{{ AddRecatpcha() | raw }}					
+						</div>
+					</td>
+				</tr>
+			</table>
+			<div>
 			</form>
         </td>
     </tr>
     <tr>
         <td align="right">
-            <div class="Button" value="create" onClick="MProjectCreator.createPrivateOffer('{{formPrefix}}');">create</div>
+            <div class="Button" value="create" onClick="javascript:MProjectCreator.createPrivateOffer('{{formPrefix}}');">create</div>
         </td>
     </tr>
 </table>

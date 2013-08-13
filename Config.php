@@ -112,7 +112,15 @@
 			),
 			
 			// The part of the url {AATP_PRODUCT_NUMBER} will be replace with the project number, so you can change the url, but you have to take into account where you add the {AATP_PRODUCT_NUMBER}.
-			"DashboardProjectLink" => 'http://mhhe.mcgraw-hill.com/Applications/CustomProjectTracking/HomePage.cfm?product_number={AATP_PRODUCT_NUMBER}&homepage_action=open_product',			
+			"DashboardProjectLink" => 'http://mhhe.mcgraw-hill.com/Applications/CustomProjectTracking/HomePage.cfm?product_number={AATP_PRODUCT_NUMBER}&homepage_action=open_product',
+			
+			"ReCaptcha" => Array(
+				"Keys" => Array (
+					"Public" => '6LckDOYSAAAAAIhwKzIxJsWkFdzKnodsHhfLwfDh',
+					"Private" => '6LckDOYSAAAAAJYriz2TEDRijsnby5P2uPGKTqfz'
+				),
+				"LibraryPath" => './Libraries/ReCAPTCHA/recaptchalib.php'
+			)
 		);
 	}
 

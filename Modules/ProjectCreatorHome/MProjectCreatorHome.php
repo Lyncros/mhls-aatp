@@ -214,19 +214,23 @@ class MProjectCreatorHome extends CUnauthorizedModule {
     }
 
     function UploadPrivateOfferFile() {
-        $Filename = $_POST["Filename"];
+		$FilenameOriginal = $_POST["FilenameOriginal"];
+        $Filepath = CData::$PathTemp.$_POST["Filename"];
 
-        $FileContents = file(CData::$PathTemp . $Filename, FILE_IGNORE_NEW_LINES);
+        $FileContents = file($Filepath, FILE_IGNORE_NEW_LINES);
+		
         $ErrorDetails = Array();
-        $CreatedProjects = 0;
+        $CreatedProjects = 0;		
+        $RowsProcessed = 0;
 
         foreach ($FileContents as $Line) {
             $Values = $this->ParseCSVLine($Line);
 
             $ProjectNumber = $Values[self::PO_PROJECT_NUMBER_COL];
             //Ignore the titles line
-            if (is_numeric($ProjectNumber)) {
-
+            if (is_numeric($ProjectNumber)) {				
+				$RowsProcessed++;
+				
                 $Errors = $this->ProjectPrivateOfferCheckMandatoryFields($Values);
 
                 if (CProjectsPrivateOffer::ExistsWithProjectNumber($ProjectNumber)) {
@@ -321,7 +325,7 @@ class MProjectCreatorHome extends CUnauthorizedModule {
 
                 if (!empty($Errors)) {
                     $ErrorDetails[] = Array(
-                        "Project Number" => $ProjectNumber,
+                        "ISBN" => $ISBN,
                         "details" => $Errors,
                     );
                 }
@@ -329,11 +333,14 @@ class MProjectCreatorHome extends CUnauthorizedModule {
         }
 
         $Template = $this->LoadTemplate("ProjectsUploadResult");
-
-        $Params = Array();
+		
+		$Params = Array();
+        $Params["filename"] = $FilenameOriginal;
+        $Params["filesize"] = filesize($Filepath);
+        $Params["processed"] = $RowsProcessed;
         $Params["created"] = $CreatedProjects;
         $Params["errors"] = $ErrorDetails;
-
+        
         return Array(1, Array("", $Template->render($Params)));
     }
 

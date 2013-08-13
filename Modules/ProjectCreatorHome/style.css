@@ -42,7 +42,8 @@ th {
 
 .ShopOnlineErrorTable {
     border-spacing:     0px;
-    width:              100%;
+	width: 100%;
+	border: 2px solid rgb(99, 92, 92);
 }
 
 .ShopOnlineErrorRowOdd {
@@ -53,16 +54,49 @@ th {
 
 .ShopOnlineErrorRowEven {
     background-color:   #ff9999;
-    border-bottom:      1px solid #d1d1d1;
+    /*border-bottom:      1px solid #d1d1d1;*/
+}
+.ShopOnlineErrorTable th
+{
+	border-bottom: 1px solid white;
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+.ShopOnlineErrorRowOdd td, .ShopOnlineErrorRowEven td
+{
+	border-bottom: 1px solid white;
+}
+
+.ShopOnlineErrorRowOdd p, .ShopOnlineErrorRowEven p
+{
+	padding-left: 5px;
 }
 
 label.error {
 	color: red;
-	font-size: 13px;
-	font-family: myriad-pro;
-	font-weight: bold;
+	font-size: 12px;
+	font-family: myriad-pro;	
 }
 
 .CForm_Textbox {
 	width: 300px;
+	padding-left: 5px;
+}
+.CForm_Table
+{
+	width: 518px;
+}
+.TableFormGroup
+{	
+	border: 0;
+}	
+.ProjectCreatorUploadButton
+{
+	width: 220px;
+}
+.CForm_Upload_Icon_Done {
+	margin-top: 3px;
+}
+h2 {
+	margin-bottom: 14px;
 }

@@ -168,17 +168,19 @@ function recaptcha_check_answer ($privkey, $remoteip, $challenge, $response, $ex
                 $recaptcha_response->error = 'incorrect-captcha-sol';
                 return $recaptcha_response;
         }
-
-        $response = _recaptcha_http_post (RECAPTCHA_VERIFY_SERVER, "/recaptcha/api/verify",
-                                          array (
+		$a = array (
                                                  'privatekey' => $privkey,
                                                  'remoteip' => $remoteip,
                                                  'challenge' => $challenge,
                                                  'response' => $response
-                                                 ) + $extra_params
+                                                 ) + $extra_params;
+		//die(var_dump($a));
+        $response = _recaptcha_http_post (RECAPTCHA_VERIFY_SERVER, "/recaptcha/api/verify",$a
+                                         
                                           );
 
         $answers = explode ("\n", $response [1]);
+		//die(var_dump($answers));
         $recaptcha_response = new ReCaptchaResponse();
 
         if (trim ($answers [0]) == 'true') {

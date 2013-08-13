@@ -79,6 +79,9 @@
 				}else
 				if($Action === "Window_Delete") {
 					return Array(1, $this->FileControl->LoadFile("Delete.php", CFILE_TYPE_CONTENTS_OB));
+				}else
+				if($Action === "CheckCaptcha") {
+					return $this->CheckCaptcha();
 				}
 			}
 
@@ -103,6 +106,24 @@
 			}
 
 			return Array(0, "Unable to remove record, please try again.");
+		}
+		
+		//----------------------------------------------------------------------
+		function CheckCaptcha() {
+			require_once(Config::$Options["ReCaptcha"]["LibraryPath"]);
+			
+			$resp = recaptcha_check_answer(	Config::$Options["ReCaptcha"]["Keys"]["Private"],
+											"127.0.0.1",//$_SERVER["REMOTE_ADDR"],
+											//'03AHJ_VuvIQ2c8zegLIulknfErFKAjF-AKQcr_UXREKh_7of7jO82w2dKmFpPyL80XiXfmoA--02357tjiCXkkE61ZzLI_J57UKxvQ5TWV1q_n03QC1KE87YKZZNeWPxa7adBeVM6SdtnlWYNcYDl0UFdrPd73n_Hgnu1ji-64P0vzJ4I1iZbxKN4',
+											//'once vignske');
+											htmlspecialchars($_POST["recaptcha_challenge_field"]),
+											htmlspecialchars($_POST["recaptcha_response_field"]));
+			
+			$a = Config::$Options["ReCaptcha"]["Keys"]["Private"];
+			$a .= ' - '.$_SERVER["REMOTE_ADDR"];
+			$a .= ' - '.$_POST["recaptcha_challenge_field"];
+			$a .= ' - '.$_POST["recaptcha_response_field"];
+			return Array(($resp->is_valid) ? 1 : 0,$a);
 		}
 	};
 

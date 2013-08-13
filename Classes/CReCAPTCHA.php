@@ -12,8 +12,8 @@
 
 	//==========================================================================
 	class CReCAPTCHA {
-		private static $PublicKey	= "6LdUsAUAAAAAABZhLSnuR59ga-HuBXByBT7nT9CG";
-		private static $PrivateKey	= "6LdUsAUAAAAAAF9lVAEhW91P69B4eoGzGu2uYo44";
+		private static $PublicKey	= "6LckDOYSAAAAAIhwKzIxJsWkFdzKnodsHhfLwfDh";
+		private static $PrivateKey	= "6LckDOYSAAAAAJYriz2TEDRijsnby5P2uPGKTqfz";
 
 		public static function GetHTML() {
 			return recaptcha_get_html(self::$PublicKey);

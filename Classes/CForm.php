@@ -1132,7 +1132,7 @@
 			return $Content;
 		}
 
-		public static function AddUpload($Name, $FormName, $Location = "Temp") {
+		public static function AddUpload($Name, $FormName, $Location = "Temp", $Class = '') {
 			$Content = "";
 
 			if(self::$Format == "Table") {
@@ -1143,7 +1143,7 @@
 			}
 
 			$Content .= "
-				<input type='text' readonly='true' class='CForm_Textbox CForm_Upload_Textbox' name='".self::$Prefix.$FormName."Original' id='".self::$Prefix.$FormName."Original'/>
+				<input type='text' readonly='true' class='".$Class." CForm_Textbox CForm_Upload_Textbox' name='".self::$Prefix.$FormName."Original' id='".self::$Prefix.$FormName."Original'/>
 				<span class='CForm_Upload_Button' id='".self::$Prefix.$FormName."_SWFUpload' rel='SWFUpload'></span>
 				<div id='".self::$Prefix.$FormName."_SWFUpload_Icon' class='CForm_Upload_Icon'></div>
 				<input type='hidden' name='".self::$Prefix.$FormName."' id='".self::$Prefix.$FormName."' title='".$Error."'/>
@@ -1358,6 +1358,12 @@
 
 		public static function SetFormat($Format) {
 			self::$Format = $Format;
+		}
+		
+		public static function AddRecatpcha() {
+			require_once(Config::$Options["ReCaptcha"]["LibraryPath"]);			
+			
+			return recaptcha_get_html(Config::$Options["ReCaptcha"]["Keys"]["Public"]);
 		}
 	};
 ?>

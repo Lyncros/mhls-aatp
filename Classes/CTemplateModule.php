@@ -26,7 +26,7 @@ class CTemplateModule extends CModuleGeneric {
                         return forward_static_call_array("CForm::{$StaticMethod->name}", func_get_args());
                     }));
         }
-
+		
         $this->Twig->addFilter(new Twig_SimpleFilter("FormatDate", function($timestamp) {
             //WHY are we using the first line (now commented) instead of the second?
             //return date(CTemplateModule::DATE_FORMAT, $timestamp);

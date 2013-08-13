@@ -108,8 +108,8 @@ CAJAX.OnLoop = function() {
 	var Request		= CAJAX.Queue[0].Request;
 	var Type		= CAJAX.Queue[0].Type;
 	var Action		= CAJAX.Queue[0].Action;
-	var Parms		= CAJAX.Queue[0].Parms;
-
+	var Parms		= CAJAX.Queue[0].Parms;	
+	
 	var ParmsString = "";
 
 	for(var i in Parms) {
@@ -213,3 +213,32 @@ CAJAX.OnError = function(Data, TextStatus) {
 $(CAJAX.OnInit);
 
 //=============================================================================
+//-----------------------------------------------------------------------------
+CAJAX.ExecuteAsync = function(Request, Type, Action, Parms) {
+	var Response;
+	var ParmsString = "";
+	
+	for(var i in Parms) {
+		if(is_array(Parms[i]) || is_object(Parms[i])) {
+			ParmsString += "&" + i + "=" + encodeURIComponent(JSON.stringify(Parms[i]));
+		}else{
+			ParmsString += "&" + i + "=" + encodeURIComponent(Parms[i]);
+		}
+	}	
+	
+	var URI = "AJAX_Request=" + encodeURIComponent(Request) + "&AJAX_Type=" + encodeURIComponent(Type) + "&AJAX_Action=" + encodeURIComponent(Action) + ParmsString;
+	
+	$.ajax({
+		async:		false,
+		type:		"POST",
+		url:		"/AJAX.php",
+		data:		URI,
+		dataType:	"text",
+
+		success:	function (Data, Text) {
+			Response = explode("\n", Data, 2);			
+		}		
+	});	
+	
+	return Response;
+}
