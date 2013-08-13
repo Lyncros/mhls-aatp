@@ -264,9 +264,9 @@
 						<p><b>Plant Left:</b> ".$Project->PlantLeft."</p>
 						<p><b>Vendors:</b> ".$Project->GetVendors()."</p>
 						<p><b>Product Solutions:</b> ".$Project->GetProductSolutions()."</p>
-						<p><b>Date Paid:</b> ".date('n/j/Y', $Project->DatePaid)."</p>".
-						/*<p><div style='margin-top: -32px;margin-right: 50px;'class='Button' value='RequestPO' onClick=\"MProjects.RequestPO('".CForm::GetPrefix()."');\">Request PO</div></p>*/
-					"</div>
+						<p><b>Date Paid:</b> ".date('n/j/Y', $Project->DatePaid)."</p>
+						<p><div style='margin-top: -32px;margin-right: 50px;'class='Button' value='RequestPO' onClick=\"MProjects.RequestPO('".CForm::GetPrefix()."');\">Request PO</div></p>
+					</div>
 				</td>
 				<td style='width:30px;'></td>
 			</tr>

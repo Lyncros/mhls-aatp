@@ -30,6 +30,14 @@
 			return true;
 		}
 		
+		function LoadAllOfGroup($Group)
+		{
+			$UserGroup = new CUsersGroups();
+			$UserGroup->OnLoadAll("WHERE `Name` = '$Group'");
+			
+			return $this->OnLoadAll('WHERE `UsersGroupsID` = ' . $UserGroup->ID);
+		}
+		
 		function GetName() {
 			if(strlen($this->FirstName) > 0 || strlen($this->LastName) > 0) {
 				return $this->FirstName." ".$this->LastName;

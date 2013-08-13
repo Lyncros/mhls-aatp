@@ -434,6 +434,27 @@
 			
 			return false;			
 		}
+		
+		/**
+		 *	Sends a single email, using a template that already exists in the system, to the
+		 *  user whom ID is received.
+		 *
+		 *	@static
+		 *	@param string $UserID - the email address of the recipient
+		 *	@param string $Type - the template type
+		 *	@param string $Name - the template name
+		 *	@param string $SubName - the template subname
+		 *	@param array $EmailParams - a series of key/value pairs that contain the data needed for the template
+		 *	@return boolean
+		 */
+		public static function PushEmailToUserIDs($UsersIDs, $Type, $Name, $SubName, Array $EmailParms) {
+			$Result = true;
+			
+			foreach ($UsersIDs as $UserID)
+				$Result = $Result && CNotifier::PushEmailToUserID($UserID, $Type, $Name, $SubName, $EmailParms);
+			
+			return $Result;
+		}
 
 	};
 

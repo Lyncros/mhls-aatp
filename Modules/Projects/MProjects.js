@@ -925,6 +925,22 @@ MProjects.Save = function(Prefix) {
 	return false;
 }
 
+//-----------------------------------------------------------------------------
+MProjects.RequestPO = function(Prefix) {
+	if(	CForm.Submit("Projects", "Module", "RequestPO", Prefix, 
+					function(Code, Content) {						
+						//CPageNotice.Add("Success", 'The request has been sent');
+						return true;
+					}, null)
+		== false) 
+	{		
+		//CPageNotice.Add("Error", 'Email could not be sent. It could be a problem with the SMTP Server or that there is no AP Contact in the system.');
+		return false;
+	}
+	
+	return true;
+}
+
 //=============================================================================
 $(MProjects.OnInit);
 

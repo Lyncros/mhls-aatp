@@ -173,6 +173,9 @@
 			}else
 			if($Action == "GetProjectDetailsForList") {
 				return $this->GetProjectDetailsForList();
+			}else
+			if($Action == "RequestPO") {
+				return $this->RequestPO();
 			}
 			if(parent::CanAccess($Action) == false) {
 				return Array(0, "You do not have permission to perform this action");
@@ -1241,6 +1244,50 @@
 		}
 		
 		//----------------------------------------------------------------------
+		function RequestPO() {
+			// Load Logged User, Vendors and Product Solutions
+			$User = new CUsers();
+			$User->OnLoad(CSecurity::GetUsersID());
+			
+			$Vendors = new CVendors();
+			$Vendors->OnLoadByIds(json_decode($_POST["VendorsID"]));
+			
+			$ProductSolutions = new CProductSolutions();
+			$ProductSolutions->OnLoadByIds(json_decode($_POST["ProductSolutionsID"]));
+			
+			// Prepare email data
+			$EmailData = Array(
+				"ProjectNumber"	=> intval($_POST["ProductNumber"]),
+				"User"			=> $User->FirstName . " " . $User->LastName,
+				"School"		=> htmlspecialchars($_POST["School"]),
+				"Budget"		=> htmlspecialchars($_POST["RequestPlant"]),
+				"ISBN"			=> htmlspecialchars($_POST["ISBN10"]),
+				"Vendors" 		=> $Vendors->ToString('Name'),
+				"Scope"	 		=> $ProductSolutions->ToString('Name'),
+				"DateTime"		=> date('n/j/Y g:ia', time()),
+			);
+			
+			//Load AP Contacts
+			$Users = new CUsers();
+			$Users->LoadAllOfGroup('AP Contact');
+			
+			try 
+			{
+				if(count($Users->Rows)>0)
+				{
+					//Notify AP Contacts
+					CNotifier::PushEmailToUserIDs($Users->Rows->RowsToArray('ID'), "Module", "Projects", "Request PO", $EmailData);
+					
+					return Array(1,'The request has been sent');
+				}
+				else
+				{
+					return Array(0,'Request has not been sent becouse there is no AP Contact in the system.');
+				}
+			} catch (Exception $e) {
+				return Array(0, 'Request has not been sent. It could be a problem with the SMTP Server.');
+			}
+		}
 		//----------------------------------------------------------------------
 		private function AddMilestonesAndTodoListsToProject($ProjectID, $ProductTypeId)
 		{

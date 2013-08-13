@@ -7,16 +7,15 @@
 		function OnRender() {
 			$Action = $this->GetActionName();
 			
-			$templateName = $this->GetTemplateName($Action);
-			$params = $this->GetTemplateParams($Action);
-			//die(var_dump($this->Twig));
-			$template = $this->Twig->loadTemplate($templateName.".twig");
-			$template->display($params);
+			$template = $this->LoadTemplate($Action);
+			
+			$template->display($this->GetTemplateParams($Action));
 		}
 		
 		private function GetActionName()
 		{
 			$ActionName = $_GET["Page"];
+			
 			return ($ActionName == null)?"Index":$ActionName;
 		}		
 	}

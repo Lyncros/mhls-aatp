@@ -76,6 +76,20 @@
 		 *
 		 *
 		 */
+		function OnLoadByIDs($IDs, $Extra = "") {
+			$IDsAsString = implode(', ',$IDs);
+
+			$Query = "SELECT * FROM `".$this->Table."` WHERE `ID` IN ($IDsAsString)";
+
+			return $this->OnLoadByQuery($Query." ".$Extra);
+		}
+		
+		/**
+		 *
+		 *
+		 *
+		 *
+		 */
 		function OnLoadByQuery($Query) {
 			if(($Res = mysql_query($Query)) === false) {
 				trigger_error("mySQL Error: ".mysql_error()." - ".$Query, E_USER_WARNING);
@@ -159,6 +173,21 @@
 			return ($this->Rows->$Variable = $Value);
 		}
 
+		//=====================================================================
+		/**
+		 *
+		 *
+		 *
+		 *
+		 */
+		 function ToString($Column)
+		 {
+			if($this->Rows != 0)
+				return $this->Rows->ToString($Column);
+			else
+				return '';
+		 }
+		 
 		//=====================================================================
 		// Static members
 		//=====================================================================

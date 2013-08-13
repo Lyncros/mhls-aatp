@@ -3,7 +3,7 @@ CREATE TABLE `Vendors` (
 	`Name` VARCHAR(50) NOT NULL,
 	PRIMARY KEY (`ID`),
 	INDEX `ID` (`ID`)
-)
+);
 
 ALTER TABLE `Vendors`
 ADD COLUMN `Created` INT(10) NOT NULL AFTER `Name`,
@@ -19,7 +19,7 @@ CREATE TABLE `ProjectsVendors` (
 	`VendorsID` INT(10) NOT NULL DEFAULT '0',
 	PRIMARY KEY (`ID`),
 	INDEX `ID` (`ID`)
-)
+);
 
 CREATE TABLE `ProjectsProductSolutions` (
 	`ID` INT(10) NOT NULL AUTO_INCREMENT,
@@ -27,4 +27,4 @@ CREATE TABLE `ProjectsProductSolutions` (
 	`ProductSolutionsID` INT(10) NOT NULL DEFAULT '0',
 	PRIMARY KEY (`ID`),
 	INDEX `ID` (`ID`)
-)
+);

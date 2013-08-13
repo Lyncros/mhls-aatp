@@ -162,5 +162,19 @@
 			
 			return $value;
 		}
+		
+		function ToString($Column)
+		 {
+		 	$AsString = '';
+			if($this->Result != null)
+			{
+				foreach($this as $Row)
+					$AsString .= $Row->Current[$Column] . ', ';
+				
+				return (strlen($AsString)>0)?substr($AsString, 0, strlen($AsString)-2):'';
+			}
+			
+			return '';
+		 }
 	};
 ?>
