@@ -16,28 +16,34 @@
                 <div id="ProjectDetailsReadOnly">
                     <table width="100%">
                         <tr>
-                            <td style="vertical-align:top; padding:22px 11px; padding-left:0px; width:25%;">
+                            <td style="vertical-align:top; padding:22px 11px; padding-left:0px; width:35%;">
                                 <div style="font-weight:bold; font-size:18px;">{{project.ISBN}}</div>
                                 <p><b>Connect Plus ISBN:</b>&nbsp;{{project.ConnectPlusISBN}}</p>
                                 <p><b>Requester:</b>&nbsp;{{project.RequesterName}}</p>
                                 <p><b>e-mail:</b>&nbsp;{{project.RequesterEmail}}</p>
                             </td>
                             <td style="vertical-align:top; padding-top:20px;"><div class="Separator"></div></td>
-                            <td style="vertical-align:top; padding:22px 11px; width:25%;">
+                            <td style="vertical-align:top; padding:22px 11px; width:64%;">
                                 <div style="color:#d74c4c; font-weight:bold; font-size:14px;">Dates</div>
                                 <p><b>Submit date:</b>&nbsp;{{ project.Created | FormatDate }}</p>
                                 <p><b>Date needed:</b>&nbsp;{{ project.DateNeeded | FormatDate }}</p>
                                 <p><b>Complete date:</b>&nbsp;{{ project.CompleteDate | FormatDate }}</p>
                             </td>
-                            <td style="vertical-align:top; padding-top:20px;"><div class="Separator"></div></td>
-                            <td style="vertical-align:top; padding:22px 11px; width:25%">
-                                <div style="color:#0685c5; font-weight:bold; font-size:14px;">Project Details</div>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <div style="color:#0685c5; font-weight:bold; font-size:14px;">Details</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align:top; padding:22px 11px; width:35%">
                                 <p><b>Status:</b>&nbsp;{{ GetStatusName(project.Status) }}</p>
                                 <p><b>LSC:</b>&nbsp;{{project.LSCUserName}}</p>
                                 <p><b>CA:</b>&nbsp;{{project.CreativeContactName}}</p>
                                 <p><b>Product type:</b>&nbsp;{{project.ConnectionType}}</p>
                             </td>
-                            <td style="vertical-align:top; padding:22px 11px; width:25%">
+                            <td style="vertical-align:top; padding-top:20px;"><div class="Separator"></div></td>
+                            <td style="vertical-align:top; padding:22px 11px; width:64%">
                                 <p><b>School city:</b>&nbsp;{{project.SchoolCity}}</p>
                                 <p><b>Campus name:</b>&nbsp;{{project.CampusName}}</p>
                                 <p><b>Duration:</b>&nbsp;{{project.Duration}}</p>
