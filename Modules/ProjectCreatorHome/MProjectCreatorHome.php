@@ -86,7 +86,7 @@ class MProjectCreatorHome extends CUnauthorizedModule {
         if ($NewProjectID === FALSE) {
             return Array(0, "Error saving Project Shop Online in database.");
         } else {
-            $MilestonesNames = Config::$Options["Module"]["ProjectCreatorHome"]["ShopOnlineMilestones"];
+            $MilestonesNames = $this->GetConfig("ShopOnlineMilestones");
 
             if (!empty($MilestonesNames)) {
                 if ($ProjectShop->AddMilestonesAndTodoListsToProject($NewProjectID, $MilestonesNames, $Extra) === FALSE) {
@@ -142,7 +142,7 @@ class MProjectCreatorHome extends CUnauthorizedModule {
                     if ($NewProjectID === FALSE) {
                         $Errors[] = "Could not save project in database.";
                     } else {
-                        $MilestonesNames = Config::$Options["Module"]["ProjectCreatorHome"]["ShopOnlineMilestones"];
+                        $MilestonesNames = $this->GetConfig("ShopOnlineMilestones");
 
                         if (empty($MilestonesNames)) {
                             $CreatedProjects++;
@@ -176,13 +176,13 @@ class MProjectCreatorHome extends CUnauthorizedModule {
 
         return Array(1, Array("", $Template->render($Params)));
     }
-    
+
     public function ShopOnlineISBN10Exists() {
-		$ISBN10 = intval($_POST["ISBN10"]);
-		
-		return Array(CProjectsShopOnline::ExistsWithISBN10($ISBN10),'');
-	}
-    
+        $ISBN10 = intval($_POST["ISBN10"]);
+
+        return Array(CProjectsShopOnline::ExistsWithISBN10($ISBN10), '');
+    }
+
     ///////////////////////////////////////////////
     ////////       PRIVATE OFFER      /////////////
     ///////////////////////////////////////////////
@@ -229,7 +229,7 @@ class MProjectCreatorHome extends CUnauthorizedModule {
         if ($NewProjectID === FALSE) {
             return Array(0, "Error creating Project Private Offer.");
         } else {
-            $MilestonesNames = Config::$Options["Module"]["ProjectCreatorHome"]["PrivateOfferMilestones"];
+            $MilestonesNames = $this->GetConfig("PrivateOfferMilestones");
 
             if (!empty($MilestonesNames)) {
                 if ($ProjectPrivateOffer->AddMilestonesAndTodoListsToProject($NewProjectID, $MilestonesNames, $Extra) === FALSE) {
@@ -329,7 +329,7 @@ class MProjectCreatorHome extends CUnauthorizedModule {
                     if ($NewProjectID === FALSE) {
                         $Errors[] = "Error saving project in database.";
                     } else {
-                        $MilestonesNames = Config::$Options["Module"]["ProjectCreatorHome"]["PrivateOfferMilestones"];
+                        $MilestonesNames = $this->GetConfig("PrivateOfferMilestones");
 
                         if (empty($MilestonesNames)) {
                             $CreatedProjects++;
@@ -363,25 +363,25 @@ class MProjectCreatorHome extends CUnauthorizedModule {
 
         return Array(1, Array("", $Template->render($Params)));
     }
-	
-	public function PrivateOfferProjectNumberExists() {
-		$ProjectNumber = intval($_POST["ProjectNumber"]);
-		
-		return Array(CProjectsPrivateOffer::ExistsWithProjectNumber($ProjectNumber),'');
-	}
-	
-	public function PrivateOfferISBNExists() {
-		$ISBN = htmlspecialchars($_POST["ISBN"]);
-		
-		return Array(CProjectsPrivateOffer::ExistsWithISBN($ISBN),'');
-	}
-	
-	public function PrivateOfferConnectPlusISBNExists() {
-		$ConnectPlusISBN = htmlspecialchars($_POST["ConnectPlusISBN"]);
-		
-		return Array(CProjectsPrivateOffer::ExistsWithConnectPlusISBN($ConnectPlusISBN),'');
-	}
-	
+
+    public function PrivateOfferProjectNumberExists() {
+        $ProjectNumber = intval($_POST["ProjectNumber"]);
+
+        return Array(CProjectsPrivateOffer::ExistsWithProjectNumber($ProjectNumber), '');
+    }
+
+    public function PrivateOfferISBNExists() {
+        $ISBN = htmlspecialchars($_POST["ISBN"]);
+
+        return Array(CProjectsPrivateOffer::ExistsWithISBN($ISBN), '');
+    }
+
+    public function PrivateOfferConnectPlusISBNExists() {
+        $ConnectPlusISBN = htmlspecialchars($_POST["ConnectPlusISBN"]);
+
+        return Array(CProjectsPrivateOffer::ExistsWithConnectPlusISBN($ConnectPlusISBN), '');
+    }
+
     ///////////////////////////////////////////////////
     ////////         PRIVATE FUNCTIONS      ///////////
     ///////////////////////////////////////////////////
@@ -482,6 +482,7 @@ class MProjectCreatorHome extends CUnauthorizedModule {
             return $ISBNType;
         }
     }
+
 }
 
 ?>

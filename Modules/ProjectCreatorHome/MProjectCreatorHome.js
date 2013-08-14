@@ -53,11 +53,11 @@ MProjectCreator.initShopOnlineForm = function(Prefix) {
 		jQuery.validator.addMethod(	"checkCaptcha", MProjectCreator.checkCaptchaFunction, " (*) Invalid Captcha");
         jQuery.validator.addMethod(	"ISBNExists", 
 									function() {
-										var rsp = CAJAX.ExecuteAsync('ProjectCreatorHome','Module','ShopOnlineISBN10Exists',{ ConnectPlusISBN: $('#'+Prefix+'ConnectPlusISBN').val() });
+										var rsp = CAJAX.ExecuteAsync('ProjectCreatorHome','Module','ShopOnlineISBN10Exists',{ ISBN10: $('#'+Prefix+'ISBN10').val() });
 										
 										return rsp[0] == 0;	
 										
-									}, " (*) Connect Plus ISBN already Exists");
+									}, " (*) ISBN already Exists");
         jQuery.validator.addMethod(	"isCustomCover", 
                                     function() {
                                         if($('input[name=CoverType]:checked').val() == 'CustomCover')

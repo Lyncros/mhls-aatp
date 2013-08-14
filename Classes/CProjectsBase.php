@@ -8,7 +8,7 @@ abstract class CProjectsBase extends CTable {
 
     private $MilestoneClass;
     private $MilestoneToDosClass;
-    
+
     public function __construct($Table, $MilestoneClass, $MilestoneToDosClass) {
         parent::__construct($Table);
         $this->MilestoneClass = $MilestoneClass;
@@ -19,25 +19,27 @@ abstract class CProjectsBase extends CTable {
         $success = true;
 
         $CMilestones = new CMilestones();
-        $CMilestones->OnLoadAll("WHERE Name IN (" . implode(", ", $MilestonesNames) . ")");
+        if ($CMilestones->OnLoadAll("WHERE Name IN ('" . implode("','", $MilestonesNames) . "')") === FALSE) {
+            return true;
+        }
 
-        foreach ($CMilestones as $Milestone) {
+        foreach ($CMilestones->Rows as $Milestone) {
             if (!$this->AddMilestone($ProjectID, $Milestone, $Extra)) {
                 $success = false;
             }
         }
-
+        
         return $success;
     }
 
     private function AddMilestone($ProjectID, $Milestone, $Extra) {
         $Data = array(
             "ProjectsID" => $ProjectID,
-            "Name" => $Milestone["Name"],
-            "CustomerApproval" => $Milestone["CustomerApproval"],
-            "Summary" => $Milestone["Summary"],
-            "PlantAllocated" => $Milestone["PlantAllocated"],
-            "Status" => $Milestone["Status"],
+            "Name" => $Milestone->Name,
+            "CustomerApproval" => $Milestone->CustomerApproval,
+            "Summary" => $Milestone->Summary,
+            "PlantAllocated" => $Milestone->PlantAllocated,
+            "Status" => $Milestone->Status,
         );
 
         $CMilestones = new $this->MilestoneClass();
@@ -46,7 +48,7 @@ abstract class CProjectsBase extends CTable {
             return false;
         }
 
-        $ToDoLists = unserialize($Milestone["ToDosLists"]);
+        $ToDoLists = unserialize($Milestone->ToDosLists);
 
         foreach ($ToDoLists as $ToDoListID) {
             $ToDosList = new CToDosLists();
@@ -57,7 +59,7 @@ abstract class CProjectsBase extends CTable {
             $ToDoIDs = unserialize($ToDosList->Members);
             foreach ($ToDoIDs as $ToDoID) {
                 $CToDo = new CToDos();
-                if ($CToDo->OnLoad($ToDoID) === false) {
+                if ($CToDo->OnLoadByID($ToDoID) === false) {
                     continue;
                 }
 

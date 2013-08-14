@@ -107,8 +107,8 @@
 					)
 				),
                 "ProjectCreatorHome" => Array (
-                    "ShopOnlineMilestones"      => Array(),//"Cover", "Flags Flipped", "Email sent"),
-                    "PrivateOfferMilestones"    => Array(),
+                    "ShopOnlineMilestones"      => Array("Cover", "Flags Flipped", "Email sent"),
+                    "PrivateOfferMilestones"    => Array("Cover"),
                 ),
 			),
 

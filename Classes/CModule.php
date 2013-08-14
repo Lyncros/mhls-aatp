@@ -96,6 +96,10 @@
 
 			return Array(1, "");
 		}
+        
+        public function GetConfig($ConfigKey) {
+            return Config::$Options["Module"][$this->Name][$ConfigKey];
+        }
 
 		private function SaveSettings() {
 			$ModuleName = $_POST["Name"];
@@ -113,7 +117,7 @@
 
 			return Array(1, "Success (Save Settings)");
 		}
-
+        
 		//======================================================================
 		// Static Functions
 		//======================================================================
