@@ -4,14 +4,14 @@
 
 var EFFECT_DURATION = 700;
 
-MProjectsShopOnline = {};
+MProjectsPrivateOffer = {};
 
-MProjectsShopOnline.showProjectDetails = function(projectId) {
+MProjectsPrivateOffer.showProjectDetails = function(projectId) {
     var params = {
         'ID': projectId
     };
 
-    CAJAX.Add("ProjectsShopOnline", "Module", "ShowProjectDetails", params, function(code, content) {
+    CAJAX.Add("ProjectsPrivateOffer", "Module", "ShowProjectDetails", params, function(code, content) {
         if (code == 0) {
             alert(content);
         } else {
@@ -22,7 +22,7 @@ MProjectsShopOnline.showProjectDetails = function(projectId) {
     });
 };
 
-MProjectsShopOnline.moveToList = function() {
+MProjectsPrivateOffer.moveToList = function() {
     $('#ProjectListContainer').slideDown(EFFECT_DURATION);
     $('#ProjectDetailsContainer').fadeOut(EFFECT_DURATION, function() {
         $('#ProjectDetailsContainer').empty();
@@ -30,17 +30,17 @@ MProjectsShopOnline.moveToList = function() {
     $('#ProjectDetailsContainer').slideUp(EFFECT_DURATION);
 };
 
-MProjectsShopOnline.toggleDetailsEdit = function() {
+MProjectsPrivateOffer.toggleDetailsEdit = function() {
     $('#ProjectDetailsReadOnly').slideToggle(EFFECT_DURATION);
     $('#ProjectDetailsEdit').slideToggle(EFFECT_DURATION);
 };
 
-MProjectsShopOnline.toggleMilestone = function(milestoneID) {
+MProjectsPrivateOffer.toggleMilestone = function(milestoneID) {
     $('#Milestone' + milestoneID).slideToggle(EFFECT_DURATION);
 };
 
-MProjectsShopOnline.saveMilestone = function(prefix) {
-    if(CForm.Submit("ProjectsShopOnline", "Module", "SaveMilestone", prefix, function(code, response) {
+MProjectsPrivateOffer.saveMilestone = function(prefix) {
+    if(CForm.Submit("ProjectsPrivateOffer", "Module", "SaveMilestone", prefix, function(code, response) {
         var message;
         
         if (code == 0) {
@@ -61,6 +61,6 @@ MProjectsShopOnline.saveMilestone = function(prefix) {
     return true;
 };
 
-MProjectsShopOnline.deleteMilestone = function(MilestoneID) {
+MProjectsPrivateOffer.deleteMilestone = function(MilestoneID) {
     alert('Deleting milestones is not allowed in this phase.');
 };

@@ -1,5 +1,5 @@
 <div id="ProjectListContainer">
-<h1>{{projects|length}} Projects Shop Online</h1>
+<h1>{{projects|length}} Projects Private Offer</h1>
 <br/>
 
 {% for p in projects %}
@@ -8,7 +8,8 @@
         <table style="width:100%;" cellpadding="0" cellspacing="0">
             <tr>
                 <td class="ProjectListSection">
-                    <p class="ProjectListISBN">ISBN:&nbsp;{{p.ISBN10}}</p>
+                    <p class="ProjectListISBN">Connect ISBN:&nbsp;{{p.ISBN}}</p>
+                    <p><b>Connect Plus ISBN:</b>&nbsp;{{p.ConnectPlusISBN}}</p>
                     <p><b>Requester:</b>&nbsp;{{p.RequesterName}}</p>
                     <p><b>e-Mail:</b>&nbsp;{{p.RequesterEmail}}</p>
                 </td>
@@ -20,7 +21,7 @@
                 <td class="ProjectListSeparator"><div class="Separator"></div></td>
                 <td class="ProjectListSection">
                     <div class="ProjectListSectionDetailsTitle">Project Details</div>
-                    <p><b>CA:</b>&nbsp;{{ p.ContactName }}</p>
+                    <p><b>CA:</b>&nbsp;{{ p.CreativeContactName }}</p>
                 </td>
                 <td class="ProjectListSeparator"><div class="Separator"></div></td>
                 <td class="ProjectListSection">
@@ -38,10 +39,10 @@
                         </li>
                     {% endfor %}
                     </ul>
-                    <p><b>Status:</b>&nbsp;{{ GetStatusName(p.Status) }}</p>
+                    <p><b>Status:</b>&nbsp;{{ p.Status }}</p>
                 </td>
                 <td class="ProjectListDetailsLink">
-                    <div onClick="MProjectsShopOnline.showProjectDetails({{p.ID}})" class='ProjectDetailsLink'></div>
+                    <div onClick="MProjectsPrivateOffer.showProjectDetails({{p.ID}})" class='ProjectDetailsLink'></div>
                 </td>
             </tr>
         </table>

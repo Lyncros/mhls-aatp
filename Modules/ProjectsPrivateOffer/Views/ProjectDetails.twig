@@ -1,13 +1,12 @@
 <div class="ProjectContainer" style="padding-bottom:45px;">
-    <div id='MoveBackButton' onClick="MProjectsShopOnline.moveToList();" class='Back' style='top: 10px; left: 715px;'></div>
+    <h1 style="position: absolute;top: 0px;">{{project.ProjectNumber}}&nbsp;//&nbsp;{{project.SchoolName}}</h1>
+    <br/>
+    <div id='MoveBackButton' onClick="MProjectsPrivateOffer.moveToList();" class='Back' style='top: 35px; left: 715px;'></div>
     <table style="width:100%;" cellpadding="0" cellspacing="0">
         <tr>
             <td style="width:33px; padding-top:17px;"></td>
             <td colspan="7" style="padding-top:20px; font-size:24px;">
                 <div style="float:left;">Project Details</div>
-                {% if canEdit %}
-                <div class="Icon_Edit" style="float:left; margin-left:12px;" onClick="MProjectsShopOnline.toggleDetailsEdit();"></div>
-                {% endif %}
             </td>
             <td style="width:33px;"></td>
         </tr>
@@ -17,25 +16,32 @@
                 <div id="ProjectDetailsReadOnly">
                     <table width="100%">
                         <tr>
-                            <td style="vertical-align:top; padding:22px 11px; padding-left:0px; width:40%;">
-                                <div style="font-weight:bold; font-size:18px;">{{project.ISBN10}}</div>
-                                <p><b>Author:</b>&nbsp;{{project.Author}}</p>
-                                <p><b>Requester name:</b>&nbsp;{{project.RequesterName}}</p>
+                            <td style="vertical-align:top; padding:22px 11px; padding-left:0px; width:25%;">
+                                <div style="font-weight:bold; font-size:18px;">{{project.ISBN}}</div>
+                                <p><b>Connect Plus ISBN:</b>&nbsp;{{project.ConnectPlusISBN}}</p>
+                                <p><b>Requester:</b>&nbsp;{{project.RequesterName}}</p>
                                 <p><b>e-mail:</b>&nbsp;{{project.RequesterEmail}}</p>
                             </td>
                             <td style="vertical-align:top; padding-top:20px;"><div class="Separator"></div></td>
-                            <td style="vertical-align:top; padding:22px 11px; width:30%;">
+                            <td style="vertical-align:top; padding:22px 11px; width:25%;">
                                 <div style="color:#d74c4c; font-weight:bold; font-size:14px;">Dates</div>
                                 <p><b>Submit date:</b>&nbsp;{{ project.Created | FormatDate }}</p>
                                 <p><b>Date needed:</b>&nbsp;{{ project.DateNeeded | FormatDate }}</p>
                                 <p><b>Complete date:</b>&nbsp;{{ project.CompleteDate | FormatDate }}</p>
                             </td>
                             <td style="vertical-align:top; padding-top:20px;"><div class="Separator"></div></td>
-                            <td style="vertical-align:top; padding:22px 11px; width:30%">
+                            <td style="vertical-align:top; padding:22px 11px; width:25%">
                                 <div style="color:#0685c5; font-weight:bold; font-size:14px;">Project Details</div>
-                                <p><b>Status:</b>&nbsp;{{ GetStatusName(project.Status) }}</p>
-                                <p><b>CA:</b>&nbsp;{{project.ContactName}}</p>
-                                <p><b>ISBN type:</b>&nbsp;{{project.ISBNType}}</p>
+                                <p><b>Status:</b>&nbsp;{{ project.Status }}</p>
+                                <p><b>LSC:</b>&nbsp;{{project.LSCUserName}}</p>
+                                <p><b>CA:</b>&nbsp;{{project.CreativeContactName}}</p>
+                                <p><b>Product type:</b>&nbsp;{{project.ConnectionType}}</p>
+                            </td>
+                            <td style="vertical-align:top; padding:22px 11px; width:25%">
+                                <p><b>School city:</b>&nbsp;{{project.SchoolCity}}</p>
+                                <p><b>Campus name:</b>&nbsp;{{project.CampusName}}</p>
+                                <p><b>Duration:</b>&nbsp;{{project.Duration}}</p>
+                                <p><b>Price:</b>&nbsp;{{project.Price}}</p>
                             </td>
                         </tr>
                         <tr>
@@ -95,7 +101,7 @@
             </td>
             <td>
                 <div id="MilestoneLabel{{m.ID}}"
-                     onclick="MProjectsShopOnline.toggleMilestone({{m.ID}});" 
+                     onclick="MProjectsPrivateOffer.toggleMilestone({{m.ID}});" 
                      style="padding-left:11px; font-weight:bold; font-size:14px; margin-top:12px; margin-bottom:6px; cursor:pointer;">
                     <span style="float:left;">
                         [{{loop.index}}] {{m.Name}}&nbsp;&nbsp;&nbsp;
@@ -111,10 +117,10 @@
                         {{ AddYesNo("Complete", "Status", isComplete, "YesNo") | raw }}
                         <tr>
                             <td colspan="3" align="right">
-                                <div class="Button" value="Save" onClick="MProjectsShopOnline.saveMilestone({{m.ID}}, '{{GetPrefix()}}');">save</div>
-                                <div class="Button" value="Cancel" onClick="MProjectsShopOnline.toggleMilestone({{m.ID}});">cancel</div>
+                                <div class="Button" value="Save" onClick="MProjectsPrivateOffer.saveMilestone('{{GetPrefix()}}');">save</div>
+                                <div class="Button" value="Cancel" onClick="MProjectsPrivateOffer.toggleMilestone({{m.ID}});">cancel</div>
                                 {% if canDelete %}
-                                    <div class="Button" value="Delete" onClick="MProjectsShopOnline.deleteMilestone({{m.ID}});">delete</div>
+                                    <div class="Button" value="Delete" onClick="MProjectsPrivateOffer.deleteMilestone({{m.ID}});">delete</div>
                                 {% endif %}
                             </td>
                         </tr>

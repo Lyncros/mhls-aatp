@@ -8,11 +8,38 @@ abstract class CProjectsBase extends CTable {
 
     private $MilestoneClass;
     private $MilestoneToDosClass;
+    public $Milestones;
 
     public function __construct($Table, $MilestoneClass, $MilestoneToDosClass) {
         parent::__construct($Table);
         $this->MilestoneClass = $MilestoneClass;
         $this->MilestoneToDosClass = $MilestoneToDosClass;
+    }
+
+    function OnLoadByID($ID, $Extra) {
+        if (parent::OnLoadByID($ID, $Extra) === false) {
+            return false;
+        }
+
+        return $this->OnInit();
+    }
+
+    public function OnInit() {
+        $this->Milestones = $this->LoadMilestonesByProjectID($this->ID);
+        
+        return true;
+    }
+
+    public function LoadMilestonesByProjectID($ProjectID) {
+        $CProjectMilestones = new $this->MilestoneClass();
+        return $CProjectMilestones->LoadByProjectID($ProjectID);
+    }
+    
+    public function LoadUserFullName($UserID) {
+        $CUser = new CUsers();
+        if ($CUser->OnLoadByID($UserID)) {
+            return $CUser->LastName . ", " . $CUser->FirstName;
+        }
     }
 
     public function AddMilestonesAndTodoListsToProject($ProjectID, $MilestonesNames, $Extra) {
@@ -28,7 +55,7 @@ abstract class CProjectsBase extends CTable {
                 $success = false;
             }
         }
-        
+
         return $success;
     }
 
@@ -82,11 +109,6 @@ abstract class CProjectsBase extends CTable {
         }
 
         return true;
-    }
-    
-    public function LoadMilestonesByProjectID($ProjectID) {
-        $CProjectMilestones = new $this->MilestoneClass();
-        return $CProjectMilestones->LoadByProjectID($ProjectID);
     }
 
 }

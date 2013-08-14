@@ -8,32 +8,16 @@ class CProjectsShopOnline extends CProjectsBase {
     const TABLE_NAME = "ProjectsShopOnline";
 
     public $ContactName;
-    public $Milestones;
 
     function __construct() {
         parent::__construct(self::TABLE_NAME, "CProjectsShopOnlineMilestones", "CProjectsShopOnlineMilestonesToDos");
     }
 
-    function OnLoadByID($ID, $Extra) {
-        if (parent::OnLoadByID($ID, $Extra) === false) {
-            return false;
-        }
-
-        return $this->OnInit();
-    }
-
     public function OnInit() {
-        $this->ContactName = $this->LoadContactName();
-        $this->Milestones = $this->LoadMilestonesByProjectID($this->ID);
-        
-        return true;
-    }
+        parent::OnInit();
+        $this->ContactName = $this->LoadUserFullName($this->UsersID);
 
-    public function LoadContactName() {
-        $CUser = new CUsers();
-        if ($CUser->OnLoadByID($this->UsersID)) {
-            $this->ContactName = $CUser->FirstName.", ".$CUser->LastName;
-        }
+        return true;
     }
 
     public function OnLoadAllActive() {

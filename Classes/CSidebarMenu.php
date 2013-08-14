@@ -66,7 +66,10 @@ class CSidebarMenu {
                 new CSidebarMenu("Index", "Vendors Management Home")
             ),
             "ProjectsShopOnline" => Array(
-                new CSidebarMenu("ProjectsShopOnline", "SHOP setups")
+                new CSidebarMenu("ProjectsShopOnline", "Shop online")
+            ),
+            "ProjectsPrivateOffer" => Array(
+                new CSidebarMenu("ProjectsPrivateOffer", "Private Offer")
             ),
         );
     }

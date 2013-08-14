@@ -448,7 +448,11 @@ input[disabled],select[disabled] {
 .SidebarIconVendorsManagementIndex						{ background-image: url("./SidebarIconToDos.png"); }
 .SidebarActive .SidebarIconProjects						{ background-image: url("./SidebarIconProjectsActive.png"); }
 
-.SidebarIconProjectCreatorHomePrivateOffer				{ background-image:	url("./SidebarIconResourcesCategories.png"); }
+.SidebarIconProjectCreatorHomePrivateOffer, .SidebarIconProjectsPrivateOffer
+{ 
+    background-image:	url("./SidebarIconResourcesCategories.png"); 
+}
+
 .SidebarIconProjectCreatorHomeShopOnline, .SidebarIconProjectsShopOnline
 { 
 	background-image:	url("./SidebarIconProductSolutions.png"); 
