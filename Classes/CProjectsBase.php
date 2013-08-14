@@ -83,6 +83,11 @@ abstract class CProjectsBase extends CTable {
 
         return true;
     }
+    
+    public function LoadMilestonesByProjectID($ProjectID) {
+        $CProjectMilestones = new $this->MilestoneClass();
+        return $CProjectMilestones->LoadByProjectID($ProjectID);
+    }
 
 }
 

@@ -31,6 +31,36 @@ MProjectsShopOnline.moveToList = function() {
 };
 
 MProjectsShopOnline.toggleDetailsEdit = function() {
-    $('#ProjectDetailsReadOnly').slideToggle();
-    $('#ProjectDetailsEdit').slideToggle();
+    $('#ProjectDetailsReadOnly').slideToggle(EFFECT_DURATION);
+    $('#ProjectDetailsEdit').slideToggle(EFFECT_DURATION);
+};
+
+MProjectsShopOnline.toggleMilestone = function(milestoneID) {
+    $('#Milestone' + milestoneID).slideToggle(EFFECT_DURATION);
+};
+
+MProjectsShopOnline.saveMilestone = function(milestoneId, prefix) {
+    if(CForm.Submit("ProjectsShopOnline", "Module", "SaveMilestone", prefix, function(code, response) {
+        var message;
+        
+        if (code == 0) {
+            message = response;
+        } else {
+            var Parts = explode("\n", response, 2);
+            message = Parts[0];
+            $('#ProjectDetailsContainer').html(Parts[1]);
+        }
+        
+        CForm.SubmitCallback(code, message);
+        // We handle the display of success message
+        return false;
+	}) == false) {
+		alert(CForm.GetLastError());
+		return false;
+	}
+    return true;
+};
+
+MProjectsShopOnline.deleteMilestone = function(MilestoneID) {
+    alert('Deleting milestones is not allowed in this phase.');
 };

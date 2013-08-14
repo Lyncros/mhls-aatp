@@ -10,6 +10,15 @@ h1 {
     top:        5px;
 }
 
+ul {
+  list-style:   none;
+  padding:      0px;
+}
+
+.SeparatorHorizontal {
+    border-bottom: 1px solid #d1d1d1 !important;
+}
+
 .ProjectListSeparator {
     vertical-align: top; 
     padding-top:    7px; 
@@ -49,4 +58,9 @@ h1 {
 
 .ProjectListDetailsLink {
     padding-right:  13px;
+}
+
+.ProjectsListMilestoneIncomplete {
+    color:          red;
+    font-weight:    bold;
 }

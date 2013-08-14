@@ -108,7 +108,7 @@
 				),
                 "ProjectCreatorHome" => Array (
                     "ShopOnlineMilestones"      => Array("Cover", "Flags Flipped", "Email sent"),
-                    "PrivateOfferMilestones"    => Array("Cover"),
+                    "PrivateOfferMilestones"    => Array("Private Offer setup using the tool", "Screenshot of solution taken", "Email notification"),
                 ),
 			),
 

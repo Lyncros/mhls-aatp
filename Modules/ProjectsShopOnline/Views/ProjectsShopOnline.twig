@@ -25,6 +25,19 @@
                 <td class="ProjectListSeparator"><div class="Separator"></div></td>
                 <td class="ProjectListSection">
                     <div class="ProjectListSectionMilestonesTitle">Milestones</div>
+                    <ul>
+                    {% for m in p.milestones %}
+                        <li>
+                        {% if m.Status == "Complete" %}
+                        <span>
+                        {% else %}
+                        <span class="ProjectsListMilestoneIncomplete">
+                        {% endif %}
+                        {{ m.Name }}
+                        </span>
+                        </li>
+                    {% endfor %}
+                    </ul>
                     <p><b>Status:</b>&nbsp;{{ GetStatusName(p.Status) }}</p>
                 </td>
                 <td class="ProjectListDetailsLink">

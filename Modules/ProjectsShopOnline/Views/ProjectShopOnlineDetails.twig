@@ -41,6 +41,9 @@
                         <tr>
                             <td colspan="3"><p><b>Comments:</b>&nbsp;{{ project.Comments }}</p></td>
                         </tr>
+                        <tr>
+                            <td colspan="5" class="SeparatorHorizontal"></td>
+                        </tr>
                     </table>
                 </div>
                 {% if canEdit %}
@@ -68,6 +71,57 @@
             </td>
 			<td style="width:30px;"></td>
         </tr>
+        {% if project.milestones %}
+        <tr>
+            <td></td>
+            <td>
+                <div style='font-weight:bold; font-size:14px; margin-top:12px; margin-bottom:6px;'>
+                    Milestone Completion // <span style="color:#5a8111;">{{project.milestoneCompletion}}&nbsp;% Complete</span>
+                </div>
+                <div class="CompletionWrapper" style="width:672px;">
+                    <div class="CompletionBar" style="width:{{project.milestoneCompletion * 670 / 100}}px"></div>
+                    <div class="CompletionPercentage">{{project.milestoneCompletion}}</div>
+                </div>  
+            </td>
+        </tr>
+        {% endif %}
+        {% for m in project.milestones %}
+        {% set isComplete = (m.Status == "Complete") %}
+        <tr>
+            <td>
+                {% if isComplete %}
+                <div class="Complete" style="float:right; position:relative; top:8px;"></div>
+                {% endif %}
+            </td>
+            <td>
+                <div id="MilestoneLabel{{m.ID}}"
+                     onclick="MProjectsShopOnline.toggleMilestone({{m.ID}});" 
+                     style="padding-left:11px; font-weight:bold; font-size:14px; margin-top:12px; margin-bottom:6px; cursor:pointer;">
+                    <span style="float:left;">
+                        [{{loop.index}}] {{m.Name}}&nbsp;&nbsp;&nbsp;
+                    </span>
+                    <div class="MilestoneDownArrow"></div>
+                </div>
+                <div class="MilestoneDetails" id="Milestone{{m.ID}}"  
+                     style="padding-left:58px; display:none; clear:both; margin:12px 0px; position:relative; top:12px;">
+                    <table>
+                        {{ RandomPrefix() }}
+                        {{ AddHidden("MilestoneID", m.ID) | raw }}
+                        {{ AddHidden("ProjectID", project.ID) | raw }}
+                        {{ AddYesNo("Complete", "Status", isComplete, "YesNo") | raw }}
+                        <tr>
+                            <td colspan="3" align="right">
+                                <div class="Button" value="Save" onClick="MProjectsShopOnline.saveMilestone({{m.ID}}, '{{GetPrefix()}}');">save</div>
+                                <div class="Button" value="Cancel" onClick="MProjectsShopOnline.toggleMilestone({{m.ID}});">cancel</div>
+                                {% if canDelete %}
+                                    <div class="Button" value="Delete" onClick="MProjectsShopOnline.deleteMilestone({{m.ID}});">delete</div>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
     </table>
 </div>
-							
