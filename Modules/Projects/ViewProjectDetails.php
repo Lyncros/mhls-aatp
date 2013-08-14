@@ -225,6 +225,39 @@
 									$VendorsArray[$Row->ID] = $Row->Name;
 								}
 								echo CForm::AddListbox("Vendors", "VendorsID", $VendorsArray, $Project->Vendors, "", "", "", "Basic");
+                                
+                                // Specialities
+								$Specialities = new CSpecialities();
+								$Specialities->OnLoadAll("WHERE `Active` = 1 ORDER BY `Name` ASC");
+								$SpecialitiesValuesArray = Array();
+								foreach(CForm::RowsToArray($Specialities->Rows, "Name") as $Key => $Value) {
+									$SpecialitiesValuesArray[] = json_encode(Array("id" => $Key, "text" => $Value));
+								}
+								
+								echo CForm::AddStatic("Specialities", "<input type='text' name='".CForm::GetPrefix()."Specialities' id='".CForm::GetPrefix()."Specialities' value='' style='width:300px;'>"); 
+								echo "<script type='text/javascript'>
+										$('#".CForm::GetPrefix()."Specialities').select2({
+											minimumResultsForSearch		: 20,
+											multiple					: true,
+											data						: [".str_replace('"id"', 'id', str_replace('"text"', 'text', implode(",", $SpecialitiesValuesArray)))."],
+											createSearchChoice			: function(term, data) {
+												if ($(data).filter(function() {
+													return this.text.localeCompare(term) === 0;
+												}).length === 0) {
+													return {id:term, text:term};
+												}
+											}
+										});
+										
+										$('#".CForm::GetPrefix()."Specialities').select2('val', [";
+										$Separator = "";
+										foreach($Project->Specialities as $Key => $Value) {
+											echo $Separator . "{id:".$Key.", text:\"".$Value."\"}";
+											$Separator = ",";
+										}
+										echo "])
+									</script>";
+								// End Specialities
 								
 								// Product Solutions
 								$ProductSolutionsArray = Array("" => "");

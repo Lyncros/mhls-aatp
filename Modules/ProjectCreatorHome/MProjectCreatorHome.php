@@ -176,7 +176,13 @@ class MProjectCreatorHome extends CUnauthorizedModule {
 
         return Array(1, Array("", $Template->render($Params)));
     }
-
+    
+    public function ShopOnlineISBN10Exists() {
+		$ISBN10 = intval($_POST["ISBN10"]);
+		
+		return Array(CProjectsShopOnline::ExistsWithISBN10($ISBN10),'');
+	}
+    
     ///////////////////////////////////////////////
     ////////       PRIVATE OFFER      /////////////
     ///////////////////////////////////////////////
@@ -358,19 +364,19 @@ class MProjectCreatorHome extends CUnauthorizedModule {
         return Array(1, Array("", $Template->render($Params)));
     }
 	
-	public function ProjectNumberExists() {
+	public function PrivateOfferProjectNumberExists() {
 		$ProjectNumber = intval($_POST["ProjectNumber"]);
 		
 		return Array(CProjectsPrivateOffer::ExistsWithProjectNumber($ProjectNumber),'');
 	}
 	
-	public function ISBNExists() {
+	public function PrivateOfferISBNExists() {
 		$ISBN = htmlspecialchars($_POST["ISBN"]);
 		
 		return Array(CProjectsPrivateOffer::ExistsWithISBN($ISBN),'');
 	}
 	
-	public function ConnectPlusISBNExists() {
+	public function PrivateOfferConnectPlusISBNExists() {
 		$ConnectPlusISBN = htmlspecialchars($_POST["ConnectPlusISBN"]);
 		
 		return Array(CProjectsPrivateOffer::ExistsWithConnectPlusISBN($ConnectPlusISBN),'');
@@ -476,7 +482,6 @@ class MProjectCreatorHome extends CUnauthorizedModule {
             return $ISBNType;
         }
     }
-
 }
 
 ?>

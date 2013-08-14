@@ -591,6 +591,26 @@
 			return false;
 		}
 		
+        //----------------------------------------------------------------------
+		function AddSpeciality($Name) {
+			$Name = htmlspecialchars($Name);
+			
+			$Data = Array(
+				"Name"					=> $Name,
+				"Active"				=> 1,
+				"Created"				=> time(),
+				"CreatedUsersID"		=> CSecurity::GetUsersID(),
+				"CreatedIPAddress"		=> $_SERVER["REMOTE_ADDR"],
+				"Modified"				=> time(),
+				"ModifiedUsersID"		=> CSecurity::GetUsersID(),
+				"ModifiedIPAddress"		=> $_SERVER["REMOTE_ADDR"],
+			);
+			
+			if(($ID = CTable::Add("Specialities", $Data)) !== false) return $ID;
+			
+			return false;
+		}
+        
 		//----------------------------------------------------------------------
 		function UpdateResourceList() {
 			$ProjectID = $_POST["ProjectID"];
@@ -805,7 +825,33 @@
 					CTable::Add("ProjectsVendors", Array("ProjectsID" => $ID, "VendorsID" => intval($VendorID)));
 				}
 			}
-
+            
+            // Specialities            
+			if($_POST["Specialities"]) {
+				$Specialities = explode(",", htmlspecialchars($_POST["Specialities"]));
+				$PreviousSpecialitiesIds = array_keys($ProjectInDB->Specialities);
+				$SpecialitiesToAdd = array_diff($Specialities, $PreviousSpecialitiesIds);
+				$SpecialitiesToRemove = array_diff($PreviousSpecialitiesIds, $Specialities);
+				
+				foreach ($SpecialitiesToAdd as $SpecialityID) {
+					if(intval($SpecialityID) <= 0) {
+						$SpecialityID = self::AddSpeciality($SpecialityID);
+						if(!$SpecialityID) continue;
+					}
+					
+					CTable::Add("ProjectsSpecialities", Array("ProjectsID" => $ID, "SpecialitiesID" => intval($SpecialityID)));
+				}
+				
+				if (!empty($SpecialitiesToRemove)) {
+					$InList = implode(", ", $SpecialitiesToRemove);
+					CTable::RunQuery("DELETE FROM `ProjectsSpecialities` WHERE `ProjectsID` = $ID AND `SpecialitiesID` IN ($InList)");
+				}
+			} else {
+				if (!empty($ProjectInDB->Specialities)) {
+					CTable::RunQuery("DELETE FROM `ProjectsSpecialities` WHERE `ProjectsID` = $ID");
+				}
+			}
+            
 			// Product Solutions
 			CTable::RunQuery("DELETE FROM `ProjectsProductSolutions` WHERE `ProjectsID` = $ID");
 			if($_POST["ProductSolutionsID"] != "null") {

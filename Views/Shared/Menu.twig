@@ -4,7 +4,7 @@
 
 <li class="{{ activeSidebarNode == action.name ? 'SidebarActive' : ''}}">
 	<div style="text-align:center;line-height: 13px;padding-top: 5px;">{{action.displayName}}</div>
-    <div class="SuperToolsSidebarIcon SidebarIcon" 
+    <div class="SuperToolsSidebarIcon SidebarIcon SidebarIcon{{moduleName}}{{action.name}}" 
          onClick="CModule.Load('{{moduleName}}', {'Page' : '{{action.name}}'});" title="{{action.displayName}}"></div>
 </li>
 <li style='padding-left:2px; height:2px;'><div class='SidebarSeparator'></div></li>

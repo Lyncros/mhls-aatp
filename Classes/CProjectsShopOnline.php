@@ -5,8 +5,10 @@
  */
 class CProjectsShopOnline extends CProjectsBase {
 
+    const TABLE_NAME = "ProjectsShopOnline";
+       
     function __construct() {
-        parent::__construct("ProjectsShopOnline", "CProjectsShopOnlineMilestones", "CProjectsShopOnlineMilestonesToDos");
+        parent::__construct(self::TABLE_NAME, "CProjectsShopOnlineMilestones", "CProjectsShopOnlineMilestonesToDos");
     }
 
     public static function GetISBNTypes() {
@@ -35,7 +37,7 @@ class CProjectsShopOnline extends CProjectsBase {
     public function OnLoadByID($ID, $Extra = "") {
         return $this->OnLoadByQuery("
             SELECT P.*, CONCAT(U.`LastName`, ', ', U.`FirstName`) as `ContactName` 
-            FROM `ProjectsShopOnline` as P 
+            FROM `".self::TABLE_NAME."` as P 
                 JOIN `Users` as U ON P.UsersID = U.ID 
             WHERE P.`ID` = $ID AND `Deleted` IS NULL");
     }
@@ -43,11 +45,16 @@ class CProjectsShopOnline extends CProjectsBase {
     public function OnLoadAllActive() {
         return $this->OnLoadByQuery("
             SELECT P.*, CONCAT(U.`LastName`, ', ', U.`FirstName`) as `ContactName` 
-            FROM `ProjectsShopOnline` as P 
+            FROM `".self::TABLE_NAME."` as P 
                 JOIN `Users` as U ON P.UsersID = U.ID 
             WHERE `Deleted` IS NULL");
     }
+    
+    public static function ExistsWithISBN10($ISBN10) {
+        $Projects = CTable::Select(self::TABLE_NAME, "WHERE ISBN10 = ISBN10");
 
+        return ($Projects != null) && $Projects->count() > 0;
+    }
 }
 
 ?>

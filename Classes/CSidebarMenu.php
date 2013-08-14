@@ -62,9 +62,9 @@ class CSidebarMenu {
             ),
             "MilestoneList" => Array(
                 new CSidebarMenu("MilestonesImAssignedTo", "Milestones I'm assigned to", "MilestonesImAssignedTo", "View")),
-            /*"VendorsManagement" => Array(
+            "VendorsManagement" => Array(
                 new CSidebarMenu("Index", "Vendors Management Home")
-            ),*/
+            ),
             "ProjectsShopOnline" => Array(
                 new CSidebarMenu("ProjectsShopOnline", "SHOP setups")
             ),

@@ -24,6 +24,7 @@
 		public $ToDos					= Array();
 		public $ProductTypes			= Array();
 		public $Tags					= Array();
+        public $Specialities			= Array();
 		public $Vendors					= Array();
 		
 		
@@ -53,6 +54,7 @@
 			$this->OnLoadToDos();
 			$this->OnLoadProductTypes();
 			$this->OnLoadTags();
+            $this->OnLoadSpecialities();
 			$this->OnLoadVendors();
 			$this->OnLoadProductSolutions();
 			
@@ -169,6 +171,20 @@
 				asort($this->Tags);
 			}
 			unset($ProjectsTags);
+		}
+        
+        function OnLoadSpecialities() {
+			$ProjectsSpecialities = new CTable("ProjectsSpecialities");
+			if($ProjectsSpecialities->OnLoadAll("WHERE `ProjectsID` = ".$this->ID)) {
+				foreach($ProjectsSpecialities->Rows as $Row) {
+					$Speciality = new CSpecialities();
+					if(! $Speciality->OnLoad($Row->SpecialitiesID)) continue;
+
+					$this->Specialities[intval($Speciality->ID)] = $Speciality->Name;
+				}
+				asort($this->Specialities);
+			}
+			unset($ProjectsSpecialities);
 		}
 		
 		function OnLoadVendors() {

@@ -1,4 +1,4 @@
-T/*===========================================================================*/
+/*===========================================================================*/
 /**
 @import url("Icons.css");
 
@@ -445,8 +445,14 @@ input[disabled],select[disabled] {
 .SidebarIconProjects									{ background-image: url("./SidebarIconProjects.png"); }
 .SidebarIconProjectsAdd									{ background-image: url("./SidebarIconAddProject.png"); }
 .SidebarIconMilestoneListMilestonesImAssignedTo			{ background-image: url("./SidebarIconViewMilestonesImAssignedTo.png"); }
-.SidebarIconVendorsManagementIndex						{ background-image: url("./SidebarIconViewMilestonesImAssignedTo.png"); }
+.SidebarIconVendorsManagementIndex						{ background-image: url("./SidebarIconToDos.png"); }
 .SidebarActive .SidebarIconProjects						{ background-image: url("./SidebarIconProjectsActive.png"); }
+
+.SidebarIconProjectCreatorHomePrivateOffer				{ background-image:	url("./SidebarIconResourcesCategories.png"); }
+.SidebarIconProjectCreatorHomeShopOnline, .SidebarIconProjectsShopOnline
+{ 
+	background-image:	url("./SidebarIconProductSolutions.png"); 
+}
 
 .SidebarSubicon {
 	display:							none;
@@ -489,7 +495,7 @@ input[disabled],select[disabled] {
 	background-color:					#f0f0f0;
 	float:								right;
 	width:								756px;
-	min-height:							400px;
+	min-height:							580px;
 	position:							relative;
 	-webkit-border-radius:				3px;
 	-moz-border-radius:					3px;

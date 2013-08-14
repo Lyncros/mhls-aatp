@@ -1,29 +1,24 @@
 {% extends 'UnauthorizedModuleMaster.twig' %}
     
 {% block mainContent %}
-
-<script type="text/javascript">
-	{{ RandomPrefix() }}
-	{% set uploadPrefix = GetPrefix() %}
-	MProjectCreator.InitPrivateOfferUpload('{{uploadPrefix}}');
-  
-	{{ RandomPrefix() }}
-	{% set formPrefix = GetPrefix() %}
-	MProjectCreator.InitPrivateOfferForm('{{formPrefix}}');
-</script>
  
 <h2>Product page setup for Private Offers at a Connect site</h2>
 
 <table width="100%" cellspacing="0" cellpadding="0">
+    <script type="text/javascript">
+        {{ RandomPrefix() }}
+        {% set uploadPrefix = GetPrefix() %}
+        MProjectCreator.initUploadForm('{{uploadPrefix}}');
+    </script>
     <tr>
         <td width="100px" valign="top">
-			<form id="UploadForm" >							
-				<div class="TableFormGroup" align="center">
-					<table class="CForm_Table">
-						{{ AddUpload("Filename", "Filename","Temp","ProjectCreatorUploadButton") | raw }}
-					</table>
-				</div>
-			</form>
+            <form id="UploadForm" >							
+                <div class="TableFormGroup" align="center">
+                    <table class="CForm_Table">
+                        {{ AddUpload("Filename", "Filename","Temp","ProjectCreatorUploadButton") | raw }}
+                    </table>
+                </div>
+            </form>
         </td>
     </tr>
     <tr>
@@ -32,7 +27,11 @@
                  onClick="MProjectCreator.uploadPrivateOfferFile('{{uploadPrefix}}');">upload</div>
         </td>
     </tr>
-    <tr><td><div id="UploadResultContainer" class="ShopOnlineUploadResultsContainer" style="display: none"></div></td></tr>
+    <script type="text/javascript">
+        {{ RandomPrefix() }}
+        {% set formPrefix = GetPrefix() %}
+        MProjectCreator.initPrivateOfferForm('{{formPrefix}}');
+    </script>
     <tr>
         <td width="100%" valign="top">			
 			<form id="CreationForm" >			

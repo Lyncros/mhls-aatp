@@ -56,9 +56,12 @@
 						
 			$Data = Array(
 				"Name"				=> CFormat::SpecialChars($_POST["Name"]),
-				"Modified"				=> time(),
-				"ModifiedUsersID"		=> CSecurity::GetUsersID(),
-				"ModifiedIPAddress"		=> $_SERVER["REMOTE_ADDR"]		
+				"MainContact"		=> CFormat::SpecialChars($_POST["MainContact"]),
+				"Phone"				=> CFormat::SpecialChars($_POST["Phone"]),
+				"Email"				=> CFormat::SpecialChars($_POST["Email"]),
+				"Modified"			=> time(),
+				"ModifiedUsersID"	=> CSecurity::GetUsersID(),
+				"ModifiedIPAddress"	=> $_SERVER["REMOTE_ADDR"]		
 			);
 
 			if($ID > 0) {				

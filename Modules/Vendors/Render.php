@@ -17,23 +17,15 @@
 		return date("n/j/Y", $Value);
 	}
 
-	function OnPublic($Value, $Row) {
-		if($Value == 0) return "No";
-		
-		return "<span style='color: green; font-weight: bold'>Yes</span>";
-	}
-
 	$Search = new CSearch("Vendors");
 
 	if(!CSecurity::IsSuperAdmin()) {
 		$Search->AddRestriction("SuperAdmin", 0);
 	}
 
-	if($ShowInactive == false) {
-		
-	}
-
-	$Search->AddColumn("Vendors", "Name", "75%", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnInfo");
+	$Search->AddColumn("Name", "Name", "70%", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnInfo");
+	$Search->AddColumn("Added", "Created", "15%", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnTimestamp");
+	$Search->AddColumn("Updated", "Modified", "15%", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnTimestamp");	
 	
 	$Search->SetDefaultColumn(0);
 

@@ -1,67 +1,81 @@
 {% extends 'UnauthorizedModuleMaster.twig' %}
 
 {% block mainContent %}
+
 <h2>Product page setup for shop.mcgraw-hill.com</h2>
 
 <table width="100%" cellspacing="0" cellpadding="0">
+    <script type="text/javascript">
+        {{ RandomPrefix() }}
+        {% set uploadPrefix = GetPrefix() %}
+        MProjectCreator.initUploadForm('{{uploadPrefix}}');
+    </script>
     <tr>
         <td width="100px" valign="top">
-            <form id="UploadForm" >
-			{{ RandomPrefix() }}
-			<script type="text/javascript">
-				$(document).ready(function() {
-					$("#UploadForm").validate({
-						ignore: '',
-						rules: { '{{GetPrefix()}}Filename': { required:true,  }},
-						messages: { '{{GetPrefix()}}Filename': { required: "Select a file with the upload button."} }
-					});					
-				});
-			</script>		
-							
-			<div class="TableFormGroup" align="center">
-				<table class="CForm_Table">
-					{{ AddUpload("Filename", "Filename","Temp","ProjectCreatorUploadButton") | raw }}
-				</table>
-			</div>
-			</form>
+            <form id="UploadForm" >	
+                <div class="TableFormGroup" align="center">
+                    <table class="CForm_Table">
+                        {{ AddUpload("Filename", "Filename","Temp","ProjectCreatorUploadButton") | raw }}
+                    </table>
+                </div>
+            </form>
         </td>
     </tr>
     <tr>
         <td align="right">
             <div id="UploadButton" class="Button ShopOnlineButton" value="create" 
-                 onClick="MProjectCreator.uploadShopOnlineFile('{{GetPrefix()}}');">upload</div>
+                 onClick="MProjectCreator.uploadShopOnlineFile('{{uploadPrefix}}');">upload</div>
         </td>
     </tr>
+    <script type="text/javascript">
+        {{ RandomPrefix() }}
+        {% set formPrefix = GetPrefix() %}
+        MProjectCreator.initShopOnlineForm('{{formPrefix}}');
+    </script>
     <tr>
         <td width="100%" valign="top">
-            <div class="TableFormGroup" align="center">
-                <table class="CForm_Table TableFormGroup">
-
-                    {{ RandomPrefix() }}
+			<form id="CreationForm" >			
+				<div class="TableFormGroup" align="center">
+                <table class="CForm_Table">
+                    
                     {{ AddTextbox("ISBN-10", "ISBN10", "") | raw }}
                     {{ AddTextbox("Author", "Author", "") | raw }}
                     {{ AddTextbox("Requester name", "RequesterName", "") | raw }}
                     {{ AddTextbox("Requester e-mail", "RequesterEmail", "") | raw }}
                     {{ AddDatepicker("Date needed", "DateNeeded", "") | raw }}
-                    {{ AddDropdown("Creative Analyst", "UsersID", Users, "") | raw }}
+                    {{ AddDropdown("Creative Contact", "UsersID", Users, "") | raw }}
+					<tr>
+						<td class="CForm_Name" style="line-height:0px;">&nbsp;</td>
+						<td><label for="{{formPrefix}}UsersID" class="error" style="display:none;">Creative Contact is required.</label></td>
+					</tr>
                     {{ AddTextarea("Comments", "Comments", "") | raw }}
                     <tr>
                         <td align="right" class="CForm_Name" valign="top"><b>Cover:</b>&nbsp;</td>
                         <td class="CForm_Value" valign="top">
-                            <input type="radio" name="cover" title="National cover">National cover</input>
-                            <input type="radio" name="cover" title="Custom cover">Custom cover</input>
+                            <input type="radio" name="CoverType" class="CoverType" value="NationalCover" title="National cover">National cover</input>
+                            <input type="radio" name="CoverType" class="CoverType" value="CustomCover" title="Custom cover">Custom cover</input>							
                         </td>
                     </tr>
-                    {{ AddTextbox("Custom cover URL", "CustomCoverURL", "") | raw }}
-                    {{ AddDropdown("ISBN Type", "ISBNType", ISBNTypes, "") | raw }}
-
+                    {{ AddTextbox("Custom cover URL", "CustomCoverURL", "", "", "", "Hidden") | raw }}
+                    {{ AddDropdown("ISBN Type", "ISBNType", ISBNTypes, "", "") | raw }}
+					<tr>
+						<td class="CForm_Name" style="line-height:0px;">&nbsp;</td>
+						<td><label for="{{formPrefix}}ISBNType" class="error" style="display:none;">ISBN Type is required.</label></td>
+					</tr>
+					<tr>
+						<td colspan="2" style="text-align:center;">
+							<div align="center" style="margin-top:30px;">
+							{{ AddRecatpcha() | raw }}					
+							</div>
+						</td>
+					</tr>
                 </table>
             </div>
         </td>
     </tr>
     <tr>
         <td align="right">
-            <div class="Button" value="create" onClick="MProjectCreator.createShopOnline('{{GetPrefix()}}');">create</div>
+            <div class="Button" value="create" onClick="javascript:MProjectCreator.createShopOnline('{{formPrefix}}');">create</div>
         </td>
     </tr>
 </table>

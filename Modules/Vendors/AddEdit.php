@@ -13,6 +13,10 @@
 <table class="CForm_Table">
 <?
 	echo CForm::AddTextbox("Name", "Name", @$TableObject->Name, "Please enter a Name.");	
+	echo CForm::AddTextbox("Main Contact", "MainContact", @$TableObject->MainContact, "Please enter the Main Contact.");	
+	echo CForm::AddTextbox("Phone", "Phone", @$TableObject->Phone, "Please enter an Phone.");	
+	echo CForm::AddTextbox("Email", "Email", @$TableObject->Email, "Please enter an Email.");
+	
 ?>
 </table>
 

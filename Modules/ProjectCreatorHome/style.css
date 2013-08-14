@@ -100,3 +100,6 @@ label.error {
 h2 {
 	margin-bottom: 14px;
 }
+tr.Hidden {
+    display: none;
+}
