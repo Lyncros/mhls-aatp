@@ -74,7 +74,7 @@ MProjectCreator.initShopOnlineForm = function(Prefix) {
 		rules[Prefix+'DateNeeded']          = { required:true, date: true };
 		rules[Prefix+'UsersID']             = { min: 1, number: true };
 		rules[Prefix+'CustomCoverURL']      = { isCustomCover:true };
-		rules[Prefix+'ISBNType']            = {  min: 1 };			
+		rules[Prefix+'ISBNType']            = {  required: true };			
 		rules['recaptcha_response_field']   = { checkCaptcha: true };
 		
 		var messages = new Object();
