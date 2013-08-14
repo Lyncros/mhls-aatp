@@ -1,0 +1,59 @@
+/* 
+    Document   : styles
+    Created on : Aug 12, 2013, 4:43:16 PM
+    Description:
+        Styles for Projects Shop Online list.
+*/
+
+h1 {
+    position:   absolute; 
+    top:        5px;
+}
+.ProjectListSectionFirst {
+    min-width: 200px !important;
+}
+.ProjectListSeparator {
+    vertical-align: top; 
+    padding-top:    7px; 
+    padding-bottom: 7px;
+    height: 50px;
+    width: 1px;
+}
+div.Separator  {
+    height:100%;
+}
+.ProjectListSection {
+    vertical-align: top; 
+    padding:        7px 11px;
+    line-height:    18px;
+    color:          #4e5260;
+    width:20%;
+}
+
+.ProjectListISBN {
+    font-weight:    bold;
+    font-size:      14px;
+}
+
+.ProjectListSectionDatesTitle {
+    color:          #d74c4c;
+    font-weight:    bold;
+    font-size:      14px;
+}
+
+.ProjectListSectionDetailsTitle {
+    color:          #0685c5;
+    font-weight:    bold;
+    font-size:      14px;
+}
+
+.ProjectListSectionMilestonesTitle {
+    color:          #4f911e;
+    font-weight:    bold;
+    font-size:      14px;
+    margin-bottom:  10px;
+}
+
+.ProjectListDetailsLink {
+    padding-right:  13px;
+}

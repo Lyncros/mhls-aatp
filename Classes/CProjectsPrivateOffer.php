@@ -39,6 +39,10 @@ class CProjectsPrivateOffer extends CProjectsBase {
     public static function GetPriceTypes() {
         return Array("Connect", "Connect Plus", "ConnectPlus");
     }
+    
+    public static function GetAllStatus() {
+        return array("1" => "In Progress", "4" => "Completed");
+    }
 
     public static function ExistsWithProjectNumber($ProjectNumber) {
         $Projects = CTable::Select(self::TABLE_NAME, "WHERE ProjectNumber = $ProjectNumber");

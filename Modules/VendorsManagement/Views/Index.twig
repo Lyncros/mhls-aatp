@@ -1,42 +1,39 @@
-<h1>{{vendors|length}} Vendors</h1>
+<h1>{{vendorsInfo|length}} Vendors</h1>
 <br/>
 <div id="ProjectListContainer">
-
-{% for p in vendors %}
-<div class="ProjectWrapper">
-    <div class="ProjectContainer">
-        <table style="width:100%;" cellpadding="0" cellspacing="0">
-            <tr>
-                <td class="ProjectListSection">
-                    <p class="ProjectListISBN">Name:&nbsp;{{p.ISBN10}}</p>
-                    <p><b>Requester:</b>&nbsp;{{p.RequesterName}}</p>
-                    <p><b>e-Mail:</b>&nbsp;{{p.RequesterEmail}}</p>
-                </td>
-                <td class="ProjectListSeparator"><div class="Separator"></div></td>
-                <td class="ProjectListSection">
-                    <div class="ProjectListSectionDatesTitle">Dates</div>
-                    <p><b>Date needed:</b>&nbsp;{{ p.DateNeeded | FormatDate }}</p>
-                </td>
-                <td class="ProjectListSeparator"><div class="Separator"></div></td>
-                <td class="ProjectListSection">
-                    <div class="ProjectListSectionDetailsTitle">Project Details</div>
-                    <p><b>CA:</b>&nbsp;{{ p.ContactName }}</p>
-                </td>
-                <td class="ProjectListSeparator"><div class="Separator"></div></td>
-                <td class="ProjectListSection">
-                    <div class="ProjectListSectionMilestonesTitle">Milestones</div>
-                    <p><b>Status:</b>&nbsp;{{ GetStatusName(p.Status) }}</p>
-                </td>
-                <td class="ProjectListDetailsLink">
-                    <div onClick="MProjectsShopOnline.showProjectDetails({{p.ID}})" class='ProjectDetailsLink'></div>
-                </td>
-            </tr>
-        </table>
+    
+    {% for vi in vendorsInfo %}
+    <div class="ProjectWrapper">
+        <div class="ProjectContainer">
+            <table style="width:100%;" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td class="ProjectListSectionFirst ProjectListSection">
+                        <div class="ProjectListSectionDetailsTitle">Vendor Info</div>
+                        <p class="ProjectListISBN">Name:&nbsp;{{vi.vendor.Name}}</p>
+                        <p><b>MainContact:</b>&nbsp;{{vi.vendor.MainContact}}</p>
+                        <p><b>Phone:</b>&nbsp;{{vi.vendor.Phone}}</p>
+                        <p><b>eMail:</b>&nbsp;{{vi.vendor.Email}}</p>
+                    </td>
+                    
+                    <td class="ProjectListSeparator"><div class="Separator"></div></td>
+                    <td class="ProjectListSection">
+                        <div class="ProjectListSectionDatesTitle">Projects</div>
+                        <p><b>Total:</b>&nbsp;{{ vi.totalProjects }}</p>
+                    </td>
+                    
+                    {% for sc in vi.specialityColumns %}
+                        <td class="ProjectListSeparator"><div class="Separator"></div></td>
+                        <td class="ProjectListSection">
+                            <div class="ProjectListSectionDetailsTitle"># By Speciality</div>
+                            {% for s in sc %}
+                                <p><b>{{s.Name}}:</b>&nbsp;{{s.Count}}</p>
+                            {% endfor %}
+                        </td> 
+                    {% endfor %}                        
+                </tr>
+            </table>
+        </div>
     </div>
-</div>
-{% endfor %}
-
-</div>
-
-<div id="ProjectDetailsContainer" style="display: none">
+    {% endfor %}
+    
 </div>

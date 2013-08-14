@@ -28,9 +28,9 @@ class CTemplateModule extends CModuleGeneric {
         }
 		
         $this->Twig->addFilter(new Twig_SimpleFilter("FormatDate", function($timestamp) {
-            //WHY are we using the first line (now commented) instead of the second?
+            //WHY are we using the first line (now commented) instead of the second? Becouse of the php version on the server
             //return date(CTemplateModule::DATE_FORMAT, $timestamp);
-            return $this->FormatDate($timestamp);
+            return is_null($timestamp) ? "-" : date(CTemplateModule::DATE_FORMAT, $timestamp);//$this->FormatDate($timestamp);
         }));
     }
 
@@ -40,11 +40,14 @@ class CTemplateModule extends CModuleGeneric {
      * And the params will be built by a function called like the page requested plus string Params.
      */
     function OnRenderContent() {
-        $Page = $_GET["Page"];
-
-        $Template = $this->LoadTemplate($Page);
-
-        $Params = $this->GetTemplateParams($Page);
+        $Action = $this->GetActionName();
+        $Params = $this->GetTemplateParams($Action);
+        
+        if($this->LoggedUserCanAccess($Params))
+            $Template = $this->LoadTemplate($Action);
+        else
+            $Template = $this->Twig->loadTemplate("NoPermission.twig");
+        
         $Template->display($Params);
     }
 
@@ -97,8 +100,32 @@ class CTemplateModule extends CModuleGeneric {
         return parent::OnAJAX($Action);
     }
 
+    //----------------------------------------------------------------------
     function FormatDate($timestamp) {
         return is_null($timestamp) ? "-" : date(self::DATE_FORMAT, $timestamp);
+    }
+    
+    //----------------------------------------------------------------------
+    private function GetActionName()
+    {
+        $ActionName = $_GET["Page"];
+
+        return ($ActionName == null)?"Index":$ActionName;
+    }
+    
+    private function LoggedUserCanAccess($Params)
+    {   
+        if(array_key_exists("Permissions", $Params))
+        {
+            $Permissions = $Params["Permissions"];
+            $CanAccess = true;
+            foreach ($Permissions as $Permission)
+                $CanAccess = $CanAccess && parent::CanAccess($Permission);
+            
+            return $CanAccess;
+        }
+        else
+            return true;
     }
 
 }

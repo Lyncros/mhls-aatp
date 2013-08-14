@@ -57,7 +57,7 @@ MProjectCreator.initShopOnlineForm = function(Prefix) {
 										
 										return rsp[0] == 0;	
 										
-									}, " (*) ISBN already Exists");
+									}, " (*) This ISBN is already in use. Please contact your Creative Analyst.");
         jQuery.validator.addMethod(	"isCustomCover", 
                                     function() {
                                         if($('input[name=CoverType]:checked').val() == 'CustomCover')
@@ -83,9 +83,9 @@ MProjectCreator.initShopOnlineForm = function(Prefix) {
 		messages[Prefix+'Author']           = { required: " (*) Author is required.", 
                                                 maxlength: " (*) Max length is 255 digits."};					
 		messages[Prefix+'RequesterName']    = { required: " (*) Requester Name is required.", 
-                                                maxlength: " (*) Max length is 50 digits."};
+                                                maxlength: " (*) Max length is 255 digits."};
 		messages[Prefix+'RequesterEmail']   = { required: " (*) Requester Email is required.", 
-                                                maxlength: " (*) Max length is 50 digits.",
+                                                maxlength: " (*) Max length is 255 digits.",
                                                 email: " (*) Invalid email."};
 		messages[Prefix+'DateNeeded']       = { required: " (*) Date Needed is required.", 
                                                 date: " (*) Invalid date."};
@@ -158,21 +158,21 @@ MProjectCreator.initPrivateOfferForm = function(Prefix) {
 
 										return rsp[0] == 0;	
 
-									}, " (*) ISBN already Exists");
+									}, " (*) This ISBN is already in use. Please contact your Creative Analyst.");
 		jQuery.validator.addMethod(	"connectPlusISBNExists", 
 									function() {
 										var rsp = CAJAX.ExecuteAsync('ProjectCreatorHome','Module','PrivateOfferConnectPlusISBNExists',{ ConnectPlusISBN: $('#'+Prefix+'ConnectPlusISBN').val() });
 										
 										return rsp[0] == 0;	
 										
-									}, " (*) Connect Plus ISBN already Exists");
+									}, " (*) This Connect Plus ISBN is already in use. Please contact your Creative Analyst.");
 		
 		var rules = new Object();
 		rules[Prefix+'ProjectNumber']       = { required:true, maxlength: 10, number: true, projectNumberExists: true};
 		rules[Prefix+'ISBN']                = { required:true, maxlength: 10, ISBNExists: true };
 		rules[Prefix+'ConnectPlusISBN']     = { maxlength: 10, connectPlusISBNExists: true };
-		rules[Prefix+'RequesterName']       = { required:true, maxlength: 50 };
-		rules[Prefix+'RequesterEmail']      = { required:true, maxlength: 50, email: true };
+		rules[Prefix+'RequesterName']       = { required:true, maxlength: 255 };
+		rules[Prefix+'RequesterEmail']      = { required:true, maxlength: 255, email: true };
 		rules[Prefix+'LscID']               = { min: 1, number: true };
 		rules[Prefix+'DateNeeded']          = { required:true, date: true };
 		rules[Prefix+'CreativeContactID']   = { min: 1, number: true };
@@ -190,9 +190,9 @@ MProjectCreator.initPrivateOfferForm = function(Prefix) {
                                                 maxlength: " (*) Max length is 10 digits."};
 		messages[Prefix+'ConnectPlusISBN']  = { maxlength: " (*) Max length is 10 digits."};					
 		messages[Prefix+'RequesterName']    = { required: " (*) Requester Name is required.", 
-                                                maxlength: " (*) Max length is 50 digits."};
+                                                maxlength: " (*) Max length is 255 digits."};
 		messages[Prefix+'RequesterEmail']   = { required: " (*) Requester Email is required.", 
-                                                maxlength: " (*) Max length is 50 digits.",
+                                                maxlength: " (*) Max length is 255 digits.",
                                                 email: " (*) Invalid email."};
 		messages[Prefix+'DateNeeded']       = { required: " (*) Date Needed is required.", 
                                                 date: " (*) Invalid date."};

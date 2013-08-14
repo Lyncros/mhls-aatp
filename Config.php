@@ -124,7 +124,9 @@
 					"Private" => '6LckDOYSAAAAAJYriz2TEDRijsnby5P2uPGKTqfz'
 				),
 				"LibraryPath" => './Libraries/ReCAPTCHA/recaptchalib.php'
-			)
+			),
+            
+            "ProjectCreatorISBNDuplicatedContact" => 'James Doepke',
 		);
 	}
 

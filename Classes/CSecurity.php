@@ -70,7 +70,7 @@
 
 		public static function CanAccess($Name, $Action = "", $Type = "Module") {
 			if($Name === "Login") return true;
-
+            
 			if(self::IsLoggedIn() && ($Name == "Dashboard" || $Name == "Terms")) {
 				return true;
 			}

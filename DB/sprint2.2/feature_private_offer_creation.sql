@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS `ProjectsPrivateOffer` (
   `Duration` int(10) unsigned DEFAULT NULL,
   `PriceType` varchar(50) NOT NULL,
   `Price` float unsigned NOT NULL,
+  `Status` tinyint NOT NULL DEFAULT 1,
   `Created` int(10) unsigned NOT NULL,
   `CreatedUsersID` int(10) unsigned NOT NULL,
   `CreatedIPAddress` varchar(64) NOT NULL,
