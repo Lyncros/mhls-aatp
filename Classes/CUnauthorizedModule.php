@@ -12,11 +12,15 @@
 			$template->display($this->GetTemplateParams($Action));
 		}
 		
+        function IndexAction() {
+            return "Index";
+        }
+        
 		private function GetActionName()
 		{
 			$ActionName = $_GET["Page"];
 			
-			return ($ActionName == null)?"Index":$ActionName;
-		}		
+			return ($ActionName == null)?$this->IndexAction():$ActionName;
+		}
 	}
 ?>

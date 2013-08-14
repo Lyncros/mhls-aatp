@@ -79,7 +79,6 @@ class CProjectsPrivateOffer extends CProjectsBase {
             return false;
         }
     }
-
 }
 
 ?>

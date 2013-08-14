@@ -4,6 +4,10 @@
 MProjectCreator = {};
 var RecaptchaOptions;
 
+MProjectCreator.backHome = function() {
+    window.location.href = '/ProjectCreatorHome'
+}
+
 MProjectCreator.checkCaptchaFunction = function() {
 	var Parms = { 	
 					recaptcha_challenge_field: $('input#recaptcha_challenge_field').val(),
@@ -101,7 +105,8 @@ MProjectCreator.initShopOnlineForm = function(Prefix) {
 MProjectCreator.createShopOnline = function(Prefix) {
     if($('#CreationForm').valid()) {
         if (CForm.Submit("ProjectCreatorHome", "Module", "CreateShopOnline", Prefix, function(Code, Response) {
-            return true;
+            $("#MainContainer").html(Response);
+            return false;
         }) == false) {
             alert(CForm.GetLastError());
             return false;
@@ -211,7 +216,8 @@ MProjectCreator.initPrivateOfferForm = function(Prefix) {
 MProjectCreator.createPrivateOffer = function(Prefix) {
     if($('#CreationForm').valid()) {
 		if (CForm.Submit("ProjectCreatorHome", "Module", "CreatePrivateOffer", Prefix, function(Code, Response) {
-			 return true;
+			 $("#MainContainer").html(Response);
+             return false;
 		}) == false) {
 			alert(CForm.GetLastError());
 			return false;

@@ -43,10 +43,11 @@ class MProjectCreatorHome extends CUnauthorizedModule {
     }
 
     function IndexParams() {
-        $data = array();
-        $data['activeSidebarNode'] = '';
-
-        return array_merge($data, $this->BuildTemplateDefaultParams());
+        return $this->PrivateOfferParams();
+    }
+    
+    function IndexAction() {
+        return "PrivateOffer";
     }
 
     ///////////////////////////////////////////////
@@ -93,7 +94,10 @@ class MProjectCreatorHome extends CUnauthorizedModule {
                     return Array(0, "Error adding automatic milestones to project.");
                 }
             }
-            return Array(1, "Project Shop Online created successfully.");
+            
+            $template = $this->LoadTemplate('PrivateOfferConfirmation');
+			
+            return Array(1, $template->display());            
         }
     }
 
@@ -225,7 +229,7 @@ class MProjectCreatorHome extends CUnauthorizedModule {
         $ProjectPrivateOffer = new CProjectsPrivateOffer();
         $Extra = $this->BuildSaveParameters();
         $NewProjectID = $ProjectPrivateOffer->Save(0, $Data, $Extra);
-
+            
         if ($NewProjectID === FALSE) {
             return Array(0, "Error creating Project Private Offer.");
         } else {
@@ -236,7 +240,10 @@ class MProjectCreatorHome extends CUnauthorizedModule {
                     return Array(0, "Error adding automatic milestones to project.");
                 }
             }
-            return Array(1, "Project Private Offer created successfully.");
+            
+            $template = $this->LoadTemplate('PrivateOfferConfirmation');
+			
+            return Array(1, $template->display());
         }
     }
 

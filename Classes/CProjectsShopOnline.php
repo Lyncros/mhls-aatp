@@ -46,7 +46,7 @@ class CProjectsShopOnline extends CProjectsBase {
     }
 
     public static function ExistsWithISBN10($ISBN10) {
-        $Projects = CTable::Select(self::TABLE_NAME, "WHERE ISBN10 = ISBN10");
+        $Projects = CTable::Select(self::TABLE_NAME, "WHERE ISBN10 = $ISBN10");
 
         return ($Projects != null) && $Projects->count() > 0;
     }
@@ -63,7 +63,6 @@ class CProjectsShopOnline extends CProjectsBase {
         $StatusList = self::GetAllStatus();
         return (array_key_exists($StatusId, $StatusList)) ? $StatusList[$StatusId] : "";
     }
-
 }
 
 ?>

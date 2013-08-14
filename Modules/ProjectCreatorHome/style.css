@@ -103,3 +103,35 @@ h2 {
 tr.Hidden {
     display: none;
 }
+
+div.FormComplete h2 {
+    padding-top: 20px;
+    font-size: 24px;
+    font-family: Helvetica, Arial, sans-serif;
+    color: #222222;
+    text-align: left;
+    font-weight: normal;
+    padding-left: 10px;
+}
+
+div.FormComplete h3 {
+    background: none;
+    font-family: Helvetica, Arial, sans-serif;
+    color: #4B83C8;
+    font-weight: normal;
+    font-size: 20px;
+    text-align: left;
+    padding-left: 10px;
+}
+
+div.FormComplete ul {
+    text-align: left;
+    padding-bottom: 20px;
+    font-family: Helvetica, Arial, sans-serif;
+    color: #222222;
+    font-size: 15px;
+}
+
+div.FormComplete li {
+    padding-bottom: 10px;
+}
