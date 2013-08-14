@@ -4,17 +4,17 @@
  * Base class for MProjectsPrivateOffer and MrojectsShopOnline.
  */
 class MProjectsBase extends CTemplateModule {
-    
+
     private $ProjectsClass;
     private $MilestonesClass;
     private $MilestoneToDosClass;
-    
+
     public function __construct($ViewsFolder, $ProjectsClassPrefix) {
         parent::__construct($ViewsFolder);
-        
+
         $this->ProjectsClass = $ProjectsClassPrefix;
-        $this->MilestonesClass = $ProjectsClassPrefix."Milestones";
-        $this->MilestoneToDosClass = $ProjectsClassPrefix."MilestonesToDos";
+        $this->MilestonesClass = $ProjectsClassPrefix . "Milestones";
+        $this->MilestoneToDosClass = $ProjectsClassPrefix . "MilestonesToDos";
     }
 
     function ShowProjectDetails() {
@@ -25,17 +25,15 @@ class MProjectsBase extends CTemplateModule {
     function RenderProjectDetails($ProjectID) {
         $CProject = new $this->ProjectsClass();
         if ($CProject->OnLoadByID($ProjectID)) {
-            $ProjectDataArray = $CProject->Rows->RowsToArrayAllColumns();
-
             //Deleting is not allowed in this phase
             $Params = Array(
                 "canEdit" => CSecurity::$User->CanAccess("ProjectDetails", "Edit"),
                 "canDelete" => FALSE, //CSecurity::$User->CanAccess("ProjectDetails", "Delete"),
-                "project" => $ProjectDataArray[$ProjectID],
+                "project" => $CProject->AllValues(),
+                "milestones" => $CProject->Milestones,
             );
-
-            $Params["project"]["milestones"] = $CProject->Milestones;
-            $Params["project"]["milestoneCompletion"] = $this->CalculateProjectMilestonesCompletion($CProject->Milestones);
+            
+            $Params["milestoneCompletion"] = $this->CalculateProjectMilestonesCompletion($CProject->Milestones);
         }
 
         return $this->LoadTemplate("ProjectDetails")->render($Params);

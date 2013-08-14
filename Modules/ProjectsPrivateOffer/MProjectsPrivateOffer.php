@@ -9,6 +9,10 @@ class MProjectsPrivateOffer extends MProjectsBase {
         parent::__construct("./Modules/ProjectsPrivateOffer/Views", "CProjectsPrivateOffer");
 
         $this->JSFile = "MProjectsPrivateOffer.js";
+        
+        $this->Twig->addFunction(new Twig_SimpleFunction("GetStatusName", function($Status) {
+                    return CProjectsPrivateOffer::GetStatusNameById($Status);
+                }));
     }
 
     function ProjectsPrivateOfferParams() {

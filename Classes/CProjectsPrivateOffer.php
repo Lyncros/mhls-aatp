@@ -8,8 +8,9 @@
 class CProjectsPrivateOffer extends CProjectsBase {
 
     const TABLE_NAME = "ProjectsPrivateOffer";
-    
+
     public $LSCUserName;
+    public $CreativeContactName;
 
     function __construct() {
         parent::__construct(self::TABLE_NAME, "CProjectsPrivateOfferMilestones", "CProjectsPrivateOfferMilestonesToDos");
@@ -17,11 +18,20 @@ class CProjectsPrivateOffer extends CProjectsBase {
 
     public function OnInit() {
         parent::OnInit();
-        
+
         //Load internal vars.
         $this->LSCUserName = $this->LoadUserFullName($this->LscID);
-        
+        $this->CreativeContactName = $this->LoadUserFullName($this->CreativeContactID);
+
         return true;
+    }
+    
+    public function AllValues() {
+        $temp = $this->Current;
+        $temp["LSCUserName"] = $this->LSCUserName;
+        $temp["CreativeContactName"] = $this->CreativeContactName;
+        
+        return $temp;
     }
 
     public function OnLoadAllActive() {
@@ -42,6 +52,11 @@ class CProjectsPrivateOffer extends CProjectsBase {
     
     public static function GetAllStatus() {
         return array("1" => "In Progress", "4" => "Completed");
+    }
+    
+    public static function GetStatusNameById($StatusId) {
+        $StatusList = self::GetAllStatus();
+        return (array_key_exists($StatusId, $StatusList)) ? $StatusList[$StatusId] : "";
     }
 
     public static function ExistsWithProjectNumber($ProjectNumber) {

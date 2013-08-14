@@ -19,6 +19,13 @@ class CProjectsShopOnline extends CProjectsBase {
 
         return true;
     }
+    
+    public function AllValues() {
+        $temp = $this->Current;
+        $temp["ContactName"] = $this->ContactName;
+        
+        return $temp;
+    }
 
     public function OnLoadAllActive() {
         return $this->OnLoadByQuery("
@@ -53,7 +60,7 @@ class CProjectsShopOnline extends CProjectsBase {
     }
 
     public static function GetStatusNameById($StatusId) {
-        $StatusList = CProjectsShopOnline::GetAllStatus();
+        $StatusList = self::GetAllStatus();
         return (array_key_exists($StatusId, $StatusList)) ? $StatusList[$StatusId] : "";
     }
 

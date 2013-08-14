@@ -39,7 +39,7 @@
                         </li>
                     {% endfor %}
                     </ul>
-                    <p><b>Status:</b>&nbsp;{{ p.Status }}</p>
+                    <p><b>Status:</b>&nbsp;{{ GetStatusName(p.Status) }}</p>
                 </td>
                 <td class="ProjectListDetailsLink">
                     <div onClick="MProjectsPrivateOffer.showProjectDetails({{p.ID}})" class='ProjectDetailsLink'></div>

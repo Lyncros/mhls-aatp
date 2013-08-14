@@ -32,7 +32,7 @@
                             <td style="vertical-align:top; padding-top:20px;"><div class="Separator"></div></td>
                             <td style="vertical-align:top; padding:22px 11px; width:25%">
                                 <div style="color:#0685c5; font-weight:bold; font-size:14px;">Project Details</div>
-                                <p><b>Status:</b>&nbsp;{{ project.Status }}</p>
+                                <p><b>Status:</b>&nbsp;{{ GetStatusName(project.Status) }}</p>
                                 <p><b>LSC:</b>&nbsp;{{project.LSCUserName}}</p>
                                 <p><b>CA:</b>&nbsp;{{project.CreativeContactName}}</p>
                                 <p><b>Product type:</b>&nbsp;{{project.ConnectionType}}</p>
@@ -48,7 +48,7 @@
                             <td colspan="3"><p><b>Comments:</b>&nbsp;{{ project.Comments }}</p></td>
                         </tr>
                         <tr>
-                            <td colspan="5" class="SeparatorHorizontal"></td>
+                            <td colspan="6" class="SeparatorHorizontal"></td>
                         </tr>
                     </table>
                 </div>
@@ -77,21 +77,21 @@
             </td>
 			<td style="width:30px;"></td>
         </tr>
-        {% if project.milestones %}
+        {% if milestones %}
         <tr>
             <td></td>
             <td>
                 <div style='font-weight:bold; font-size:14px; margin-top:12px; margin-bottom:6px;'>
-                    Milestone Completion // <span style="color:#5a8111;">{{project.milestoneCompletion}}&nbsp;% Complete</span>
+                    Milestone Completion // <span style="color:#5a8111;">{{milestoneCompletion}}&nbsp;% Complete</span>
                 </div>
                 <div class="CompletionWrapper" style="width:672px;">
-                    <div class="CompletionBar" style="width:{{project.milestoneCompletion * 670 / 100}}px"></div>
-                    <div class="CompletionPercentage">{{project.milestoneCompletion}}</div>
+                    <div class="CompletionBar" style="width:{{milestoneCompletion * 670 / 100}}px"></div>
+                    <div class="CompletionPercentage">{{milestoneCompletion}}</div>
                 </div>  
             </td>
         </tr>
         {% endif %}
-        {% for m in project.milestones %}
+        {% for m in milestones %}
         {% set isComplete = (m.Status == "Complete") %}
         <tr>
             <td>
