@@ -81,3 +81,13 @@ CREATE TABLE `ProjectsShopOnlineMilestonesToDos` (
   PRIMARY KEY (`ID`)
 );
 
+DROP TABLE IF EXISTS `ProjectsShopOnlineStoreFrontItems`;
+
+CREATE TABLE IF NOT EXISTS `ProjectsShopOnlineStoreFrontItems` (
+  `ID` int(10) NOT NULL AUTO_INCREMENT,
+  `ProjectsID` int(10) NOT NULL DEFAULT '0',
+  `ISBN` varchar(10) NOT NULL DEFAULT '0',
+  `Author` varchar(255) NOT NULL DEFAULT '0',
+  `Virtual` varchar(255) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ID`)
+);
