@@ -76,10 +76,10 @@ class MProjectCreatorHome extends CUnauthorizedModule {
             "DateNeeded" => strtotime($_POST["DateNeeded"]),
             "UsersID" => intval($_POST["UsersID"]),
             "Comments" => htmlspecialchars($_POST["Comments"]),
-            "CustomCoverURL" => htmlspecialchars($_POST["CustomerCoverURL"]),
+            "CustomCoverURL" => htmlspecialchars($_POST["CustomCoverURL"]),
             "ISBNType" => htmlspecialchars($_POST["ISBNType"]),
-            "ShopPageInstructions" => htmlspecialchars($_POST["ShopPageInstructions"]),
-            "EmailInstructions" => htmlspecialchars($_POST["EmailInstructions"]),
+            "VirtualECOMInstructionsShop" => htmlspecialchars($_POST["VirtualECOMInstructionsShop"]),
+            "VirtualECOMInstructionsEmail" => htmlspecialchars($_POST["VirtualECOMInstructionsEmail"]),
         );
         
         $ProjectShop = new CProjectsShopOnline();

@@ -52,8 +52,6 @@ class CProjectsShopOnline extends CProjectsBase {
     
     public function AddStoreFrontInfoItems($ProjectID, $StoreFrontInfoItems) {
         $success = true;
-        var_dump($ProjectID);
-        var_dump($StoreFrontInfoItems);
         
         foreach ($StoreFrontInfoItems as $StoreFrontInfoItem) {
             if (!$this->AddStoreFrontInfoItem($ProjectID, $StoreFrontInfoItem)) {
@@ -86,7 +84,7 @@ class CProjectsShopOnline extends CProjectsBase {
     }
 
     public static function GetISBNTypes() {
-        return Array("PPK", "Physical", "COMBO", "Virtual/ECOM");        
+        return Array("1" => "PPK", "2" => "Physical", "3" => "COMBO", "4" => "Virtual/ECOM");        
     }
 
     public static function GetAllStatus() {

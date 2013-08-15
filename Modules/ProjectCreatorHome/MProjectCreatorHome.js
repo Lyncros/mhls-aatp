@@ -3,6 +3,7 @@
  */
 MProjectCreator = {};
 var RecaptchaOptions;
+var VIRTUAL_ECOM_CODE = 4; //Virtual/ECOM
 
 MProjectCreator.backHome = function() {
     window.location.href = '/ProjectCreatorHome'
@@ -54,15 +55,14 @@ MProjectCreator.initShopOnlineForm = function(Prefix) {
 		});
         
         $('#'+Prefix+'ISBNType').change(function(){
-			if($(this).val() == 3) // 3 is id for 'Virtual/ECOM' 
-            {
-				$('#'+Prefix+'ShopPageInstructions').parent().parent().show();
-                $('#'+Prefix+'EmailInstructions').parent().parent().show();
+			if($(this).val() == VIRTUAL_ECOM_CODE) {
+				$('#'+Prefix+'VirtualECOMInstructionsShop').parent().parent().show();
+                $('#'+Prefix+'VirtualECOMInstructionsEmail').parent().parent().show();
 			} else {                
-                $('#'+Prefix+'ShopPageInstructions').val('');
-                $('#'+Prefix+'EmailInstructions').val('');
-                $('#'+Prefix+'ShopPageInstructions').parent().parent().hide();
-                $('#'+Prefix+'EmailInstructions').parent().parent().hide();                
+                $('#'+Prefix+'VirtualECOMInstructionsShop').val('');
+                $('#'+Prefix+'VirtualECOMInstructionsEmail').val('');
+                $('#'+Prefix+'VirtualECOMInstructionsShop').parent().parent().hide();
+                $('#'+Prefix+'VirtualECOMInstructionsEmail').parent().parent().hide();                
             }
 		});
         var storeFrontInfoCounter = 1;
@@ -141,31 +141,31 @@ MProjectCreator.initShopOnlineForm = function(Prefix) {
                                     }, " (*) Custom Cover is required when Custom Cover is selected.");
         jQuery.validator.addMethod(	"needsShopPageInstructions", 
                                     function() {
-                                        if($('#'+Prefix+'ISBNType').val() == 3) // 3 is id for 'Virtual/ECOM'
-                                            return $('#'+Prefix+'ShopPageInstructions').val().length > 0; 
+                                        if($('#'+Prefix+'ISBNType').val() == VIRTUAL_ECOM_CODE)
+                                            return $('#'+Prefix+'VirtualECOMInstructionsShop').val().length > 0; 
                                         else
                                             return true;
                                     }, " (*) Shop Page Instructions is required when Virtual/ECOM is selected.");
         jQuery.validator.addMethod(	"needsEmailInstructions", 
                                     function() {
-                                        if($('#'+Prefix+'ISBNType').val() == 3) // 3 is id for 'Virtual/ECOM'
-                                            return $('#'+Prefix+'EmailInstructions').val().length > 0; 
+                                        if($('#'+Prefix+'ISBNType').val() == VIRTUAL_ECOM_CODE)
+                                            return $('#'+Prefix+'VirtualECOMInstructionsEmail').val().length > 0; 
                                         else
                                             return true;
                                     }, " (*) Email Instructions is required when Virtual/ECOM is selected.");                                    
 		
 		var rules = new Object();
-		rules[Prefix+'ISBN10']              = { required:true, maxlength: 10, ISBNExists: true };
-		rules[Prefix+'Author']              = { required:true, maxlength: 255 };
-		rules[Prefix+'RequesterName']       = { required:true, maxlength: 255 };
-		rules[Prefix+'RequesterEmail']      = { required:true, maxlength: 255, email: true };
-		rules[Prefix+'DateNeeded']          = { required:true, date: true };
-		rules[Prefix+'UsersID']             = { min: 1, number: true };
-		rules[Prefix+'CustomCoverURL']      = { needsCustomCover: true };
-        rules[Prefix+'ShopPageInstructions'] = { needsShopPageInstructions: true };
-        rules[Prefix+'EmailInstructions']   = { needsEmailInstructions: true };
-		rules[Prefix+'ISBNType']            = { required: true };			
-		rules['recaptcha_response_field']   = { checkCaptcha: true };
+		rules[Prefix+'ISBN10']                  = { required:true, maxlength: 10, ISBNExists: true };
+		rules[Prefix+'Author']                  = { required:true, maxlength: 255 };
+		rules[Prefix+'RequesterName']           = { required:true, maxlength: 255 };
+		rules[Prefix+'RequesterEmail']          = { required:true, maxlength: 255, email: true };
+		rules[Prefix+'DateNeeded']              = { required:true, date: true };
+		rules[Prefix+'UsersID']                 = { min: 1, number: true };
+		rules[Prefix+'CustomCoverURL']          = { needsCustomCover: true };
+        rules[Prefix+'VirtualECOMInstructionsShop'] = { needsShopPageInstructions: true };
+        rules[Prefix+'VirtualECOMInstructionsEmail']= { needsEmailInstructions: true };
+		rules[Prefix+'ISBNType']                = { required: true };			
+		rules['recaptcha_response_field']       = { checkCaptcha: true };
 		
 		var messages = new Object();
 		messages[Prefix+'ISBN10']           = { required: " (*) ISBN-10 is required.", 
