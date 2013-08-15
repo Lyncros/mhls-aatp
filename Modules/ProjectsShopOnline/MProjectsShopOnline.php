@@ -6,7 +6,7 @@
 class MProjectsShopOnline extends MProjectsBase {
 
     public function __construct() {
-        parent::__construct("./Modules/ProjectsShopOnline/Views", "CProjectsShopOnline");
+        parent::__construct("./Modules/ProjectsShopOnline/Views", "CProjectsShopOnline", "ProjectsShopOnline");
 
         $this->JSFile = "MProjectsShopOnline.js";
 
@@ -29,6 +29,13 @@ class MProjectsShopOnline extends MProjectsBase {
 
 
         return $Params;
+    }
+
+    public function BuildSaveProjectParameters() {
+        return Array(
+            "ISBN10" => htmlspecialchars($_POST["ISBN10"]),
+            "Status" => intval($_POST["Status"]),
+        );
     }
 
 }

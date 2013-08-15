@@ -3,18 +3,20 @@
 /**
  * Base class for MProjectsPrivateOffer and MrojectsShopOnline.
  */
-class MProjectsBase extends CTemplateModule {
+abstract class MProjectsBase extends CTemplateModule {
 
     private $ProjectsClass;
     private $MilestonesClass;
     private $MilestoneToDosClass;
+    private $SecName;
 
-    public function __construct($ViewsFolder, $ProjectsClassPrefix) {
+    public function __construct($ViewsFolder, $ProjectsClassPrefix, $SecName) {
         parent::__construct($ViewsFolder);
 
         $this->ProjectsClass = $ProjectsClassPrefix;
         $this->MilestonesClass = $ProjectsClassPrefix . "Milestones";
         $this->MilestoneToDosClass = $ProjectsClassPrefix . "MilestonesToDos";
+        $this->SecName = $SecName;
     }
 
     function ShowProjectDetails() {
@@ -27,10 +29,11 @@ class MProjectsBase extends CTemplateModule {
         if ($CProject->OnLoadByID($ProjectID)) {
             //Deleting is not allowed in this phase
             $Params = Array(
-                "canEdit" => CSecurity::$User->CanAccess("ProjectDetails", "Edit"),
-                "canDelete" => FALSE, //CSecurity::$User->CanAccess("ProjectDetails", "Delete"),
+                "canEdit" => CSecurity::$User->CanAccess($this->SecName, "Edit"),
+                "canDelete" => CSecurity::$User->CanAccess($this->SecName, "Delete"),
                 "project" => $CProject->AllValues(),
                 "milestones" => $CProject->Milestones,
+                "statusList" => call_user_func(array($this->ProjectsClass, 'GetAllStatus')),
             );
             
             $Params["milestoneCompletion"] = $this->CalculateProjectMilestonesCompletion($CProject->Milestones);
@@ -60,6 +63,32 @@ class MProjectsBase extends CTemplateModule {
 
         return Array(1, Array("Milestone " . ($IsNew ? "added" : "saved") . " successfully.", $this->RenderProjectDetails($ProjectID)));
     }
+    
+    abstract function BuildSaveProjectParameters();
+
+
+    public function SaveProject() {
+        $ProjectID = intval($_POST["ProjectID"]);
+        //right now only save ISBN and Status
+        $Data = Array(
+            "ISBN"  => htmlspecialchars($_POST["ISBN"]),
+            "Status" => intval($_POST["Status"]),
+        );
+
+        $Extra = Array(
+            "UsersID" => CSecurity::$User->ID,
+            "IPAddress" => $_SERVER["REMOTE_ADDR"],
+        );
+
+        $CProject = new CProjectsPrivateOffer();
+        if ($CProject->Save($ProjectID, $Data, $Extra) === FALSE) {
+            return Array(0, "Error updating project.");
+        }
+
+        return Array(1, Array("Project saved successfully.", $this->RenderProjectDetails($ProjectID)));
+    }
+    
+    
 
     protected function CalculateProjectMilestonesCompletion($Milestones) {
         $Completion = 0;

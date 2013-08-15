@@ -6,10 +6,10 @@
 class MProjectsPrivateOffer extends MProjectsBase {
 
     public function __construct() {
-        parent::__construct("./Modules/ProjectsPrivateOffer/Views", "CProjectsPrivateOffer");
+        parent::__construct("./Modules/ProjectsPrivateOffer/Views", "CProjectsPrivateOffer", "ProjectsPrivateOffer");
 
         $this->JSFile = "MProjectsPrivateOffer.js";
-        
+
         $this->Twig->addFunction(new Twig_SimpleFunction("GetStatusName", function($Status) {
                     return CProjectsPrivateOffer::GetStatusNameById($Status);
                 }));
@@ -29,6 +29,13 @@ class MProjectsPrivateOffer extends MProjectsBase {
 
 
         return $Params;
+    }
+
+    public function BuildSaveProjectParameters() {
+        return Array(
+            "ISBN" => htmlspecialchars($_POST["ISBN"]),
+            "Status" => intval($_POST["Status"]),
+        );
     }
 
 }

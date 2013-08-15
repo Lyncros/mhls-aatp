@@ -5,6 +5,10 @@
             <td style="width:33px; padding-top:17px;"></td>
             <td colspan="7" style="padding-top:20px; font-size:24px;">
                 <div style="float:left;">Project Details</div>
+                {% if canEdit %}
+                    <div class='Icon_Edit' style='float:left; margin-left:12px;' 
+                         onClick="MProjectsShopOnline.toggleDetailsEdit()"></div>
+                {% endif %}
             </td>
             <td style="width:33px;"></td>
         </tr>
@@ -48,16 +52,17 @@
                     <table class="CForm_Table">
                         
                         {{ RandomPrefix() }}
-						{{ AddTextbox("ISBN10", "ISBN-10", project.ISBN10, "", "", "Basic") | raw }}
-                        {{ AddTextbox("RequesterName", "Requester name", project.RequesterName, "", "", "Basic") | raw }}
+						{{ AddTextbox("ISBN-10", "ISBN10", project.ISBN10, "", "", "Basic") | raw }}
+                        {{ AddDropdown("Status", "Status", statusList, project.Status) | raw }}
+                        {{ AddHidden("ProjectID", project.ID) | raw }}
                         
                         <tr>
                             <td></td>
                             <td>
-                                <div class="Button" value="Save" onClick="alert('Not implemented. Prefix: {{ GetPrefix() }}');">save</div>
+                                <div class="Button" value="Save" onClick="MProjectsShopOnline.save('Project', '{{ GetPrefix() }}');">save</div>
                                 <div class="Button" value="Cancel" onClick="MProjectsShopOnline.toggleDetailsEdit();">cancel</div>
                                 {% if canDelete %}
-                                <div class="Button" value="Delete" onClick="alert('Not implemented. Prefix: {{ GetPrefix() }}');">delete</div>
+                                <div class="Button" value="Delete" onClick="MProjectsShopOnline.deleteProject('{{project.ID}}');">delete</div>
                                 {% endif %}
                                 <br style="clear:both;"><br>
                             </td>
@@ -82,6 +87,7 @@
             </td>
         </tr>
         {% endif %}
+        {% if canEdit %}
         {% for m in milestones %}
         {% set isComplete = (m.Status == "Complete") %}
         <tr>
@@ -108,7 +114,7 @@
                         {{ AddYesNo("Complete", "Status", isComplete, "YesNo") | raw }}
                         <tr>
                             <td colspan="3" align="right">
-                                <div class="Button" value="Save" onClick="MProjectsShopOnline.saveMilestone('{{GetPrefix()}}');">save</div>
+                                <div class="Button" value="Save" onClick="MProjectsShopOnline.save('Milestone', {{GetPrefix()}}');">save</div>
                                 <div class="Button" value="Cancel" onClick="MProjectsShopOnline.toggleMilestone({{m.ID}});">cancel</div>
                                 {% if canDelete %}
                                     <div class="Button" value="Delete" onClick="MProjectsShopOnline.deleteMilestone({{m.ID}});">delete</div>
@@ -120,5 +126,6 @@
             </td>
         </tr>
         {% endfor %}
+        {% endif %}
     </table>
 </div>

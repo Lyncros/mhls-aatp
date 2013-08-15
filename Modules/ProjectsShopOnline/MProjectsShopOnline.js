@@ -39,8 +39,8 @@ MProjectsShopOnline.toggleMilestone = function(milestoneID) {
     $('#Milestone' + milestoneID).slideToggle(EFFECT_DURATION);
 };
 
-MProjectsShopOnline.saveMilestone = function(prefix) {
-    if(CForm.Submit("ProjectsShopOnline", "Module", "SaveMilestone", prefix, function(code, response) {
+MProjectsShopOnline.save = function(entity, prefix) {
+    if(CForm.Submit("ProjectsShopOnline", "Module", "Save" + entity, prefix, function(code, response) {
         var message;
         
         if (code == 0) {
@@ -61,6 +61,10 @@ MProjectsShopOnline.saveMilestone = function(prefix) {
     return true;
 };
 
-MProjectsShopOnline.deleteMilestone = function(MilestoneID) {
+MProjectsShopOnline.deleteMilestone = function(milestoneID) {
     alert('Deleting milestones is not allowed in this phase.');
+};
+
+MProjectsShopOnline.deleteProject = function(projectID) {
+    alert('Deleting projects is not allowed in this phase.');
 };

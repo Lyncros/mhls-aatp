@@ -39,8 +39,8 @@ MProjectsPrivateOffer.toggleMilestone = function(milestoneID) {
     $('#Milestone' + milestoneID).slideToggle(EFFECT_DURATION);
 };
 
-MProjectsPrivateOffer.saveMilestone = function(prefix) {
-    if(CForm.Submit("ProjectsPrivateOffer", "Module", "SaveMilestone", prefix, function(code, response) {
+MProjectsPrivateOffer.save = function(entity, prefix) {
+    if(CForm.Submit('ProjectsPrivateOffer', 'Module', 'Save' + entity, prefix, function(code, response) {
         var message;
         
         if (code == 0) {
@@ -61,6 +61,12 @@ MProjectsPrivateOffer.saveMilestone = function(prefix) {
     return true;
 };
 
-MProjectsPrivateOffer.deleteMilestone = function(MilestoneID) {
+MProjectsPrivateOffer.deleteMilestone = function(milestoneID) {
     alert('Deleting milestones is not allowed in this phase.');
 };
+
+
+MProjectsPrivateOffer.deleteProject = function(projectID) {
+    alert('Deleting projects is not allowed in this phase.');
+};
+
