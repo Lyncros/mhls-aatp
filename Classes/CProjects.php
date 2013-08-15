@@ -484,12 +484,13 @@
 		}
 		//----------------------------------------------------------------------
 		private function ParseUrl($link) {
-			if ($url = parse_url($link))
-			{				
-				if(!isset($ret["scheme"]))
+            $url = parse_url($link);
+			if ($url !== FALSE) {
+				if(!isset($url["scheme"])) {
 					return "http://" . $link;
-				else
-					return $link;				
+                } else {
+                    return $link;
+                }
 			}		
 			
 			return "";
