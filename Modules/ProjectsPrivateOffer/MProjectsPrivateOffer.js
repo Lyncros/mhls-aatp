@@ -36,6 +36,7 @@ MProjectsPrivateOffer.showProjectDetails = function(projectId) {
         if (code == 0) {
             alert(content);
         } else {
+            $('#SearchForm').fadeOut(EFFECT_DURATION);
             $('#ProjectListContainer').slideUp(EFFECT_DURATION);
             $('#ProjectDetailsContainer').html(content);
             $('#ProjectDetailsContainer').fadeIn(EFFECT_DURATION);
@@ -49,6 +50,7 @@ MProjectsPrivateOffer.moveToList = function() {
         $('#ProjectDetailsContainer').empty();
     });
     $('#ProjectDetailsContainer').slideUp(EFFECT_DURATION);
+    $('#SearchForm').fadeIn(EFFECT_DURATION);
 };
 
 MProjectsPrivateOffer.toggleDetailsEdit = function() {
