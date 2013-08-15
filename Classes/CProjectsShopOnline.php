@@ -8,6 +8,7 @@ class CProjectsShopOnline extends CProjectsBase {
     const TABLE_NAME = "ProjectsShopOnline";
 
     public $ContactName;
+    public $StoreFrontItems;
 
     function __construct() {
         parent::__construct(self::TABLE_NAME, "CProjectsShopOnlineMilestones", "CProjectsShopOnlineMilestonesToDos");
@@ -16,13 +17,20 @@ class CProjectsShopOnline extends CProjectsBase {
     public function OnInit() {
         parent::OnInit();
         $this->ContactName = $this->LoadUserFullName($this->UsersID);
+        $this->StoreFrontItems = $this->LoadStoreFrontItems();
 
         return true;
+    }
+    
+    public function LoadStoreFrontItems() {
+        $CStoreFront = new CProjectsShopOnlineStoreFrontItems();
+        return $CStoreFront->OnLoadByProjectID($this->ID);
     }
     
     public function AllValues() {
         $temp = $this->Current;
         $temp["ContactName"] = $this->ContactName;
+        $temp["StoreFrontItems"] = $this->StoreFrontItems;
         
         return $temp;
     }

@@ -1,4 +1,4 @@
-<div class="ProjectContainer" style="padding-bottom:45px;">
+<div class="ProjectContainer" style="padding-bottom:45px;border: 2px solid #bebebe;border-radius: 5px;">
     <div id='MoveBackButton' onClick="MProjectsShopOnline.moveToList();" class='Back' style='top: 35px; left: 715px;'></div>
     <table style="width:100%;" cellpadding="0" cellspacing="0">
         <tr>
@@ -18,7 +18,8 @@
                 <div id="ProjectDetailsReadOnly">
                     <table width="100%">
                         <tr>
-                            <td style="vertical-align:top; padding:22px 11px; padding-left:0px; width:40%;">
+                            <td style="width:1%;"></td>
+                            <td style="vertical-align:top; padding:22px 11px; padding-left:0px; width:39%;">
                                 <div style="font-weight:bold; font-size:18px;">{{project.ISBN10}}</div>
                                 <p><b>Author:</b>&nbsp;{{project.Author}}</p>
                                 <p><b>Requester name:</b>&nbsp;{{project.RequesterName}}</p>
@@ -40,8 +41,48 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="3"><p><b>Comments:</b>&nbsp;{{ project.Comments }}</p></td>
+                            <td colspan="5"><p><b>Custom cover url:</b>&nbsp;{{ project.CustomCoverURL }}</p></td>
                         </tr>
+                        <tr>
+                            <td colspan="5"><p><b>Comments:</b>&nbsp;{{ project.Comments }}</p></td>
+                        </tr>
+                        {% if project.ISBNType == "Virtual/ECOM" %}
+                        <tr>
+                            <td></td>
+                            <td colspan="4">
+                                <table>
+                                    <tr>
+                                        <td><p><b>Virtual code</b></p></td>
+                                        <td><div id="AddMilestone" onClick="$('#VirtualECOMDetails').slideToggle();"></div></td>
+                                    </tr>
+                                </table>
+                                <div id="VirtualECOMDetails" style="display: none">
+                                    <p><b>Shop instructions:</b>&nbsp;{{project.VirtualECOMInstructionsShop}}</p>
+                                    <p><b>e-mail instructions:</b>&nbsp;{{project.VirtualECOMInstructionsEmail}}</p>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endif %}
+                        {% if project.StoreFrontItems %}
+                        <tr>
+                            <td></td>
+                            <td colspan="4">
+                                <table>
+                                    <tr>
+                                        <td><p><b>e-commerce BookShelf:</b></p></td>
+                                        <td><div id="AddMilestone" onClick="$('#StoreFrontItems').slideToggle();"></div></td>
+                                    </tr>
+                                </table>
+                                <div id="StoreFrontItems" style="display: none">
+                                    {% for item in project.StoreFrontItems %}
+                                        <p><b>ISBN:</b>&nbsp;{{item.ISBN}}</p>
+                                        <p><b>Author:</b>&nbsp;{{item.Author}}</p>
+                                        <p><b>Virtual:</b>&nbsp;{{item.Virtual}}</p>
+                                    {% endfor %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endif %}
                         <tr>
                             <td colspan="5" class="SeparatorHorizontal"></td>
                         </tr>
