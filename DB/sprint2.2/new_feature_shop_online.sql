@@ -1,6 +1,3 @@
-CREATE DATABASE IF NOT EXISTS `aatp`;
-USE `aatp`;
-
 DROP TABLE IF EXISTS `ProjectsShopOnline`;
 
 CREATE TABLE `ProjectsShopOnline` (
