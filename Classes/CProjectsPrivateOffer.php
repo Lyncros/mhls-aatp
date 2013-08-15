@@ -34,12 +34,17 @@ class CProjectsPrivateOffer extends CProjectsBase {
         return $temp;
     }
 
-    public function OnLoadAllActive() {
+    public function OnLoadAllActive($SearchKeywords) {
+        $AndClause = "";
+        if (!empty($SearchKeywords)) {
+            $AndClause = "AND (P.ISBN LIKE '%$SearchKeywords%' OR P.ProjectNumber LIKE '%$SearchKeywords%') ";
+        }
+        
         return $this->OnLoadByQuery("
             SELECT P.*, CONCAT(U.`LastName`, ', ', U.`FirstName`) as `CreativeContactName` 
             FROM `" . $this->Table . "` as P 
                 JOIN `Users` as U ON P.CreativeContactID = U.ID 
-            WHERE `Deleted` IS NULL");
+            WHERE `Deleted` IS NULL $AndClause");
     }
 
     public static function GetConnectionTypes() {

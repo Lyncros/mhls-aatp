@@ -4,6 +4,26 @@
 
 var EFFECT_DURATION = 700;
 
+$(document).ready(function() {
+    $('#SearchForm').live('submit', function(event) {
+        if(event.preventDefault) event.preventDefault(); 
+        else event.returnValue = false;
+
+        var params = {
+            'Keywords': $('#SearchQuery').val()
+        };
+
+        CAJAX.Add('ProjectsShopOnline', 'Module', 'Search', params, function(code, content) {
+            if (code == 0) {
+                alert(content);
+            } else {
+                $('#ProjectListContainer').html(content);
+            }
+        });
+        return false;
+    });
+});
+
 MProjectsShopOnline = {};
 
 MProjectsShopOnline.showProjectDetails = function(projectId) {

@@ -27,12 +27,17 @@ class CProjectsShopOnline extends CProjectsBase {
         return $temp;
     }
 
-    public function OnLoadAllActive() {
+    public function OnLoadAllActive($SearchKeywords) {
+        $AndClause = "";
+        if (!empty($SearchKeywords)) {
+            $AndClause = "AND (P.ISBN10 LIKE '%$SearchKeywords%') ";
+        }
+        
         return $this->OnLoadByQuery("
             SELECT P.*, CONCAT(U.`LastName`, ', ', U.`FirstName`) as `ContactName` 
             FROM `" . self::TABLE_NAME . "` as P 
                 JOIN `Users` as U ON P.UsersID = U.ID 
-            WHERE `Deleted` IS NULL");
+            WHERE `Deleted` IS NULL $AndClause");
     }
 
     public function GetStatusName() {

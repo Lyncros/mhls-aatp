@@ -15,11 +15,11 @@ class MProjectsShopOnline extends MProjectsBase {
                 }));
     }
 
-    function ProjectsShopOnlineParams() {
+    function ProjectsShopOnlineParams($SearchKeywords = "") {
         $Params = Array();
         $CProjectsShop = new CProjectsShopOnline();
 
-        if ($CProjectsShop->OnLoadAllActive()) {
+        if ($CProjectsShop->OnLoadAllActive($SearchKeywords)) {
             $Projects = $CProjectsShop->Rows->RowsToArrayAllColumns();
             foreach ($Projects as $Project) {
                 $Params["projects"][$Project["ID"]] = $Project;
@@ -36,6 +36,15 @@ class MProjectsShopOnline extends MProjectsBase {
             "ISBN10" => htmlspecialchars($_POST["ISBN10"]),
             "Status" => intval($_POST["Status"]),
         );
+    }
+    
+    public function Search() {
+        $Keywords = htmlspecialchars($_POST["Keywords"]);
+        
+        $Params = $this->ProjectsShopOnlineParams($Keywords);
+        $Params["Keywords"] = $Keywords;
+        $template = $this->LoadTemplate("ProjectsShopOnline");
+        return Array(1, $template->render($Params));
     }
 
 }

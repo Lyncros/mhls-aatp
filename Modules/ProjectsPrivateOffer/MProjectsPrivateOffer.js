@@ -4,6 +4,27 @@
 
 var EFFECT_DURATION = 700;
 
+$(document).ready(function() {
+    $('#SearchForm').live('submit', function(event) {
+        if(event.preventDefault) event.preventDefault(); 
+        else event.returnValue = false;
+
+        var params = {
+            'Keywords': $('#SearchQuery').val()
+        };
+
+        CAJAX.Add("ProjectsPrivateOffer", "Module", "Search", params, function(code, content) {
+            if (code == 0) {
+                alert(content);
+            } else {
+                $('#ProjectListContainer').html(content);
+            }
+        });
+        return false;
+    });
+});
+
+
 MProjectsPrivateOffer = {};
 
 MProjectsPrivateOffer.showProjectDetails = function(projectId) {

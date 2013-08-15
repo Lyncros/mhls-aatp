@@ -15,11 +15,11 @@ class MProjectsPrivateOffer extends MProjectsBase {
                 }));
     }
 
-    function ProjectsPrivateOfferParams() {
+    function ProjectsPrivateOfferParams($SearchKeywords = "") {
         $Params = Array();
         $CProjectsPrivateOffer = new CProjectsPrivateOffer();
 
-        if ($CProjectsPrivateOffer->OnLoadAllActive()) {
+        if ($CProjectsPrivateOffer->OnLoadAllActive($SearchKeywords)) {
             $Projects = $CProjectsPrivateOffer->Rows->RowsToArrayAllColumns();
             foreach ($Projects as $Project) {
                 $Params["projects"][$Project["ID"]] = $Project;
@@ -30,13 +30,22 @@ class MProjectsPrivateOffer extends MProjectsBase {
 
         return $Params;
     }
-
+    
     public function BuildSaveProjectParameters() {
         return Array(
             "ISBN" => htmlspecialchars($_POST["ISBN"]),
             "ScreenshotLink" => htmlspecialchars($_POST["ScreenshotLink"]),
             "Status" => intval($_POST["Status"]),
         );
+    }
+    
+    public function Search() {
+        $Keywords = htmlspecialchars($_POST["Keywords"]);
+        
+        $Params = $this->ProjectsPrivateOfferParams($Keywords);
+        $Params["Keywords"] = $Keywords;
+        $template = $this->LoadTemplate("ProjectsPrivateOffer");
+        return Array(1, $template->render($Params));
     }
 
 }

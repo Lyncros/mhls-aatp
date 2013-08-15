@@ -26,17 +26,17 @@ abstract class CProjectsBase extends CTable {
 
     public function OnInit() {
         $this->Milestones = $this->LoadMilestonesByProjectID($this->ID);
-        
+
         return true;
     }
-    
+
     public abstract function AllValues();
-    
+
     public function LoadMilestonesByProjectID($ProjectID) {
         $CProjectMilestones = new $this->MilestoneClass();
         return $CProjectMilestones->LoadByProjectID($ProjectID);
     }
-    
+
     public function LoadUserFullName($UserID) {
         $CUser = new CUsers();
         if ($CUser->OnLoadByID($UserID)) {
