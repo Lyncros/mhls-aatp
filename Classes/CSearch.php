@@ -207,15 +207,20 @@
 				$Query .= " ORDER BY ";
 
 				$Item = $this->ItemList[$_GET["CSearch_OrderBy"]];
-
-				$Query .= "`".$Item->Column."`";
+                
+                if($Item->SpecialOrderOption)
+                    $Query .= $Item->SpecialOrderOption;
+                else
+                    $Query .= "`".$Item->Column."`";
 
 				if(!isset($_GET["CSearch_OrderByDir"])) {
 					$_GET["CSearch_OrderByDir"] = $this->DefaultColumnDir;
 				}
 
-				if($_GET["CSearch_OrderByDir"] == 1)	$Query .= " DESC ";
-				else									$Query .= " ASC ";
+				if($_GET["CSearch_OrderByDir"] == 1)	
+                    $Query .= " DESC ";
+				else									
+                    $Query .= " ASC ";
 								
 				$this->NumRows	= count(CTable::OnLoadByQuery($Query));
 
@@ -702,7 +707,7 @@
 		//=====================================================================
 		// Add Methods
 		//=====================================================================
-		function AddColumn($Name, $Column, $Width, $SearchType = 0, $FTable = "", $FLink = "", $FColumn = "", $Callback = "", $FTableBusinessesID = 0) {
+		function AddColumn($Name, $Column, $Width, $SearchType = 0, $FTable = "", $FLink = "", $FColumn = "", $Callback = "", $FTableBusinessesID = 0, $SpecialOrderOption = "") {
 			$Item = new CSearchColumn();
 
 			$Item->Name		= $Name;
@@ -717,7 +722,9 @@
 			$Item->FColumn	= $FColumn;
 
 			$Item->Callback	= $Callback;
-
+            
+            $Item->SpecialOrderOption = $SpecialOrderOption;
+            
 			$this->ItemList[] = $Item;
 		}
 		

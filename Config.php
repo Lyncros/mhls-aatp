@@ -125,8 +125,6 @@
 				),
 				"LibraryPath" => './Libraries/ReCAPTCHA/recaptchalib.php'
 			),
-            
-            "ProjectCreatorISBNDuplicatedContact" => 'James Doepke',
 		);
 	}
 

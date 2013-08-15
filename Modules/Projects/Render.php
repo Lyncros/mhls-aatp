@@ -5,6 +5,7 @@
 
 	$DayOfWeek	= date("w", $Date);
 	$Date		= mktime(2, 0, 0, date("m", $Date), date("d", $Date) - $DayOfWeek, date("Y", $Date));
+    $SearchTable = "ProjectsView";
 ?>
 <?
 	function OnCreated($Value) {
@@ -57,7 +58,7 @@
 						<td style='vertical-align:top; padding:7px 11px; width:145px;'>
 							<div style='color:#0685c5; font-weight:bold; font-size:14px;'>Project Details</div>
 							<p><b>LSC:</b> ".$Project->GetUsers("LSCs")."</p>
-							<p style='color:#0685c5; text-decoration:underline; cursor:pointer;' onClick=\"MProjects.ShowPreviewBox(this, 'LeadNotes', ".$Project->ID.");\">Lead Notes</p>
+                            <p><b>Product Solutions:</b> ".$Project->GetProductSolutions()."</p>
 						</td>
 						<td style='vertical-align:top; padding-top:7px; padding-bottom:7px;'><div class='Separator'></div></td>
 						<td style='vertical-align:top; padding:7px 11px; width:160px;'>
@@ -104,7 +105,7 @@
 		return $Temp;
 	}
 
-	$Search = new CSearch("ProjectsView");
+	$Search = new CSearch($SearchTable);
 	
 	$Search->SetItemsPerPage(50);
 	
@@ -116,7 +117,7 @@
 	/* 5 */ $Search->AddColumn("Stat Sponsor Code", "StatSponsorCode", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
 	/* 6 */ $Search->AddColumn("Created", "Created", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
 	/* 7 */ $Search->AddColumn("DueDate", "DueDate", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");	
-	/* 8 */ $Search->AddColumn("LSCs", "LSCs", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
+	/* 8 */ $Search->AddColumn("LSCs", "LSCs", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide",0,"IF(ISNULL(LSCs),1,0),LSCs");
 	/* 9 */ //$Search->AddColumn("Product Type", "ProductType", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
 	
 	// Non-deleted Projects
@@ -251,7 +252,7 @@
 					}
 					if(count($LSCValues) > 0)
 					{					
-						$SubQuery = "`Projects`.`ID` IN (SELECT `ProjectsID` FROM `ProjectsLSCs` WHERE `UsersID` IN (".implode(",", $LSCValues)."))";
+						$SubQuery = "`ID` IN (SELECT `ProjectsID` FROM `ProjectsLSCs` WHERE `UsersID` IN (".implode(",", $LSCValues)."))";
 						$Search->AddRestriction($SubQuery, "", "", "Custom");
 					}
 				}
@@ -407,7 +408,7 @@
 						$StatusValues[] = $ID;
 					}
 				}
-				$SubQuery = "`Projects`.`Status` IN (".implode(",", $StatusValues).")";
+				$SubQuery = "`Status` IN (".implode(",", $StatusValues).")";
 				$Search->AddRestriction($SubQuery, "", "", "Custom");
 			}
 		}

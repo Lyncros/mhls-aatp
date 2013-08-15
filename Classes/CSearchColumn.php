@@ -22,6 +22,8 @@
 		public $FColumn 			= "";
 
 		public $Callback			= "";
+        
+        public $SpecialOrderOption  = "";
 	};
 
 	//=========================================================================
