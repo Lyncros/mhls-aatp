@@ -78,8 +78,10 @@ class MProjectCreatorHome extends CUnauthorizedModule {
             "Comments" => htmlspecialchars($_POST["Comments"]),
             "CustomCoverURL" => htmlspecialchars($_POST["CustomerCoverURL"]),
             "ISBNType" => htmlspecialchars($_POST["ISBNType"]),
+            "ShopPageInstructions" => htmlspecialchars($_POST["ShopPageInstructions"]),
+            "EmailInstructions" => htmlspecialchars($_POST["EmailInstructions"]),
         );
-
+        
         $ProjectShop = new CProjectsShopOnline();
         $Extra = $this->BuildSaveParameters();
         $NewProjectID = $ProjectShop->Save(0, $Data, $Extra);

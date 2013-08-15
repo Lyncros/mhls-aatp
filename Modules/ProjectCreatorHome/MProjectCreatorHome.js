@@ -52,6 +52,19 @@ MProjectCreator.initShopOnlineForm = function(Prefix) {
                 $('#'+Prefix+'CustomCoverURL').parent().parent().hide();
             }
 		});
+        
+        $('#'+Prefix+'ISBNType').change(function(){
+			if($(this).val() == 3) // 3 is id for 'Virtual/ECOM' 
+            {
+				$('#'+Prefix+'ShopPageInstructions').parent().parent().show();
+                $('#'+Prefix+'EmailInstructions').parent().parent().show();
+			} else {                
+                $('#'+Prefix+'ShopPageInstructions').val('');
+                $('#'+Prefix+'EmailInstructions').val('');
+                $('#'+Prefix+'ShopPageInstructions').parent().parent().hide();
+                $('#'+Prefix+'EmailInstructions').parent().parent().hide();                
+            }
+		});
 		
 		$.validator.setDefaults({ onkeyup: false, onfocusout: false });
 		jQuery.validator.addMethod(	"checkCaptcha", MProjectCreator.checkCaptchaFunction, " (*) Invalid Captcha");
@@ -62,13 +75,27 @@ MProjectCreator.initShopOnlineForm = function(Prefix) {
 										return rsp[0] == 0;	
 										
 									}, " (*) This ISBN is already in use. Please contact your Creative Analyst.");
-        jQuery.validator.addMethod(	"isCustomCover", 
+        jQuery.validator.addMethod(	"needsCustomCover", 
                                     function() {
                                         if($('input[name=CoverType]:checked').val() == 'CustomCover')
                                             return $('#'+Prefix+'CustomCoverURL').val().length > 0; 
                                         else
                                             return true;
                                     }, " (*) Custom Cover is required when Custom Cover is selected.");
+        jQuery.validator.addMethod(	"needsShopPageInstructions", 
+                                    function() {
+                                        if($('#'+Prefix+'ISBNType').val() == 3) // 3 is id for 'Virtual/ECOM'
+                                            return $('#'+Prefix+'ShopPageInstructions').val().length > 0; 
+                                        else
+                                            return true;
+                                    }, " (*) Shop Page Instructions is required when Virtual/ECOM is selected.");
+        jQuery.validator.addMethod(	"needsEmailInstructions", 
+                                    function() {
+                                        if($('#'+Prefix+'ISBNType').val() == 3) // 3 is id for 'Virtual/ECOM'
+                                            return $('#'+Prefix+'EmailInstructions').val().length > 0; 
+                                        else
+                                            return true;
+                                    }, " (*) Email Instructions is required when Virtual/ECOM is selected.");                                    
 		
 		var rules = new Object();
 		rules[Prefix+'ISBN10']              = { required:true, maxlength: 10, ISBNExists: true };
@@ -77,8 +104,10 @@ MProjectCreator.initShopOnlineForm = function(Prefix) {
 		rules[Prefix+'RequesterEmail']      = { required:true, maxlength: 255, email: true };
 		rules[Prefix+'DateNeeded']          = { required:true, date: true };
 		rules[Prefix+'UsersID']             = { min: 1, number: true };
-		rules[Prefix+'CustomCoverURL']      = { isCustomCover:true };
-		rules[Prefix+'ISBNType']            = {  required: true };			
+		rules[Prefix+'CustomCoverURL']      = { needsCustomCover: true };
+        rules[Prefix+'ShopPageInstructions'] = { needsShopPageInstructions: true };
+        rules[Prefix+'EmailInstructions']   = { needsEmailInstructions: true };
+		rules[Prefix+'ISBNType']            = { required: true };			
 		rules['recaptcha_response_field']   = { checkCaptcha: true };
 		
 		var messages = new Object();

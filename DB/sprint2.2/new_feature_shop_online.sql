@@ -14,6 +14,8 @@ CREATE TABLE `ProjectsShopOnline` (
   `Comments` text,
   `CustomCoverURL` varchar(255) DEFAULT NULL,
   `ISBNType` enum('PPK','Physical','COMBO','Virtual/ECOM') NOT NULL,
+  `ShopPageInstructions` varchar(255) DEFAULT NULL,
+  `EmailInstructions` varchar(255) DEFAULT NULL,
   `VirtualECOMInstructionsShop` varchar(255) DEFAULT NULL,
   `VirtualECOMInstructionsEmail` varchar(255) DEFAULT NULL,
   `Status` tinyint NOT NULL DEFAULT 1,

@@ -52,7 +52,7 @@ class CProjectsShopOnline extends CProjectsBase {
     }
 
     public static function GetISBNTypes() {
-        return Array("PPK", "Physical", "COMBO", "Virtual/ECOM");
+        return Array("PPK", "Physical", "COMBO", "Virtual/ECOM");        
     }
 
     public static function GetAllStatus() {

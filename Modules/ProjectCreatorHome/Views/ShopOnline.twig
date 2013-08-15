@@ -57,11 +57,13 @@
                         </td>
                     </tr>
                     {{ AddTextbox("Custom cover URL", "CustomCoverURL", "", "", "", "Hidden") | raw }}
-                    {{ AddDropdown("ISBN Type", "ISBNType", ISBNTypes, "", "") | raw }}
+                    {{ AddDropdown("ISBN Type", "ISBNType", ISBNTypes, "", "") | raw }}                    
 					<tr>
 						<td class="CForm_Name" style="line-height:0px;">&nbsp;</td>
 						<td><label for="{{formPrefix}}ISBNType" class="error" style="display:none;">ISBN Type is required.</label></td>
 					</tr>
+                    {{ AddTextbox("Shop Page Instructions", "ShopPageInstructions", "", "", "", "Hidden") | raw }}
+                    {{ AddTextbox("Email Instructions", "EmailInstructions", "", "", "", "Hidden") | raw }}
 					<tr>
 						<td colspan="2" style="text-align:center;">
 							<div align="center" style="margin-top:30px;">
