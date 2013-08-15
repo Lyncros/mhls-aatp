@@ -126,8 +126,7 @@
                 }
                 return $this->UpdateExistent($ID, $Data);
             } else {
-                if ($Extra) 
-                {
+                if ($Extra) {
                     $Data["Created"] = time();
                     $Data["CreatedUsersID"] = $Extra["UsersID"];
                     $Data["CreatedIPAddress"] = $Extra["IPAddress"];
