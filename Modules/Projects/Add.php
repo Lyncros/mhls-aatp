@@ -58,6 +58,15 @@
 			$MtValuesArray = array(0 => "N/A") + CForm::RowsToArray($Mt->Rows, "Name");
 			
 			echo CForm::AddDropdown("Milestone template", "ProductTypes", $MtValuesArray);
+            
+            // Vendors
+            $VendorsArray = Array();
+            $Vendors = new CVendors();
+            $Vendors->OnLoadAll();								
+            foreach($Vendors->Rows as $Row) {
+                $VendorsArray[$Row->ID] = $Row->Name;
+            }
+            echo CForm::AddListbox("Vendors", "VendorsID", $VendorsArray, $Project->Vendors);
 			
 			//Tags
 			$Tags = new CTags();

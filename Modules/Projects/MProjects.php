@@ -671,11 +671,13 @@
 				"ConnectRequestIDLink"				=> htmlspecialchars($_POST["ConnectRequestIDLink"]),			
 			);
 			
+            $IsNew = FALSE;
 			if ($ID == 0) {
 				//New project, set Creation data.
 				$Data["Created"] = time();
 				$Data["CreatedUsersID"] = CSecurity::GetUsersID();
 				$Data["CreatedIPAddress"] = $_SERVER["REMOTE_ADDR"];
+                $IsNew = TRUE;
 			}
 
 			// Changes
@@ -698,9 +700,9 @@
 			}*/
 
 			if($ID) {
-				if(CTable::Update("Projects", $ID, $Data) === false) return Array(0, "Error updating record");
+				if(CTable::Update("Projects", $ID, $Data) === false) return Array(0, "Error updating project record");
 			} else {
-				if(($ID = CTable::Add("Projects", $Data)) === false) return Array(0, "Error saving record");
+				if(($ID = CTable::Add("Projects", $Data)) === false) return Array(0, "Error creating project record");
 			}
 
 			// District Managers
@@ -882,7 +884,7 @@
 				CNotifier::PushEmail("jarrod.nix@jhspecialty.com", "Module", "Projects", "Plant Request", $EmailData);
 			}*/
 			
-			return Array($ID, 'Project updated successfully');
+			return Array($ID, "Project ".($IsNew ? "created" : "updated")." successfully");
 		}
 		
 		//----------------------------------------------------------------------

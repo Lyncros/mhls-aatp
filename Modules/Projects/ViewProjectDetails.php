@@ -218,9 +218,9 @@
 								echo CForm::AddTextbox("Plant Left", "PlantLeft", $Project->PlantLeft, "", "", "Basic");
 								
 								// Vendors
-								$VendorsArray = Array("" => "");
+								$VendorsArray = Array();
 								$Vendors = new CVendors();
-								$Vendors->OnLoadAll("");								
+								$Vendors->OnLoadAll();								
 								foreach($Vendors->Rows as $Row) {
 									$VendorsArray[$Row->ID] = $Row->Name;
 								}
