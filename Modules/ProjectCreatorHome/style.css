@@ -88,8 +88,11 @@ label.error {
 }
 .TableFormGroup
 {	
-	border: 0;
-}	
+	border: 2px solid #bebebe;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
 .ProjectCreatorUploadButton
 {
 	width: 220px;
@@ -134,4 +137,30 @@ div.FormComplete ul {
 
 div.FormComplete li {
     padding-bottom: 10px;
+}
+
+.StoreFrontInfoTable
+{	
+	border: 1px solid #bebebe;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+.StoreFrontInfoTable input
+{
+    width: 240px;
+}
+
+span#ISBNToStoreFrontAddNew.ISBNToStoreFrontBtn, span#ISBNToStoreFrontRemoveLast.ISBNToStoreFrontBtn {
+    font-weight: bolder;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.StoreFrontInfoTable td
+{
+    color: #6D6D6D;
+    font-size: 13px;
+    font-weight: bold;
+    padding-left: 5px;
 }

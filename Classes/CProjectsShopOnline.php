@@ -49,7 +49,36 @@ class CProjectsShopOnline extends CProjectsBase {
 
         return intval($Count) > 0;
     }
+    
+    public function AddStoreFrontInfoItems($ProjectID, $StoreFrontInfoItems) {
+        $success = true;
+        var_dump($ProjectID);
+        var_dump($StoreFrontInfoItems);
+        
+        foreach ($StoreFrontInfoItems as $StoreFrontInfoItem) {
+            if (!$this->AddStoreFrontInfoItem($ProjectID, $StoreFrontInfoItem)) {
+                $success = false;
+            }
+        }
 
+        return $success;
+    }
+    
+    private function AddStoreFrontInfoItem($ProjectID, $StoreFrontInfoItem) {
+        $Data = array(
+            "ProjectsID" => $ProjectID,
+            "ISBN"       => $StoreFrontInfoItem['ISBN'],
+            "Author"     => $StoreFrontInfoItem['Author'],
+            "Virtual"    => $StoreFrontInfoItem['Virtual']
+        );
+
+        $CStoreFrontInfoItems = new CProjectsShopOnlineStoreFrontItems();
+        
+        $NewStoreFrontInfoItem = $CStoreFrontInfoItems->Save(0, $Data);
+        
+        return !($NewStoreFrontInfoItem === false);
+    }
+    
     public static function ExistsWithISBN10($ISBN10) {
         $Projects = CTable::Select(self::TABLE_NAME, "WHERE ISBN10 = $ISBN10");
 

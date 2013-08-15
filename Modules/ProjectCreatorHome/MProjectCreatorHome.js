@@ -65,6 +65,63 @@ MProjectCreator.initShopOnlineForm = function(Prefix) {
                 $('#'+Prefix+'EmailInstructions').parent().parent().hide();                
             }
 		});
+        var storeFrontInfoCounter = 1;
+        var addStoreFrontInfo = function() {
+            var storeFrontInfoItem = "  <tr class='StoreFrontInfoTr' id='StoreFrontInfo"+storeFrontInfoCounter+"'>";
+            storeFrontInfoItem += "         <td align='right' class='CForm_Name' valign='top'></td>";
+            storeFrontInfoItem += "         <td>";
+            storeFrontInfoItem += "             <table class='StoreFrontInfoTable'>";
+            storeFrontInfoItem += "                 <tr>";
+            storeFrontInfoItem += "                     <td>ISBN</td>";
+            storeFrontInfoItem += "                     <td><input name='"+Prefix+"StoreFrontISBN"+storeFrontInfoCounter+"' id='"+Prefix+"StoreFrontISBN"+storeFrontInfoCounter+"' type='text' class='CForm_Textbox' value><td>";
+            storeFrontInfoItem += "                 </tr>";
+            storeFrontInfoItem += "                 <tr>";
+            storeFrontInfoItem += "                     <td>Author</td>";
+            storeFrontInfoItem += "                     <td><input name='"+Prefix+"StoreFrontAuthor"+storeFrontInfoCounter+"' id='"+Prefix+"StoreFrontAuthor"+storeFrontInfoCounter+"' type='text' class='CForm_Textbox' value><td>";
+            storeFrontInfoItem += "                 </tr>";
+            storeFrontInfoItem += "                 <tr>";
+            storeFrontInfoItem += "                     <td>Virtual</td>";
+            storeFrontInfoItem += "                     <td><input name='"+Prefix+"StoreFrontVirtual"+storeFrontInfoCounter+"' id='"+Prefix+"StoreFrontVirtual"+storeFrontInfoCounter+"' type='text' class='CForm_Textbox' value><td>";
+            storeFrontInfoItem += "                 </tr>";
+            storeFrontInfoItem += "             </table>";                    
+            storeFrontInfoItem += "         </td>";
+            storeFrontInfoItem += "     </tr>";
+            
+            storeFrontInfoCounter++;
+            
+            $("#ISBNToStoreFront").parent().parent().after(storeFrontInfoItem);
+        };
+        
+        var removeLastStoreFrontInfo = function() {
+            $('#StoreFrontInfo'+(storeFrontInfoCounter-1)).remove();
+            storeFrontInfoCounter--;
+        };
+        
+        var removeAllStoreFrontInfo = function() {
+            $('.StoreFrontInfoTr').remove();
+            storeFrontInfoCounter = 1;
+        };
+        
+        $("#ISBNToStoreFrontAddNew").click(function() {
+            addStoreFrontInfo();
+        });
+        
+        $("#ISBNToStoreFrontRemoveLast").click(function() {
+            removeLastStoreFrontInfo();
+        });
+        
+        $("#ISBNToStoreFront").change(function() {
+            if(this.checked) {
+                addStoreFrontInfo();
+                $('#ISBNToStoreFrontAddNew').show();
+                $('#ISBNToStoreFrontRemoveLast').show();                
+            } else {
+                removeAllStoreFrontInfo();
+                $('#ISBNToStoreFrontAddNew').hide();
+                $('#ISBNToStoreFrontRemoveLast').hide();
+                
+            }                
+        });
 		
 		$.validator.setDefaults({ onkeyup: false, onfocusout: false });
 		jQuery.validator.addMethod(	"checkCaptcha", MProjectCreator.checkCaptchaFunction, " (*) Invalid Captcha");

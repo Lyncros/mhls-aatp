@@ -36,11 +36,7 @@
             return CTable::SelectFields("s.`Name`, count(s.`ID`) AS Count","ProjectsVendors","  JOIN `ProjectsSpecialities` ps ON `ProjectsVendors`.`ProjectsID` = ps.`ProjectsID`
                                                                                                     JOIN `Specialities` s ON ps.`SpecialitiesID` = s.`ID`
                                                                                                     WHERE `ProjectsVendors`.`VendorsID` = $VendorID
-                                                                                                    GROUP BY s.`ID`");            
-            /*if($Result->count()>0){
-                return Array();}
-            else
-                return $Result;*/
+                                                                                                    GROUP BY s.`ID`");         
         }
 	};
 ?>

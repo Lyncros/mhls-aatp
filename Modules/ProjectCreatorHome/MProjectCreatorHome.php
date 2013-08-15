@@ -97,6 +97,14 @@ class MProjectCreatorHome extends CUnauthorizedModule {
                 }
             }
             
+            $StoreFrontInfoItems = $this->GetStoreFrontInfoItems($_POST);
+            
+            if (!empty($StoreFrontInfoItems)) {
+                 if ($ProjectShop->AddStoreFrontInfoItems($NewProjectID, $StoreFrontInfoItems) === FALSE) {
+                    return Array(0, "Error adding store front info item to project.");
+                }                
+            }
+            
             $template = $this->LoadTemplate('PrivateOfferConfirmation');
 			
             return Array(1, $template->display());            
@@ -184,7 +192,7 @@ class MProjectCreatorHome extends CUnauthorizedModule {
     }
 
     public function ShopOnlineISBN10Exists() {
-        $ISBN10 = intval($_POST["ISBN10"]);
+        $ISBN10 = htmlspecialchars($_POST["ISBN10"]);
 
         return Array(CProjectsShopOnline::ExistsWithISBN10($ISBN10), '');
     }
@@ -492,6 +500,25 @@ class MProjectCreatorHome extends CUnauthorizedModule {
         }
     }
 
+    private function GetStoreFrontInfoItems($Post)
+    {
+        $StoreFrontInfoItems = Array();
+        $index = 1;
+        while(true){
+            $key = "StoreFrontISBN".$index;
+            if(array_key_exists($key,$Post)) {
+                
+                $StoreFrontInfoItems[] = Array( 'ISBN'    => $Post["StoreFrontISBN".$index], 
+                                                'Author'  => $Post["StoreFrontAuthor".$index], 
+                                                'Virtual' => $Post["StoreFrontVirtual".$index]);
+                $index++;
+            }
+            else         
+                break;
+        }
+
+        return $StoreFrontInfoItems;            
+    }
 }
 
 ?>

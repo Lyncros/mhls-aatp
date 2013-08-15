@@ -117,20 +117,25 @@
 		function OnSave() {
 		}
         
-        function Save($ID, $Data, $Extra) {
-            if ($ID > 0) {
-                $Data["Modified"] = time();
-                $Data["ModifiedUsersID"] = $Extra["UsersID"];
-                $Data["ModifiedIPAddress"] = $Extra["IPAddress"];
-                
+        function Save($ID, $Data, $Extra = null) {
+            if ($ID > 0) {                
+                if ($Extra) {                    
+                    $Data["Modified"] = time();
+                    $Data["ModifiedUsersID"] = $Extra["UsersID"];
+                    $Data["ModifiedIPAddress"] = $Extra["IPAddress"];
+                }
                 return $this->UpdateExistent($ID, $Data);
             } else {
-                $Data["Created"] = time();
-                $Data["CreatedUsersID"] = $Extra["UsersID"];
-                $Data["CreatedIPAddress"] = $Extra["IPAddress"];
-
+                if ($Extra) 
+                {
+                    $Data["Created"] = time();
+                    $Data["CreatedUsersID"] = $Extra["UsersID"];
+                    $Data["CreatedIPAddress"] = $Extra["IPAddress"];
+                }
                 return $this->AddNew($Data);
             }
+            
+            return false;
         }
         
         function AddNew($Data) {

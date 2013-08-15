@@ -65,6 +65,15 @@
                     {{ AddTextbox("Shop Page Instructions", "ShopPageInstructions", "", "", "", "Hidden") | raw }}
                     {{ AddTextbox("Email Instructions", "EmailInstructions", "", "", "", "Hidden") | raw }}
 					<tr>
+						<td class="CForm_Name"><b onmouseover="CTooltip.Show('');" onmouseout="CTooltip.Hide();">Adding this ISBN to a StoreFront?</b></td>                        
+                        <td>
+                            <input type="checkbox" name="ISBNToStoreFront" id="ISBNToStoreFront">&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span id="ISBNToStoreFrontAddNew" class="ISBNToStoreFrontBtn" style="display:none;">+</span>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <span id="ISBNToStoreFrontRemoveLast" class="ISBNToStoreFrontBtn" style="display:none;">-</span>
+                        </td>
+					</tr>
+                    <tr>
 						<td colspan="2" style="text-align:center;">
 							<div align="center" style="margin-top:30px;">
 							{{ AddRecatpcha() | raw }}					
