@@ -41,15 +41,19 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="5"><p><b>Custom cover url:</b>&nbsp;{{ project.CustomCoverURL }}</p></td>
+                            <td colspan="6">
+                                <p><b>Custom cover url:</b>&nbsp;
+                                    <a href="{{ project.CustomCoverURL }}">{{ project.CustomCoverURL }}</a>
+                                </p>
+                            </td>
                         </tr>
                         <tr>
-                            <td colspan="5"><p><b>Comments:</b>&nbsp;{{ project.Comments }}</p></td>
+                            <td colspan="6"><p class="Comments"><b>Comments:</b>&nbsp;{{ project.Comments }}</p></td>
                         </tr>
                         {% if project.ISBNType == "Virtual/ECOM" %}
                         <tr>
                             <td></td>
-                            <td colspan="4">
+                            <td colspan="5">
                                 <table>
                                     <tr>
                                         <td><p><b>Virtual code</b></p></td>
@@ -75,9 +79,17 @@
                                 </table>
                                 <div id="StoreFrontItems" style="display: none">
                                     {% for item in project.StoreFrontItems %}
-                                        <p><b>ISBN:</b>&nbsp;{{item.ISBN}}</p>
-                                        <p><b>Author:</b>&nbsp;{{item.Author}}</p>
-                                        <p><b>Virtual:</b>&nbsp;{{item.Virtual}}</p>
+                                    <table class="StoreFrontInfoTable">
+                                        <tr>
+                                            <td style="width: 50px"><b>ISBN:</b></td><td>{{item.ISBN}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Author:</b></td><td>{{item.Author}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Virtual:</b></td><td>{{item.Virtual}}</td>
+                                        </tr>
+                                    </table>
                                     {% endfor %}
                                 </div>
                             </td>

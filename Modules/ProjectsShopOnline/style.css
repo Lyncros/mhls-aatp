@@ -64,3 +64,16 @@ ul {
     color:          red;
     font-weight:    bold;
 }
+
+.StoreFrontInfoTable {	
+	border: 1px solid #bebebe;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    min-width: 150px;
+    margin-bottom: 2px;
+}
+
+.Comments {
+    width: 600px;
+    word-wrap: break-word;
+}

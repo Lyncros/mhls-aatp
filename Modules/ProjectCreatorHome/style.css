@@ -86,23 +86,24 @@ label.error {
 {
 	width: 518px;
 }
-.TableFormGroup
-{	
+.TableFormGroup {	
 	border: 2px solid #bebebe;
     border-radius: 5px;
     -webkit-border-radius: 5px;
 }
 
-.ProjectCreatorUploadButton
-{
+.ProjectCreatorUploadButton {
 	width: 220px;
 }
+
 .CForm_Upload_Icon_Done {
 	margin-top: 3px;
 }
+
 h2 {
 	margin-bottom: 14px;
 }
+
 tr.Hidden {
     display: none;
 }
@@ -139,15 +140,13 @@ div.FormComplete li {
     padding-bottom: 10px;
 }
 
-.StoreFrontInfoTable
-{	
+.StoreFrontInfoTable {	
 	border: 1px solid #bebebe;
     border-radius: 5px;
     -webkit-border-radius: 5px;
 }
 
-.StoreFrontInfoTable input
-{
+.StoreFrontInfoTable input {
     width: 240px;
 }
 
@@ -157,8 +156,7 @@ span#ISBNToStoreFrontAddNew.ISBNToStoreFrontBtn, span#ISBNToStoreFrontRemoveLast
     cursor: pointer;
 }
 
-.StoreFrontInfoTable td
-{
+.StoreFrontInfoTable td {
     color: #6D6D6D;
     font-size: 13px;
     font-weight: bold;
