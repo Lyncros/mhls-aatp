@@ -34,6 +34,7 @@ class MProjectsPrivateOffer extends MProjectsBase {
     public function BuildSaveProjectParameters() {
         return Array(
             "ISBN" => htmlspecialchars($_POST["ISBN"]),
+            "ScreenshotLink" => htmlspecialchars($_POST["ScreenshotLink"]),
             "Status" => intval($_POST["Status"]),
         );
     }

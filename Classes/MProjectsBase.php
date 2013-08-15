@@ -69,18 +69,10 @@ abstract class MProjectsBase extends CTemplateModule {
 
     public function SaveProject() {
         $ProjectID = intval($_POST["ProjectID"]);
-        //right now only save ISBN and Status
-        $Data = Array(
-            "ISBN"  => htmlspecialchars($_POST["ISBN"]),
-            "Status" => intval($_POST["Status"]),
-        );
+        $Data = $this->BuildSaveProjectParameters();
+        $Extra = $this->BuildSaveParameters();
 
-        $Extra = Array(
-            "UsersID" => CSecurity::$User->ID,
-            "IPAddress" => $_SERVER["REMOTE_ADDR"],
-        );
-
-        $CProject = new CProjectsPrivateOffer();
+        $CProject = new $this->ProjectsClass();
         if ($CProject->Save($ProjectID, $Data, $Extra) === FALSE) {
             return Array(0, "Error updating project.");
         }

@@ -52,7 +52,7 @@
                     <table class="CForm_Table">
                         
                         {{ RandomPrefix() }}
-						{{ AddTextbox("ISBN-10", "ISBN10", project.ISBN10, "", "", "Basic") | raw }}
+						{{ AddTextbox("ISBN-10", "ISBN10", project.ISBN10) | raw }}
                         {{ AddDropdown("Status", "Status", statusList, project.Status) | raw }}
                         {{ AddHidden("ProjectID", project.ID) | raw }}
                         
