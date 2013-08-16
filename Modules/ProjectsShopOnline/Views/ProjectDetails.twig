@@ -167,7 +167,7 @@
                         {{ AddYesNo("Complete", "Status", isComplete, "YesNo") | raw }}
                         <tr>
                             <td colspan="3" align="right">
-                                <div class="Button" value="Save" onClick="MProjectsShopOnline.save('Milestone', {{GetPrefix()}}');">save</div>
+                                <div class="Button" value="Save" onClick="MProjectsShopOnline.save('Milestone', '{{GetPrefix()}}');">save</div>
                                 <div class="Button" value="Cancel" onClick="MProjectsShopOnline.toggleMilestone({{m.ID}});">cancel</div>
                                 {% if canDelete %}
                                     <div class="Button" value="Delete" onClick="MProjectsShopOnline.deleteMilestone({{m.ID}});">delete</div>
