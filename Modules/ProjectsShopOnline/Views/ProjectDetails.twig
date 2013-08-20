@@ -35,7 +35,7 @@
                             <td style="vertical-align:top; padding-top:20px;"><div class="Separator"></div></td>
                             <td style="vertical-align:top; padding:22px 11px; width:30%">
                                 <div style="color:#0685c5; font-weight:bold; font-size:14px;">Project Details</div>
-                                <p><b>Status:</b>&nbsp;{{ GetStatusName(project.Status) }}</p>
+                                <p><b>Status:</b>&nbsp;{{ project.GetStatusName() }}</p>
                                 <p><b>CA:</b>&nbsp;{{project.ContactName}}</p>
                                 <p><b>ISBN type:</b>&nbsp;{{project.ISBNType}}</p>
                             </td>
@@ -126,7 +126,7 @@
             </td>
 			<td style="width:30px;"></td>
         </tr>
-        {% if milestones %}
+        {% if project.Milestones %}
         <tr>
             <td></td>
             <td>
@@ -141,7 +141,7 @@
         </tr>
         {% endif %}
         {% if canEdit %}
-        {% for m in milestones %}
+        {% for m in project.Milestones %}
         {% set isComplete = (m.Status == "Complete") %}
         <tr>
             <td>

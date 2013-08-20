@@ -26,14 +26,6 @@ class CProjectsPrivateOffer extends CProjectsBase {
         return true;
     }
     
-    public function AllValues() {
-        $temp = $this->Current;
-        $temp["LSCUserName"] = $this->LSCUserName;
-        $temp["CreativeContactName"] = $this->CreativeContactName;
-        
-        return $temp;
-    }
-
     public function OnLoadAllActive($SearchKeywords) {
         $AndClause = "";
         if (!empty($SearchKeywords)) {

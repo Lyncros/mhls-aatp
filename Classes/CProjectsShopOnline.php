@@ -26,14 +26,6 @@ class CProjectsShopOnline extends CProjectsBase {
         $CStoreFront = new CProjectsShopOnlineStoreFrontItems();
         return $CStoreFront->OnLoadByProjectID($this->ID);
     }
-    
-    public function AllValues() {
-        $temp = $this->Current;
-        $temp["ContactName"] = $this->ContactName;
-        $temp["StoreFrontItems"] = $this->StoreFrontItems;
-        
-        return $temp;
-    }
 
     public function OnLoadAllActive($SearchKeywords) {
         $AndClause = "";

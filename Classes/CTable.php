@@ -180,6 +180,10 @@
 		}
 
 		//=====================================================================
+        
+        public function __isset($Variable) {
+            return isset($this->Rows->$Variable);
+        }
 		/**
 		 *
 		 *

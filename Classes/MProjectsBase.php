@@ -27,16 +27,14 @@ abstract class MProjectsBase extends CTemplateModule {
     function RenderProjectDetails($ProjectID) {
         $CProject = new $this->ProjectsClass();
         if ($CProject->OnLoadByID($ProjectID)) {
-            //Deleting is not allowed in this phase
             $Params = Array(
+                "project" => $CProject,
+                "statusList" => call_user_func(array($this->ProjectsClass, 'GetAllStatus')),
+                "milestoneCompletion" => $this->CalculateProjectMilestonesCompletion($CProject->Milestones),
                 "canEdit" => CSecurity::$User->CanAccess($this->SecName, "Edit"),
                 "canDelete" => CSecurity::$User->CanAccess($this->SecName, "Delete"),
-                "project" => $CProject->AllValues(),
-                "milestones" => $CProject->Milestones,
-                "statusList" => call_user_func(array($this->ProjectsClass, 'GetAllStatus')),
             );
             
-            $Params["milestoneCompletion"] = $this->CalculateProjectMilestonesCompletion($CProject->Milestones);
         }
 
         return $this->LoadTemplate("ProjectDetails")->render($Params);
