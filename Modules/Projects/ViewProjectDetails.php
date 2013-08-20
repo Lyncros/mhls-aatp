@@ -283,14 +283,25 @@
 				<td></td>
 				<td colspan='7' style='border-bottom:1px solid #d1d1d1 !important; border-top:1px solid #d1d1d1 !important;padding-bottom: 10px;'>
 					<div id='ProjectCreativeBudgetDetailsReadOnly'>
-						<div style='font-weight:bold; font-size:14px; margin-top:12px; margin-bottom:6px;'>Creative Budget</div>
-						<p><b>Requested Budget:</b> ".$Project->RequestPlant."</p>
-						<p><b>Plant Paid:</b> ".$Project->PlantPaid."</p>
-						<p><b>Plant Left:</b> ".$Project->PlantLeft."</p>
-						<p><b>Vendors:</b> ".$Project->GetVendors()."</p>
-						<p><b>Product Solutions:</b> ".$Project->GetProductSolutions()."</p>
-						<p><b>Date Paid:</b> ".date('n/j/Y', $Project->DatePaid)."</p>
-						<p><div style='margin-top: -32px;margin-right: 50px;'class='Button' value='RequestPO' onClick=\"MProjects.RequestPO('".CForm::GetPrefix()."');\">Request PO</div></p>
+                        <table width=\"100%\">
+                            <tr><td>
+                                <div>
+                                    <div style='font-weight:bold; font-size:14px; margin-top:12px; margin-bottom:6px;float:left;'>Creative Budget</div>
+                                    <div id=\"AddMilestone\" style='margin-top:12px;' onclick=\"$('#CreativeBudget').slideToggle();\"></div>
+                                </div>
+                            </td></tr>
+                            <tr><td>
+                                <div id=\"CreativeBudget\" style=\"display:none;\">
+                                    <p><b>Requested Budget:</b> ".$Project->RequestPlant."</p>
+                                    <p><b>Plant Paid:</b> ".$Project->PlantPaid."</p>
+                                    <p><b>Plant Left:</b> ".$Project->PlantLeft."</p>
+                                    <p><b>Vendors:</b> ".$Project->GetVendors()."</p>
+                                    <p><b>Product Solutions:</b> ".$Project->GetProductSolutions()."</p>
+                                    <p><b>Date Paid:</b> ".date('n/j/Y', $Project->DatePaid)."</p>
+                                    <p><div style='margin-top: -32px;margin-right: 50px;'class='Button' value='RequestPO' onClick=\"MProjects.RequestPO('".CForm::GetPrefix()."');\">Request PO</div></p>
+                                </div>
+                            </td></tr>
+                        </table>
 					</div>
 				</td>
 				<td style='width:30px;'></td>
