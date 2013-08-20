@@ -293,15 +293,18 @@
 						: "";		
 		}
 		
-		function GetMilestonCompletionPercentage() {
-			$CompleteMilestonesNumber = 0;
-			$MilestoneNumber = count($this->Milestones);
-			if($MilestoneNumber > 0) {
-				foreach($this->Milestones as $Milestone) 
-					if($Milestone->Status == "Complete") 
-						$CompleteMilestonesNumber++;
+		function GetMilestoneCompletionPercentage() {
+			$MilestoneCount = count($this->Milestones);
+			
+            if($MilestoneCount > 0) {
+                $CompleteMilestonesCount = 0;
+				foreach($this->Milestones as $Milestone) {
+					if($Milestone->Status == "Complete") {
+						$CompleteMilestonesCount++;
+                    }
+                }
 				
-				return ($CompleteMilestonesNumber / $MilestoneNumber)*100;
+				return $CompleteMilestonesCount / $MilestoneCount;
 			} else {
 				return 0;
 			}

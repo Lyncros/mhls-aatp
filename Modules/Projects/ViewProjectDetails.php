@@ -10,16 +10,8 @@
 	
 	/*if($Project->GetLastTouchedDays() >= 1)*/ $LastTouchedDays = " <span class='LastTouched' style='cursor:pointer;' onClick=\"MProjects.ShowPreviewBox(this, 'LastTouched', ".$Project->ID.");\">".$Project->GetLastTouchedDays()."</span>";
 	
-	$MilestonePercentage		= 0;
-	$Numerator					= 0;
-	if(count($Project->Milestones) >= 1) {
-		foreach($Project->Milestones as $Milestone) {
-			if($Milestone->Status == "Complete") $Numerator++;
-		}
-		$MilestonePercentage	= $Numerator / count($Project->Milestones);
-	}
+    $MilestonePercentage = $Project->GetMilestoneCompletionPercentage();
 	$MilestoneBarWidth			= round(672 * $MilestonePercentage) - 2 >= 0 ? round(672 * $MilestonePercentage) - 2 : 0;
-
 	
 	echo "
 	<script>
