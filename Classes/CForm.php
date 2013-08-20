@@ -561,7 +561,7 @@
 			return $Content;
 		}
 
-		public static function AddTextbox($Name, $FormName, $Value, $Error = "", $TabIndex = "", $DisplayType = "Basic", $Style = "") {
+		public static function AddTextbox($Name, $FormName, $Value, $Error = "", $TabIndex = "", $DisplayType = "Basic", $Style = "", $Readonly = false) {
 			$Value = CForm::MakeSafe($Value);
 
 			$Content = "";
@@ -579,7 +579,11 @@
 					<td class='CForm_Value' valign='top' style='{$Style}'><b>$Name</b><br/>";
 			}
 
-			$Content .= "<input type='text' name='".self::$Prefix.$FormName."' id='".self::$Prefix.$FormName."' value='$Value' title='".$Error."' class='CForm_Textbox' ".($TabIndex != "" ? "tabindex='$TabIndex'" : "")."/>";
+			$Content .= "<input type='text' name='".self::$Prefix.$FormName."' ";
+            $Content .= "id='".self::$Prefix.$FormName."' value='$Value' title='".$Error."' ";
+            $Content .= "class='CForm_Textbox' ".($TabIndex != "" ? "tabindex='$TabIndex'" : "");
+            $Content .= ($Readonly ? " readonly " : "");
+            $Content .= "/>";
 				
 			if(self::$Format == "Table") {
 				$Content .= "

@@ -207,7 +207,7 @@
 								echo "<tr><td><div style='font-weight:bold; font-size:14px; margin-top:12px; margin-bottom:6px;'>Creative Budget</div></td><td></td></tr>";
 								echo CForm::AddTextbox("Requested Budget", "RequestPlant", $Project->RequestPlant, "", "", "Basic");
 								echo CForm::AddTextbox("Plant Paid", "PlantPaid", $Project->PlantPaid, "", "", "Basic");
-								echo CForm::AddTextbox("Plant Left", "PlantLeft", $Project->PlantLeft, "", "", "Basic");
+								echo CForm::AddTextbox("Plant Left", "PlantLeft", $Project->PlantLeft, "", "", "Basic", "", true);
 								
 								// Vendors
 								$VendorsArray = Array();

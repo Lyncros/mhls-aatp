@@ -660,7 +660,7 @@
 				"LeadNotes"							=> htmlspecialchars($_POST["LeadNotes"]),
 				"RequestPlant"						=> htmlspecialchars($_POST["RequestPlant"]),
 				"PlantPaid"							=> htmlspecialchars($_POST["PlantPaid"]),
-				"PlantLeft"							=> htmlspecialchars($_POST["PlantLeft"]),				
+				"PlantLeft"							=> (floatval($_POST["RequestPlant"]) - floatval($_POST["PlantPaid"])),
 				"DatePaid"							=> strtotime($_POST["DatePaid"]),
 				"ISBN10"							=> htmlspecialchars($_POST["ISBN10"]),
 				"ISBN13"							=> htmlspecialchars($_POST["ISBN13"]),
