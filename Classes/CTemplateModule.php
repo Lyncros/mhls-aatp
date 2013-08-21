@@ -43,10 +43,11 @@ class CTemplateModule extends CModuleGeneric {
         $Action = $this->GetActionName();
         $Params = $this->GetTemplateParams($Action);
         
-        if($this->LoggedUserCanAccess($Params))
+        if($this->LoggedUserCanAccess($Params)) {
             $Template = $this->LoadTemplate($Action);
-        else
+        } else {
             $Template = $this->Twig->loadTemplate("NoPermission.twig");
+        }
         
         $Template->display($Params);
     }
@@ -59,12 +60,12 @@ class CTemplateModule extends CModuleGeneric {
 
     function GetTemplateName($Page) {
         $TemplateName = $Page;
-
+        
         $getTemplateName = $Page . "Template";
         if (method_exists($this, $getTemplateName)) {
             $TemplateName = $this->{$getTemplateName}();
         }
-
+        
         return $TemplateName;
     }
 
@@ -106,26 +107,28 @@ class CTemplateModule extends CModuleGeneric {
     }
     
     //----------------------------------------------------------------------
-    private function GetActionName()
-    {
+    function GetActionName() {
         $ActionName = $_GET["Page"];
 
-        return ($ActionName == null)?"Index":$ActionName;
+        return (is_null($ActionName)) ? $this->IndexAction() : $ActionName;
     }
     
-    private function LoggedUserCanAccess($Params)
-    {   
-        if(array_key_exists("Permissions", $Params))
-        {
+    function IndexAction() {
+        return "Index";
+    }
+    
+    private function LoggedUserCanAccess($Params) {   
+        if(array_key_exists("Permissions", $Params)) {
             $Permissions = $Params["Permissions"];
             $CanAccess = true;
-            foreach ($Permissions as $Permission)
+            foreach ($Permissions as $Permission) {
                 $CanAccess = $CanAccess && parent::CanAccess($Permission);
+            }
             
             return $CanAccess;
-        }
-        else
+        } else {
             return true;
+        }
     }
 
 }

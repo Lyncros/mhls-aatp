@@ -450,9 +450,10 @@
 		public static function PushEmailToUserIDs($UsersIDs, $Type, $Name, $SubName, Array $EmailParms) {
 			$Result = true;
 			
-			foreach ($UsersIDs as $UserID)
+			foreach ($UsersIDs as $UserID) {
 				$Result = $Result && CNotifier::PushEmailToUserID($UserID, $Type, $Name, $SubName, $EmailParms);
-			
+            }
+            
 			return $Result;
 		}
 
