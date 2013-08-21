@@ -44,7 +44,8 @@ CWindow.Open = function(Title, Width, Height, Request, Type, Action, Parms, Call
 	function OnDone(Code, Content) {
 		if(Code != 0) {
 			CWindow.New(Title, Content, Width, Height);
-		}else{
+		} else {
+            alert(Content);
 			try {
 				PConsole.AddNotice("CWindow.Open :: " + Request + " :: Unable to open Window : " + Content, "Error");
 			}
