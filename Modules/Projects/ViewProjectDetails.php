@@ -519,21 +519,7 @@
 																	<table class='CForm_Table TableFormGroup'>";
 																	
 																		if(CSecurity::$User->CanAccess("MilestonesToDos", "Edit")) {
-																			CForm::RandomPrefix();
-																			
-																			echo CForm::AddTextbox("Name", "Name", $ToDo->Name, "Please enter a Name");
-																			echo CForm::AddYesNo("Complete", "Complete", $ToDo->Complete, "YesNo");
-																			echo CForm::AddTextarea("Comment", "Comment", $ToDo->Comment);
-																			echo CForm::AddYesNo("Comment Required", "CommentRequired", $ToDo->CommentRequired, "YesNo");
-																			
-																			$Users = CUsers::GetAllAssignableToMilestoneTodos();
-																			$Users = Array(0 => "Nobody") + $Users->RowsToAssociativeArrayWithMultipleColumns("LastName,FirstName");
-																			
-																			echo CForm::AddDropdown("Assigned To", "AssignedTo", $Users, $ToDo->AssignedTo);
-																			
-																			echo CForm::AddHidden("MilestoneID", $Milestone->ID);
-																			echo CForm::AddHidden("ProjectsID", $ProjectID);
-																			echo CForm::AddHidden("ToDoID", $ToDo->ID);
+																			BuildMilestoneToDoForm($ToDo, $Milestone, $ProjectID);
 																		} else {
 																			echo CForm::AddRow("Name", $ToDo->Name);
 																			echo CForm::AddRow("Complete", $ToDo->Complete);
@@ -608,7 +594,7 @@
 													foreach($DefaultToDosLists->Rows as $Row) {
 														$DefaultArray[$Row->ID] = $Row->Name;
 													}
-													//echo CForm::AddDropdown("Default Milestone", "DefaultMilestone", $DefaultArray);
+
 													echo "
 													<tr>
 														<td valign='top' align='right' class='CForm_Name'><b onmouseout='CTooltip.Hide();' onmouseover='CTooltip.Show('');'>Default To-Do List:</b>&nbsp;</td>
@@ -660,7 +646,7 @@
 													foreach($DefaultToDos->Rows as $Row) {
 														$DefaultArray[$Row->ID] = $Row->Name;
 													}
-													//echo CForm::AddDropdown("Default Milestone", "DefaultMilestone", $DefaultArray);
+
 													echo "
 													<tr>
 														<td valign='top' align='right' class='CForm_Name'><b onmouseout='CTooltip.Hide();' onmouseover='CTooltip.Show('');'>Default To-Do:</b>&nbsp;</td>
@@ -724,37 +710,8 @@
 							<table width='100%' cellspacing='0' cellpadding='0'>
 								<tr>
 									<td width='100%' valign='top'>
-										<table class='CForm_Table TableFormGroup'>";
-										
-											CForm::RandomPrefix();
-											
-											$DefaultToDos = new CToDos();
-											$DefaultToDos->OnLoadAll("WHERE `Active` = 1 ORDER BY `Name` ASC");
-											$DefaultArray = Array(0 => "-- Default To Do's --");
-											foreach($DefaultToDos->Rows as $Row) {
-												$DefaultArray[$Row->ID] = $Row->Name;
-											}
-											//echo CForm::AddDropdown("Default Milestone", "DefaultMilestone", $DefaultArray);
-											echo "
-											<tr>
-												<td valign='top' align='right' class='CForm_Name'><b onmouseout='CTooltip.Hide();' onmouseover='CTooltip.Show('');'>Default To Do:</b>&nbsp;</td>
-												<td valign='top' class='CForm_Value'>
-												<select class='CForm_Dropdown' title='' id='DefaultToDo' name='DefaultToDo' onChange=\"MProjects.LoadDefaultToDo('".CForm::GetPrefix()."', $(this).val());\">";
-												foreach($DefaultArray as $Key => $Value) {
-													echo "<option value='".$Key."'>".$Value."</option>";
-												}
-												echo "</select>
-												</td>
-											</tr>
-											";
-											
-											echo CForm::AddTextbox("Name", "Name", "", "Please enter a Name");
-											echo CForm::AddYesNo("Complete", "Complete", 0, "YesNo");
-											echo CForm::AddTextarea("Comment", "Comment", "");
-											echo CForm::AddYesNo("Comment Required", "CommentRequired", "", "YesNo");
-											//echo CForm::AddHidden("MilestoneID", $Milestone->ID);
-											echo CForm::AddHidden("ProjectsID", $ProjectID);
-										
+										<table class='CForm_Table TableFormGroup'>";										
+                                            BuildToDoForm($ProjectID);
 										echo "
 										</table>
 									</td>
@@ -783,7 +740,10 @@
 					<tr>
 						<td>".($ToDo->Status === "Complete" ? "<div class='Complete' style='float:right; position:relative; top:2px;'></div>" : "")."</td>
 						<td colspan='7'>
-							<div style='padding-left:11px; font-weight:bold; font-size:14px; margin-top:12px; margin-bottom:6px; cursor:pointer;' id='ToDoLabel".$ToDo->ID."'><span style='float:left;'>[".$i.".] ".$ToDo->Name."</span> <div class='ToDoDownArrow'></div></div>
+							<div style='padding-left:11px; font-weight:bold; font-size:14px; margin-top:12px; margin-bottom:6px; cursor:pointer;' id='ToDoLabel".$ToDo->ID."'>
+                                <span style='float:left;'>[".$i.".] ".$ToDo->Name."</span>
+                                <div class='ToDoDownArrow'></div>
+                            </div>
 							<div class='ToDoDetails' id='ToDo".$ToDo->ID."' style='padding-left:58px; display:none; clear:both; margin:12px 0px; position:relative; top:12px;'>
 								<table width='100%' cellspacing='0' cellpadding='0'>
 									<tr>
@@ -791,18 +751,7 @@
 											<table class='CForm_Table TableFormGroup'>";
 											
 												if(CSecurity::$User->CanAccess("ToDos", "Edit")) {
-													CForm::RandomPrefix();
-													$Users = CUsers::GetAllAssignableToTodos();
-													$Users = Array(0 => "Nobody") + $Users->RowsToAssociativeArrayWithMultipleColumns("LastName,FirstName");
-														
-													echo CForm::AddTextbox("Name", "Name", $ToDo->Name, "Please enter a Name");
-													echo CForm::AddYesNo("Complete", "Complete", $ToDo->Complete, "YesNo");
-													echo CForm::AddTextarea("Comment", "Comment", $ToDo->Comment);
-													echo CForm::AddYesNo("Comment Required", "CommentRequired", $ToDo->CommentRequired, "YesNo");
-													echo CForm::AddDropdown("Assigned To", "AssignedTo", $Users, $ToDo->AssignedTo);
-													echo CForm::AddHidden("ProjectsID", $ProjectID);
-													echo CForm::AddHidden("ToDoID", $ToDo->ID);
-													
+													BuildToDoForm($ProjectID, $ToDo);
 													
 												} else {
 													echo CForm::AddRow("Name", $ToDo->Name);
@@ -823,7 +772,8 @@
 											<input type='hidden' value='0' name='ID' id='ID'/>
 											<div class='Button' value='Save' onClick=\"MProjects.AddProjectToDo('".CForm::GetPrefix()."');\">save</div>
 											<div class='Button' value='Cancel' onClick=\"MProjects.ViewDetails(".$Project->ID.");\">cancel</div>";
-											if(CSecurity::$User->CanAccess("ToDos", "Delete")) echo "<div class='Button' value='Delete' onClick=\"MProjects.DeleteToDo('".CForm::GetPrefix()."', ".$ToDo->ID.");\">delete</div>";
+											if(CSecurity::$User->CanAccess("ToDos", "Delete")) 
+                                                    echo "<div class='Button' value='Delete' onClick=\"MProjects.DeleteToDo('".CForm::GetPrefix()."', ".$ToDo->ID.");\">delete</div>";
 										}
 										echo "
 										</td>
@@ -862,5 +812,75 @@
 			echo "
 		</table>
 	</div>
-	";	
+	";
+            
+/**
+ * Echoes the form for Milestone ToDo.
+ * @param type $ToDo
+ * @param type $Milestone
+ * @param type $ProjectID
+ */
+function BuildMilestoneToDoForm($ToDo, $Milestone, $ProjectID) {
+    CForm::RandomPrefix();
+	
+    $UsersTmp = CUsers::GetAllAssignableToMilestoneTodos();
+	$Users = Array(0 => "Nobody") + $UsersTmp->RowsToAssociativeArrayWithMultipleColumns("LastName,FirstName");
+																			
+    echo CForm::AddTextbox("Name", "Name", $ToDo->Name, "Please enter a Name");
+	echo CForm::AddYesNo("Complete", "Complete", $ToDo->Complete, "YesNo");
+	echo CForm::AddTextarea("Comment", "Comment", $ToDo->Comment);
+	echo CForm::AddYesNo("Comment Required", "CommentRequired", $ToDo->CommentRequired, "YesNo");
+	echo CForm::AddDropdown("Assigned To", "AssignedTo", $Users, $ToDo->AssignedTo);
+    echo CForm::AddHidden("MilestoneID", $Milestone->ID);
+	echo CForm::AddHidden("ProjectsID", $ProjectID);
+	echo CForm::AddHidden("ToDoID", $ToDo->ID);
+}
+
+/**
+ * Echoes the form for add or edit Project's ToDo.
+ * @param type $ProjectID
+ * @param type $ToDo if NULL, means a new ToDo
+ */
+function BuildToDoForm($ProjectID, $ToDo = NULL) {
+    CForm::RandomPrefix();
+    
+    if (is_null($ToDo)) {
+        $DefaultToDos = new CToDos();
+        $DefaultToDos->OnLoadAll("WHERE `Active` = 1 ORDER BY `Name` ASC");
+        $DefaultArray = Array(0 => "-- Default To Do's --") + $DefaultToDos->Rows->RowsToAssociativeArray("Name");
+        
+        echo "
+            <tr>
+                <td valign='top' align='right' class='CForm_Name'>
+                    <b onmouseout='CTooltip.Hide();' onmouseover='CTooltip.Show('');'>Default To Do:</b>&nbsp;</td>
+                <td valign='top' class='CForm_Value'>
+                <select class='CForm_Dropdown' title='' id='DefaultToDo' name='DefaultToDo' onChange=\"MProjects.LoadDefaultToDo('".CForm::GetPrefix()."', $(this).val());\">";
+                foreach($DefaultArray as $Key => $Value) {
+                        echo "<option value='".$Key."'>".$Value."</option>";
+                }
+                echo "</select>
+                </td>
+            </tr>
+            ";
+        
+    } else {
+        $Name = $ToDo->Name;
+        $Complete = $ToDo->Complete;
+        $Comment = $ToDo->Comment;
+        $CommentRequired = $ToDo->CommentRequired;
+        $AssignedTo = $ToDo->AssignedTo;
+    	echo CForm::AddHidden("ToDoID", $ToDo->ID);
+    }
+														
+    $UsersTmp = CUsers::GetAllAssignableToTodos();
+	$Users = Array(0 => "Nobody") + $UsersTmp->RowsToAssociativeArrayWithMultipleColumns("LastName,FirstName");
+
+    echo CForm::AddTextbox("Name", "Name", $Name, "Please enter a Name");
+	echo CForm::AddYesNo("Complete", "Complete", $Complete, "YesNo");
+	echo CForm::AddTextarea("Comment", "Comment", $Comment);
+	echo CForm::AddYesNo("Comment Required", "CommentRequired", $CommentRequired, "YesNo");
+	echo CForm::AddDropdown("Assigned To", "AssignedTo", $Users, $AssignedTo);
+	echo CForm::AddHidden("ProjectsID", $ProjectID);
+}
+
 ?>

@@ -468,13 +468,15 @@
 		
 		//----------------------------------------------------------------------
 		function AddEditProjectToDo() {
+            $AssignedTo = $_POST["AssignedTo"];
+            
 			$Data = Array(
 				"ProjectsID"			=> intval($_POST["ProjectsID"]),
 				"Name"					=> htmlspecialchars($_POST["Name"]),
 				"Complete"				=> intval($_POST["Complete"]),
 				"Comment"				=> htmlspecialchars($_POST["Comment"]),
 				"CommentRequired"		=> intval($_POST["CommentRequired"]),
-				"AssignedTo"			=> intval($_POST["AssignedTo"])
+				"AssignedTo"			=> intval($AssignedTo)
 			);
 
 			if(intval($_POST["ToDoID"]) > 0) {
@@ -510,7 +512,11 @@
 				"AssignedTo"				=> $Data["AssignedTo"],
 				"Complete"					=> ($Data["Complete"] ? "Yes" : "No"),
 			);
+            //Notify project's responsible
 			CNotifier::Push("Module", "Projects", "New or Updated To-Do", $EmailData, $Project->ID);
+            
+            //Notify assigned user
+            CNotifier::PushEmailToUserID($AssignedTo, "Module", "Projects", "Assigned To-Do", $EmailData);
 			
 			return Array(1, "To-Do added successfully.");
 		}
@@ -1163,6 +1169,25 @@
                 return Array(0, "Error deleting Milestone");
             }
 		}
+        
+        /* OLD and WORKING code - jarias
+        function DeleteMilestone() {
+			if(!CSecurity::$User->CanAccess("Milestones", "Delete")) {
+				return Array(0, "You do not have permissions to perform this action");
+			}
+			
+			$MilestoneID = intval($_POST["MilestoneID"]);
+			
+			$Data = Array(
+				"Deleted"			=> time(),
+				"DeletedUsersID"	=> CSecurity::GetUsersID(),
+				"DeletedIPAddress"	=> $_SERVER["REMOTE_ADDR"],
+			);
+			if(CTable::Update("ProjectsMilestones", $MilestoneID, $Data) === false) return Array(0, "Error deleting Milestone");
+			
+			return Array(1, "Milestone deleted successfully");
+		}
+         */
 		
 		//----------------------------------------------------------------------
 		function DeleteMilestoneToDo() {
