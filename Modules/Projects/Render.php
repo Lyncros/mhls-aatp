@@ -97,6 +97,22 @@
 		
 		return $Temp;
 	}
+    
+    function BuildIDList($Field) {
+        $Value = $Field."Value";
+        if($_GET["Filters"]) {
+            $Filters = json_decode(urldecode($_GET["Filters"]));
+            if($Filters->{$Field} === true && $Filters->{$Value}) {
+                $ArrayValues = Array();
+                foreach($Filters->{$Value} as $ID => $Boolean) {
+                    if($Boolean) {
+                        $ArrayValues[] = $ID;
+                    }
+                }
+                return implode(",", $ArrayValues);
+            }
+        } 
+    }   
 
 	$Search = new CSearch($SearchTable);
 	
@@ -150,262 +166,128 @@
 		//"CourseStartDate"			=> "Course Start Date",
 		//"RequestType"				=> "Request Type",
 		//"InstitutionContact"		=> "Institution Contact",
+        "ProductSolution"           => "Product solution"
 	);
 	
-		// Project Types
-		/*
-		$SubOptions_ProjectType = Array();
-		$ProductTypes = new CProductTypes();
-		if($ProductTypes->OnLoadAll("WHERE `Active` = 1 ORDER BY `Name`") !== false) {
-			foreach($ProductTypes->Rows as $Row) {
-				$SubOptions_ProjectType[$Row->ID] = $Row->Name;
-			}
-			if($_GET["Filters"]) {
-				$Filters = json_decode(urldecode($_GET["Filters"]));
-				if($Filters->ProjectType === true && $Filters->ProjectTypeValue) {
-					$ProjectTypeValues = Array();
-					foreach($Filters->ProjectTypeValue as $ID => $Boolean) {
-						if($Boolean) {
-							$ProjectTypeValues[] = $ID;
-						}
-					}
-					$SubQuery = "(SELECT `ProductTypesID` FROM `ProjectsProductTypes` WHERE `ProjectsID` = `Projects`.`ID`) IN (".implode(",", $ProjectTypeValues).")";
-					$Search->AddRestriction($SubQuery, "", "", "Custom");
-				}
-			}
-		}
-		*/
-		/*
-		// District Managers
-		$SubOptions_DistrictManager = Array();
-		$DMGroup = new CUsersGroups();
-		$DMGroup->OnLoadAll("WHERE `Name` = 'District Manager'");
-		$DMs = new CUsers();
-		if($DMs->OnLoadAll("WHERE `UsersGroupsID` = ".$DMGroup->ID." && `Active` = 1 ORDER BY `LastName`") !== false) {
-			foreach($DMs->Rows as $Row) {
-				$SubOptions_DistrictManager[$Row->ID] = $Row->LastName . ", " . $Row->FirstName;
-			}
-			if($_GET["Filters"]) {
-				$Filters = json_decode(urldecode($_GET["Filters"]));
-				if($Filters->DistrictManager === true && $Filters->DistrictManagerValue) {
-					$DistrictManagerValues = Array();
-					foreach($Filters->DistrictManagerValue as $ID => $Boolean) {
-						if($Boolean) {
-							$DistrictManagerValues[] = $ID;
-						}
-					}
-					$SubQuery = "`ID` IN (SELECT `ProjectsID` FROM `ProjectsDistrictManagers` WHERE `UsersID` IN (".implode(",", $DistrictManagerValues)."))";
-					$Search->AddRestriction($SubQuery, "", "", "Custom");
-				}
-			}
-		}
-		*/
-		/*
-		// Sales Reps
-		$SubOptions_SalesRep = Array();
-		$RepGroup = new CUsersGroups();
-		$RepGroup->OnLoadAll("WHERE `Name` = 'Sales Rep'");
-		$Reps = new CUsers();
-		if($Reps->OnLoadAll("WHERE `UsersGroupsID` = ".$RepGroup->ID." && `Active` = 1 ORDER BY `LastName`") !== false) {
-			foreach($Reps->Rows as $Row) {
-				$SubOptions_SalesRep[$Row->ID] = $Row->LastName . ", " . $Row->FirstName;
-			}
-			if($_GET["Filters"]) {
-				$Filters = json_decode(urldecode($_GET["Filters"]));
-				if($Filters->SalesRep === true && $Filters->SalesRepValue) {
-					$RepValues = Array();
-					foreach($Filters->SalesRepValue as $ID => $Boolean) {
-						if($Boolean) {
-							$RepValues[] = $ID;
-						}
-					}
-					$SubQuery = "`ID` IN (SELECT `ProjectsID` FROM `ProjectsSalesReps` WHERE `UsersID` IN (".implode(",", $RepValues)."))";
-					$Search->AddRestriction($SubQuery, "", "", "Custom");
-				}
-			}
-		}
-		*/
 		
-		// LSCs
-		$SubOptions_LSC = Array();
-		$LSCGroup = new CUsersGroups();
-		$LSCGroup->OnLoadAll("WHERE `Name` = 'Learning Solutions Consultant'");
-		$LSCs = new CUsers();
-		if($LSCs->OnLoadAll("WHERE `UsersGroupsID` = ".$LSCGroup->ID." && `Active` = 1 ORDER BY `LastName`") !== false) {
-			foreach($LSCs->Rows as $Row) {
-				$SubOptions_LSC[$Row->ID] = $Row->LastName . ", " . $Row->FirstName;
-			}
-			if($_GET["Filters"]) {
-				$Filters = json_decode(urldecode($_GET["Filters"]));
-				if($Filters->LSC === true && $Filters->LSCValue) {
-					$LSCValues = Array();
-					foreach($Filters->LSCValue as $ID => $Boolean) {
-						if($Boolean) {
-							$LSCValues[] = $ID;
-						}
-					}
-					if(count($LSCValues) > 0)
-					{					
-						$SubQuery = "`ID` IN (SELECT `ProjectsID` FROM `ProjectsLSCs` WHERE `UsersID` IN (".implode(",", $LSCValues)."))";
-						$Search->AddRestriction($SubQuery, "", "", "Custom");
-					}
-				}
-			}
-		}
-		
-		// LSSs
-		$SubOptions_LSS = Array();
-		$LSSGroup = new CUsersGroups();
-		$LSSGroup->OnLoadAll("WHERE `Name` = 'Learning Solutions Specialist'");
-		$LSSs = new CUsers();
-		if($LSSs->OnLoadAll("WHERE `UsersGroupsID` = ".$LSSGroup->ID." && `Active` = 1 ORDER BY `LastName`") !== false) {
-			foreach($LSSs->Rows as $Row) {
-				$SubOptions_LSS[$Row->ID] = $Row->LastName . ", " . $Row->FirstName;
-			}
-			if($_GET["Filters"]) {
-				$Filters = json_decode(urldecode($_GET["Filters"]));
-				if($Filters->LSS === true && $Filters->LSSValue) {
-					$LSSValues = Array();
-					foreach($Filters->LSSValue as $ID => $Boolean) {
-						if($Boolean) {
-							$LSSValues[] = $ID;
-						}
-					}
-					if(count($LSSValues) > 0)
-					{
-						$SubQuery = "`ID` IN (SELECT `ProjectsID` FROM `ProjectsLSSs` WHERE `UsersID` IN (".implode(",", $LSSValues)."))";
-						$Search->AddRestriction($SubQuery, "", "", "Custom");
-					}
-				}
-			}
-		}
-		/*
-		// LSRs
-		$SubOptions_LSR = Array();
-		$LSRGroup = new CUsersGroups();
-		$LSRGroup->OnLoadAll("WHERE `Name` = 'Learning Solutions Representative'");
-		$LSRs = new CUsers();
-		if($LSRs->OnLoadAll("WHERE `UsersGroupsID` = ".$LSRGroup->ID." && `Active` = 1 ORDER BY `LastName`") !== false) {
-			foreach($LSRs->Rows as $Row) {
-				$SubOptions_LSR[$Row->ID] = $Row->LastName . ", " . $Row->FirstName;
-			}
-			if($_GET["Filters"]) {
-				$Filters = json_decode(urldecode($_GET["Filters"]));
-				if($Filters->LSR === true && $Filters->LSRValue) {
-					$LSRValues = Array();
-					foreach($Filters->LSRValue as $ID => $Boolean) {
-						if($Boolean) {
-							$LSRValues[] = $ID;
-						}
-					}
-					$SubQuery = "`ID` IN (SELECT `ProjectsID` FROM `ProjectsLSRs` WHERE `UsersID` IN (".implode(",", $LSRValues)."))";
-					$Search->AddRestriction($SubQuery, "", "", "Custom");
-				}
-			}
-		}
-		*/
-		
-		// Creative Contact (combination of old Associate Creative Analyst, Junior Creative Analyst, Creative Analyst and Creative Consultant)
-		$SubOptions_CreativeContact = Array();
-		$CCGroup = new CUsersGroups();
-		$CCGroup->OnLoadAll("WHERE `Name` = 'Creative Contact'");
-		$CreativeContacts = new CUsers();
-		if($CreativeContacts->OnLoadAll("WHERE `UsersGroupsID` = ".$CCGroup->ID." && `Active` = 1 ORDER BY `LastName`")) {
-			foreach($CreativeContacts->Rows as $Row) {
-				$SubOptions_CreativeContact[$Row->ID] = $Row->LastName . ", " . $Row->FirstName;
-			}
-			if($_GET["Filters"]) {
-				$Filters = json_decode(urldecode($_GET["Filters"]));
-				if($Filters->CreativeContact === true && $Filters->CreativeContactValue) {
-					$CreativeContactsValues = Array();
-					foreach($Filters->CreativeContactValue as $ID => $Boolean) {
-						if($Boolean) {
-							$CreativeContactsValues[] = $ID;
-						}
-					}
-					if(count($CreativeContactsValues) > 0)
-					{
-						$SubQuery = "`ID` IN (SELECT `ProjectsID` FROM `ProjectsCreativeContacts` WHERE `UsersID` IN (".implode(",", $CreativeContactsValues)."))";
-						$Search->AddRestriction($SubQuery, "", "", "Custom");
-					}
-				}
-			} 
-			else if(CSecurity::GetUsersGroupsID() == 15)
-			{
-				//TODO: Fix this!
-				$Filters							= Array();
-				$Filters["CreativeContact"]			= true;
-				$Filters["CreativeContactValue"]	= Array(
-					CSecurity::GetUsersID()		=> true
-				);
-				$_GET["Filters"] = urlencode(json_encode($Filters));
-				$CreativeContactsValues = Array(CSecurity::GetUsersID());
-				$SubQuery = "`ID` IN (SELECT `ProjectsID` FROM `ProjectsCreativeContacts` WHERE `UsersID` = ".CSecurity::GetUsersID().")";
-				$Search->AddRestriction($SubQuery, "", "", "Custom");
-			}
-		}
-		
-		// Institutional Sales Reps
-		$SubOptions_InstitutionalSalesRep = Array();
-		$SalesRepGroup = new CUsersGroups();
-		$SalesRepGroup->OnLoadAll("WHERE `Name` = 'Institutional Sales Rep'");
-		$SalesReps = new CUsers();
-		if($SalesReps->OnLoadAll("WHERE `UsersGroupsID` = ".$SalesRepGroup->ID." && `Active` = 1 ORDER BY `LastName`") !== false) {
-			foreach($SalesReps->Rows as $Row) {
-				$SubOptions_InstitutionalSalesRep[$Row->ID] = $Row->LastName . ", " . $Row->FirstName;
-			}
-			if($_GET["Filters"]) {
-				$Filters = json_decode(urldecode($_GET["Filters"]));
-				if($Filters->InstitutionalSalesRep === true && $Filters->InstitutionalSalesRepValue) {
-					$InstitutionalSalesRepValues = Array();
-					foreach($Filters->InstitutionalSalesRepValue as $ID => $Boolean) {
-						if($Boolean) {
-							$InstitutionalSalesRepValues[] = $ID;
-						}
-					}
-					if(count($InstitutionalSalesRepValues) > 0)
-					{
-						$SubQuery = "`ID` IN (SELECT `ProjectsID` FROM `ProjectsInstitutionalSalesReps` WHERE `UsersID` IN (".implode(",", $InstitutionalSalesRepValues)."))";
-						$Search->AddRestriction($SubQuery, "", "", "Custom");
-					}
-				}
-			}
-		}
+    // LSCs
+    $SubOptions_LSC = Array();
+    $LSCGroup = new CUsersGroups();
+    $LSCGroup->OnLoadAll("WHERE `Name` = 'Learning Solutions Consultant'");
+    $LSCs = new CUsers();
+    if($LSCs->OnLoadAll("WHERE `UsersGroupsID` = ".$LSCGroup->ID." && `Active` = 1 ORDER BY `LastName`") !== false) {
+        $SubOptions_LSC = $LSCs->Rows->RowsToAssociativeArrayWithMultipleColumns("LastName,FirstName");
 
-		/*
-		// Course Start Date
-		$SubOptions_CourseStartDate = "Dates";
-		if($_GET["Filters"]) {
-			$Filters = json_decode(urldecode($_GET["Filters"]));
-			if($Filters->CourseStartDate === true) {
-				$SubQuery = "";
-				if(($TimestampStart = strtotime($Filters->CourseStartDateValue->Start)) > 0) {
-					$SubQuery .= " `CourseStartDate` >= ".$TimestampStart;
-				}
-				if(($TimestampEnd = strtotime($Filters->CourseStartDateValue->End)) > 0) {
-					if($SubQuery) $SubQuery .= " && ";
-					$SubQuery .= " `CourseStartDate` <= ".$TimestampEnd;
-				}
-				$Search->AddRestriction($SubQuery, "", "", "Custom");
-			}
-		}
-		*/
+        $LSCValues = BuildIDList("LSC");
+        if (!empty($LSCValues)) {
+            $SubQuery = "`ID` IN (SELECT `ProjectsID` FROM `ProjectsLSCs` WHERE `UsersID` IN ($LSCValues))";
+            $Search->AddRestriction($SubQuery, "", "", "Custom");
+        }
+    }
+
+    // LSSs
+    $SubOptions_LSS = Array();
+    $LSSGroup = new CUsersGroups();
+    $LSSGroup->OnLoadAll("WHERE `Name` = 'Learning Solutions Specialist'");
+    $LSSs = new CUsers();
+    if($LSSs->OnLoadAll("WHERE `UsersGroupsID` = ".$LSSGroup->ID." && `Active` = 1 ORDER BY `LastName`") !== false) {
+        $SubOptions_LSS = $LSSs->Rows->RowsToAssociativeArrayWithMultipleColumns("LastName,FirstName");
+
+        $LSSValues = BuildIDList("LSS");
+        if(!empty($LSSValues)) {
+            $SubQuery = "`ID` IN (SELECT `ProjectsID` FROM `ProjectsLSSs` WHERE `UsersID` IN ($LSSValues))";
+            $Search->AddRestriction($SubQuery, "", "", "Custom");
+        }
+    }
+        
 		
-		// Status		
-		$SubOptions_Status = CProjects::GetAllStatus();
-		if($_GET["Filters"]) {
-			$Filters = json_decode(urldecode($_GET["Filters"]));
-			if($Filters->Status === true && $Filters->StatusValue) {
-				$StatusValues = Array();
-				foreach($Filters->StatusValue as $ID => $Boolean) {
-					if($Boolean) {
-						$StatusValues[] = $ID;
-					}
-				}
-				$SubQuery = "`Status` IN (".implode(",", $StatusValues).")";
-				$Search->AddRestriction($SubQuery, "", "", "Custom");
-			}
-		}
+    // Creative Contact (combination of old Associate Creative Analyst, Junior Creative Analyst, Creative Analyst and Creative Consultant)
+    $SubOptions_CreativeContact = Array();
+    $CCGroup = new CUsersGroups();
+    $CCGroup->OnLoadAll("WHERE `Name` = 'Creative Contact'");
+    $CreativeContacts = new CUsers();
+    if($CreativeContacts->OnLoadAll("WHERE `UsersGroupsID` = ".$CCGroup->ID." && `Active` = 1 ORDER BY `LastName`")) {
+        foreach($CreativeContacts->Rows as $Row) {
+            $SubOptions_CreativeContact[$Row->ID] = $Row->LastName . ", " . $Row->FirstName;
+        }
+        if($_GET["Filters"]) {
+            $Filters = json_decode(urldecode($_GET["Filters"]));
+            if($Filters->CreativeContact === true && $Filters->CreativeContactValue) {
+                $CreativeContactsValues = Array();
+                foreach($Filters->CreativeContactValue as $ID => $Boolean) {
+                    if($Boolean) {
+                        $CreativeContactsValues[] = $ID;
+                    }
+                }
+                if(count($CreativeContactsValues) > 0)
+                {
+                    $SubQuery = "`ID` IN (SELECT `ProjectsID` FROM `ProjectsCreativeContacts` WHERE `UsersID` IN (".implode(",", $CreativeContactsValues)."))";
+                    $Search->AddRestriction($SubQuery, "", "", "Custom");
+                }
+            }
+        } 
+        else if(CSecurity::GetUsersGroupsID() == 15)
+        {
+            //TODO: Fix this!
+            $Filters							= Array();
+            $Filters["CreativeContact"]			= true;
+            $Filters["CreativeContactValue"]	= Array(
+                CSecurity::GetUsersID()		=> true
+            );
+            $_GET["Filters"] = urlencode(json_encode($Filters));
+            $CreativeContactsValues = Array(CSecurity::GetUsersID());
+            $SubQuery = "`ID` IN (SELECT `ProjectsID` FROM `ProjectsCreativeContacts` WHERE `UsersID` = ".CSecurity::GetUsersID().")";
+            $Search->AddRestriction($SubQuery, "", "", "Custom");
+        }
+    }
+		
+    // Institutional Sales Reps
+    $SubOptions_InstitutionalSalesRep = Array();
+    $SalesRepGroup = new CUsersGroups();
+    $SalesRepGroup->OnLoadAll("WHERE `Name` = 'Institutional Sales Rep'");
+    $SalesReps = new CUsers();
+    if($SalesReps->OnLoadAll("WHERE `UsersGroupsID` = ".$SalesRepGroup->ID." && `Active` = 1 ORDER BY `LastName`") !== false) {
+        foreach($SalesReps->Rows as $Row) {
+            $SubOptions_InstitutionalSalesRep[$Row->ID] = $Row->LastName . ", " . $Row->FirstName;
+        }
+        if($_GET["Filters"]) {
+            $Filters = json_decode(urldecode($_GET["Filters"]));
+            if($Filters->InstitutionalSalesRep === true && $Filters->InstitutionalSalesRepValue) {
+                $InstitutionalSalesRepValues = Array();
+                foreach($Filters->InstitutionalSalesRepValue as $ID => $Boolean) {
+                    if($Boolean) {
+                        $InstitutionalSalesRepValues[] = $ID;
+                    }
+                }
+                if(count($InstitutionalSalesRepValues) > 0)
+                {
+                    $SubQuery = "`ID` IN (SELECT `ProjectsID` FROM `ProjectsInstitutionalSalesReps` WHERE `UsersID` IN (".implode(",", $InstitutionalSalesRepValues)."))";
+                    $Search->AddRestriction($SubQuery, "", "", "Custom");
+                }
+            }
+        }
+    }
+
+
+    // Status		
+    $SubOptions_Status = CProjects::GetAllStatus();
+    $StatusValues = BuildIDList("Status");
+    if (!empty($StatusValues)) {
+       $SubQuery = "`Status` IN ($StatusValues)";
+       $Search->AddRestriction($SubQuery, "", "", "Custom"); 
+    }
+
+    $SubOptions_ProductSolution = Array();
+    $CProductSolutions = new CProductSolutions();
+    if ($CProductSolutions->OnLoadAll("WHERE `Active` = 1")) {
+        $SubOptions_ProductSolution = $CProductSolutions->Rows->RowsToAssociativeArray("Name");
+
+        $ProductSolutionValues = BuildIDList("ProductSolution");
+        if (!empty($ProductSolutionValues)) {
+            $SubQuery = "`ID` IN (SELECT `ProjectsID` FROM `ProjectsProductSolutions` WHERE `ProductSolutionsID` IN ($ProductSolutionValues))";
+            $Search->AddRestriction($SubQuery, "", "", "Custom");
+        }
+    }
 		
 		echo "<div id='SearchResultsContainer' style='position:absolute; top:10px; left:25px; width:4050px;'>";
 		
