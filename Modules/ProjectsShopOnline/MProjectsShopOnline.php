@@ -37,10 +37,27 @@ class MProjectsShopOnline extends MProjectsBase {
             "Status" => intval($_POST["Status"]),
         );
     }
-    
+
+    public function SendNotification($ProjectID, $MilestoneID) {
+        $CProject = new CProjectsShopOnline();
+
+        if ($CProject->LoadMilestoneCompleteNotification($ProjectID, $MilestoneID)) {
+            
+            $EmailParams = Array(
+                "ISBN" => $CProject->ISBN10,
+                "ShopLink" => $CProject->VirtualECOMInstructionsShop,
+                "Milestone" => $CProject->Name,
+                "Summary" => $CProject->Summary,
+            );
+            
+            return CNotifier::PushEmail($CProject->RequesterEmail, "Module", "ProjectsShopOnline", "MilestoneCompleted", $EmailParams)
+                    && CNotifier::PushEmailToUserID($CProject->UsersID, "Module", "ProjectsShopOnline", "MilestoneCompleted", $EmailParams);
+        }
+    }
+
     public function Search() {
         $Keywords = htmlspecialchars($_POST["Keywords"]);
-        
+
         $Params = $this->ProjectsShopOnlineParams($Keywords);
         $Params["Keywords"] = $Keywords;
         $template = $this->LoadTemplate("ProjectsShopOnline");

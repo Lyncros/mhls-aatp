@@ -44,9 +44,17 @@ abstract class MProjectsBase extends CTemplateModule {
         $MilestoneID = intval($_POST["MilestoneID"]);
         $ProjectID = intval($_POST["ProjectID"]);
         $IsNew = $MilestoneID <= 0; //right now, always update an existent milestone. This must be false.
+        
+        $SentEmail = FALSE;
+        $Status = "Active";
+        if (intval($_POST["Status"]) == 1) {
+            $Status = "Complete";
+            $SentEmail = TRUE;
+        }
+        
         //right now only save Status
         $Data = Array(
-            "Status" => (intval($_POST["Status"]) == 0) ? "Active" : "Complete",
+            "Status" => $Status,
         );
 
         $Extra = Array(
@@ -58,10 +66,19 @@ abstract class MProjectsBase extends CTemplateModule {
         if ($CMilestones->Save($MilestoneID, $Data, $Extra) === FALSE) {
             return Array(0, "Error " . ($IsNew ? "adding" : "updating") . " milestone.");
         }
+        
+        if ($SentEmail) {
+            if ($this->SendNotification($ProjectID, $MilestoneID) === FALSE) {
+                $Message = " Error sending notifications.";
+            }
+        }
 
-        return Array(1, Array("Milestone " . ($IsNew ? "added" : "saved") . " successfully.", $this->RenderProjectDetails($ProjectID)));
+        return Array(1, Array("Milestone " . ($IsNew ? "added" : "saved") . " successfully.$Message", $this->RenderProjectDetails($ProjectID)));
     }
     
+    abstract function SendNotification($ProjectID, $MilestoneID);
+
+
     abstract function BuildSaveProjectParameters();
 
 

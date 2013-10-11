@@ -39,6 +39,10 @@ class MProjectsPrivateOffer extends MProjectsBase {
         );
     }
     
+    public function SendNotification($ProjectID, $MilestoneID) {
+        //TODO Implement;
+    }
+    
     public function Search() {
         $Keywords = htmlspecialchars($_POST["Keywords"]);
         

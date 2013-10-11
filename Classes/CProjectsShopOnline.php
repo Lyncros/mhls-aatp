@@ -77,6 +77,14 @@ class CProjectsShopOnline extends CProjectsBase {
         return !($NewStoreFrontInfoItem === false);
     }
     
+    public function LoadMilestoneCompleteNotification($ProjectID, $MilestoneID) {
+        return $this->OnLoadByQuery("SELECT p.ISBN10, p.VirtualECOMInstructionsShop, p.UsersID, p.RequesterEmail, pm.Name, pm.Summary
+            FROM ProjectsShopOnline as p
+            LEFT JOIN ProjectsShopOnlineMilestones as pm
+            ON p.ID = pm.ProjectsID
+            WHERE p.ID = $ProjectID AND pm.ID = $MilestoneID");
+    }
+    
     public static function ExistsWithISBN10($ISBN10) {
         $Projects = CTable::Select(self::TABLE_NAME, "WHERE ISBN10 = $ISBN10");
 
