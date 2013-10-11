@@ -112,6 +112,7 @@
 	/* 7 */ $Search->AddColumn("DueDate", "DueDate", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");	
 	/* 8 */ $Search->AddColumn("LSCs", "LSCs", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide",0,"IF(ISNULL(LSCs),1,0),LSCs");
 	/* 9 */ //$Search->AddColumn("Product Type", "ProductType", "0px;display:none", CSEARCHCOLUMN_SEARCHTYPE_LOOSE, "", "", "", "OnHide");
+    /*10 */ $Search->AddHiddenColumn("Tags", CSEARCHCOLUMN_SEARCHTYPE_LOOSE);
 	
 	// Non-deleted Projects
 	$Search->AddAndRestriction("Deleted", "0");
