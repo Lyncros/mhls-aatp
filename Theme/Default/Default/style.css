@@ -445,17 +445,15 @@ input[disabled],select[disabled] {
 .SidebarIconProjects									{ background-image: url("./SidebarIconProjects.png"); }
 .SidebarIconProjectsAdd									{ background-image: url("./SidebarIconAddProject.png"); }
 .SidebarIconMilestoneListMilestonesImAssignedTo			{ background-image: url("./SidebarIconViewMilestonesImAssignedTo.png"); }
-.SidebarIconVendorsManagementIndex						{ background-image: url("./SidebarIconToDos.png"); }
+.SidebarIconVendorsManagementIndex						{ background-image: url("./SidebarIconVendorMgmt.png"); }
 .SidebarActive .SidebarIconProjects						{ background-image: url("./SidebarIconProjectsActive.png"); }
 
-.SidebarIconProjectCreatorHomePrivateOffer, .SidebarIconProjectsPrivateOffer
-{ 
-    background-image:	url("./SidebarIconResourcesCategories.png"); 
+.SidebarIconProjectCreatorHomePrivateOffer, .SidebarIconProjectsPrivateOffer { 
+    background-image:	url("./SidebarIconShopOnline.png"); 
 }
 
-.SidebarIconProjectCreatorHomeShopOnline, .SidebarIconProjectsShopOnline
-{ 
-	background-image:	url("./SidebarIconProductSolutions.png"); 
+.SidebarIconProjectCreatorHomeShopOnline, .SidebarIconProjectsShopOnline { 
+	background-image:	url("./SidebarIconPrivateOffer.png"); 
 }
 
 .SidebarSubicon {
