@@ -68,17 +68,23 @@ class MProjectCreatorHome extends CUnauthorizedModule {
     }
 
     function CreateShopOnline() {
+        $RequesterEmail = htmlspecialchars($_POST["RequesterEmail"]);
+        $ISBN10 = htmlspecialchars($_POST["ISBN10"]);
+        $DateNeeded = strtotime($_POST["DateNeeded"]);
+        $ISBNType = htmlspecialchars($_POST["ISBNType"]);
+        $ShopLink = htmlspecialchars($_POST["VirtualECOMInstructionsShop"]);
+        
         $Data = Array(
-            "ISBN10" => htmlspecialchars($_POST["ISBN10"]),
+            "ISBN10" => $ISBN10,
             "Author" => htmlspecialchars($_POST["Author"]),
             "RequesterName" => htmlspecialchars($_POST["RequesterName"]),
-            "RequesterEmail" => htmlspecialchars($_POST["RequesterEmail"]),
-            "DateNeeded" => strtotime($_POST["DateNeeded"]),
+            "RequesterEmail" => $RequesterEmail,
+            "DateNeeded" => $DateNeeded,
             "UsersID" => intval($_POST["UsersID"]),
             "Comments" => htmlspecialchars($_POST["Comments"]),
             "CustomCoverURL" => htmlspecialchars($_POST["CustomCoverURL"]),
-            "ISBNType" => htmlspecialchars($_POST["ISBNType"]),
-            "VirtualECOMInstructionsShop" => htmlspecialchars($_POST["VirtualECOMInstructionsShop"]),
+            "ISBNType" => $ISBNType,
+            "VirtualECOMInstructionsShop" => $ShopLink,
             "VirtualECOMInstructionsEmail" => htmlspecialchars($_POST["VirtualECOMInstructionsEmail"]),
         );
         
@@ -104,6 +110,7 @@ class MProjectCreatorHome extends CUnauthorizedModule {
                     return Array(0, "Error adding store front info item to project.");
                 }                
             }
+            $this->SentNotificationShopOnline($RequesterEmail, $ISBN10, $DateNeeded, $ShopLink, $ISBNType);
             
             $template = $this->LoadTemplate('PrivateOfferConfirmation');
 			
@@ -195,6 +202,22 @@ class MProjectCreatorHome extends CUnauthorizedModule {
         $ISBN10 = htmlspecialchars($_POST["ISBN10"]);
 
         return Array(CProjectsShopOnline::ExistsWithISBN10($ISBN10), '');
+    }
+    
+    public function SentNotificationShopOnline($RequesterEmail, $ISBN10, $DateNeeded, $ShopLink, $ISBNType) {
+        
+        $UserID = $this->GetConfig("ShopOnlineEmailUserID");
+        $Type = "Module";
+        $ModuleName = "ProjectsShopOnline";
+
+        $Params = array(
+            "ISBN10" => $ISBN10,
+            "DateNeeded" => is_null($DateNeeded) ? "-" : date(CTemplateModule::DATE_FORMAT, $DateNeeded),
+            "ShopLink" => $ShopLink,
+            "ISBNType" => CProjectsShopOnline::GetISBNTypeNameById($ISBNType),
+        );
+        return CNotifier::PushEmail($RequesterEmail, $Type, $ModuleName, "Project created requester", $Params) &&
+            CNotifier::PushEmailToUserID($UserID, $Type, $ModuleName, "Project created", $Params);
     }
 
     ///////////////////////////////////////////////

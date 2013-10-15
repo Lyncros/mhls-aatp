@@ -1163,32 +1163,14 @@
 			$MilestoneID = intval($_POST["MilestoneID"]);
             
             $CProjectsMilestones = new CProjectsMilestones();
-            if ($CProjectsMilestones->DeleteMilestone($MilestoneID, CSecurity::GetUsersID(), $_SERVER["REMOTE_ADDR"])) {
+            $Extra = $this->BuildSaveParameters();
+            if ($CProjectsMilestones->DeleteMilestone($MilestoneID, $Extra)) {
                 return Array(1, "Milestone deleted successfully");
             } else {
                 return Array(0, "Error deleting Milestone");
             }
 		}
-        
-        /* OLD and WORKING code - jarias
-        function DeleteMilestone() {
-			if(!CSecurity::$User->CanAccess("Milestones", "Delete")) {
-				return Array(0, "You do not have permissions to perform this action");
-			}
-			
-			$MilestoneID = intval($_POST["MilestoneID"]);
-			
-			$Data = Array(
-				"Deleted"			=> time(),
-				"DeletedUsersID"	=> CSecurity::GetUsersID(),
-				"DeletedIPAddress"	=> $_SERVER["REMOTE_ADDR"],
-			);
-			if(CTable::Update("ProjectsMilestones", $MilestoneID, $Data) === false) return Array(0, "Error deleting Milestone");
-			
-			return Array(1, "Milestone deleted successfully");
-		}
-         */
-		
+
 		//----------------------------------------------------------------------
 		function DeleteMilestoneToDo() {
 			if(!CSecurity::$User->CanAccess("MilestonesToDos", "Delete")) {

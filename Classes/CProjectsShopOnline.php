@@ -94,6 +94,11 @@ class CProjectsShopOnline extends CProjectsBase {
     public static function GetISBNTypes() {
         return Array("1" => "PPK", "2" => "Physical", "3" => "COMBO", "4" => "Virtual/ECOM");        
     }
+    
+    public static function GetISBNTypeNameById($ISBNTypeId) {
+        $ISBNTypeList = self::GetISBNTypes();
+        return (array_key_exists($ISBNTypeId, $ISBNTypeList)) ? $ISBNTypeList[$ISBNTypeId] : "";
+    }
 
     public static function GetAllStatus() {
         return array("1" => "Live", "2" => "Dead", "3" => "Delayed", "4" => "Completed");

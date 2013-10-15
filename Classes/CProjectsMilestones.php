@@ -1,76 +1,99 @@
 <?
-	//==========================================================================
-	/*
-		Table for Projects Milestones
 
-		7/5/2012 1:10 PM
-	*/
-	//==========================================================================
-	class CProjectsMilestones extends CTable {
-		function __construct() {
-			$this->Table = "ProjectsMilestones";
-		}
+//==========================================================================
+/*
+  Table for Projects Milestones
 
-		public static function OnCron() {
-			
-		}
+  7/5/2012 1:10 PM
+ */
+//==========================================================================
+class CProjectsMilestones extends CTable {
 
-		//----------------------------------------------------------------------
-		function OnLoad($ID) {
-			if(parent::OnLoadByID($ID) === false) {
-				return false;
-			}
+    function __construct() {
+        $this->Table = "ProjectsMilestones";
+    }
 
-			return $this->OnInit();
-		}
-
-		//----------------------------------------------------------------------
-		function OnInit() {
-			return true;
-		}
+    public static function OnCron() {
         
-        function Save($MilestoneID, $Data, $Extra) {
-			if($MilestoneID > 0) {
-				$Temp = new CProjectsMilestones();
-				$Temp->OnLoad($MilestoneID);
-				$ChangeData = Array(
-					"ProjectsMilestonesID"		=> $MilestoneID,
-					"Timestamp"					=> time(),
-					"UsersID"					=> CSecurity::GetUsersID(),
-					"IPAddress"					=> $Extra["REMOTE_ADDR"],
-					"Old"						=> serialize($Temp->Rows->Current),
-					"New"						=> serialize($Data),
-				);
-                
-				CTable::Add("ProjectsMilestonesChanges", $ChangeData);
-				
-                return CTable::Update($this->Table, $MilestoneID, $Data);
-			} else {
-				$Data["Created"]				= time();
-				$Data["CreatedUsersID"]			= CSecurity::GetUsersID();
-				$Data["CreatedIPAddress"]		= $Extra["REMOTE_ADDR"];
-				
-                return CTable::Add($this->Table, $Data);
-			}
+    }
+
+    //----------------------------------------------------------------------
+    function OnLoad($ID) {
+        if (parent::OnLoadByID($ID) === false) {
+            return false;
         }
-        
-		//======================================================================
-		function IsComplete() {
-			return $this->Status && $this->Status == "Complete";
-		}
-		
-		function AssignedToUser() {
-			return CTable::SelectByID("Users", $this->AssignedTo);
-		}
-        
-        /**
-         * Returns a list of ProjectsMilestones that are assigned to the received user.
-         */
-        function OnLoadByAssignedTo($AssignedToUserId) {
-            return $this->OnLoadByQuery("SELECT PM.*, P.ProductNumber, P.School  
+
+        return $this->OnInit();
+    }
+
+    //----------------------------------------------------------------------
+    function OnInit() {
+        return true;
+    }
+
+    function Save($MilestoneID, $Data, $Extra) {
+        if ($MilestoneID > 0) {
+            $Temp = new CProjectsMilestones();
+            $Temp->OnLoad($MilestoneID);
+            $ChangeData = Array(
+                "ProjectsMilestonesID" => $MilestoneID,
+                "Timestamp" => time(),
+                "UsersID" => CSecurity::GetUsersID(),
+                "IPAddress" => $Extra["REMOTE_ADDR"],
+                "Old" => serialize($Temp->Rows->Current),
+                "New" => serialize($Data),
+            );
+
+            CTable::Add("ProjectsMilestonesChanges", $ChangeData);
+
+            return CTable::Update($this->Table, $MilestoneID, $Data);
+        } else {
+            $Data["Created"] = time();
+            $Data["CreatedUsersID"] = CSecurity::GetUsersID();
+            $Data["CreatedIPAddress"] = $Extra["REMOTE_ADDR"];
+
+            return CTable::Add($this->Table, $Data);
+        }
+    }
+
+    //======================================================================
+    function IsComplete() {
+        return $this->Status && $this->Status == "Complete";
+    }
+
+    function AssignedToUser() {
+        return CTable::SelectByID("Users", $this->AssignedTo);
+    }
+
+    /**
+     * Returns a list of ProjectsMilestones that are assigned to the received user.
+     */
+    function OnLoadByAssignedTo($AssignedToUserId) {
+        return $this->OnLoadByQuery("SELECT PM.*, P.ProductNumber, P.School  
                 FROM `ProjectsMilestones` AS PM 
                 JOIN `Projects` as P ON P.ID = PM.ProjectsID
-                WHERE PM.`Deleted` = 0 AND PM.AssignedTo = ".$AssignedToUserId);
+                WHERE PM.`Deleted` = 0 AND PM.AssignedTo = " . $AssignedToUserId);
+    }
+
+    /**
+     * Deletes logically the milestone of a project (table ProjectsMilestones)
+     * @param integer $MilestoneID ID of the milestone to delete
+     * @param array $Extra Contains ID of user and user's IP performing the action
+     * @return boolean
+     */
+    public function DeleteMilestone($MilestoneID, $Extra) {
+        $MilestoneID = intval($_POST["MilestoneID"]);
+
+        if ($Extra) {
+            $Data["Deleted"] = time();
+            $Data["DeletedUsersID"] = $Extra["UsersID"];
+            $Data["DeletedIPAddress"] = $Extra["IPAddress"];
         }
-	};
+
+        return CTable::Update($this->Table, $MilestoneID, $Data);
+    }
+
+}
+
+;
 ?>
