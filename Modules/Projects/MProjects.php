@@ -310,6 +310,13 @@
             $MilestoneID = intval($_POST["MilestoneID"]);
             $IsNew = $MilestoneID <= 0;
             
+            $Status = "Active";
+            $ActualDeliveryDate = strtotime($_POST["ActualDeliveryDate"]);
+            if (intval($_POST["Status"]) != 0) { //if its complete
+                $Status = "Complete";
+                $ActualDeliveryDate = time();
+            }
+            
             $Data = Array(
 				"ProjectsID"			=> intval($_POST["ProjectsID"]),
 				"Name"					=> htmlspecialchars($_POST["Name"]),
@@ -317,10 +324,10 @@
 				"Summary"				=> htmlspecialchars($_POST["Summary"]),
 				"EstimatedStartDate"	=> strtotime($_POST["EstimatedStartDate"]),
 				"ExpectedDeliveryDate"	=> strtotime($_POST["ExpectedDeliveryDate"]),
-				"ActualDeliveryDate"	=> strtotime($_POST["ActualDeliveryDate"]),
+				"ActualDeliveryDate"	=> $ActualDeliveryDate,
 				"PlantAllocated"		=> htmlspecialchars($_POST["PlantAllocated"]),
 				"AssignedTo"			=> intval($_POST["AssignedTo"]),
-				"Status"				=> (intval($_POST["Status"]) == 0) ? "Active" : "Complete",
+				"Status"				=> $Status,
 			);
             
             $Extra = Array(
