@@ -307,6 +307,7 @@
 		}
 		//----------------------------------------------------------------------
 		function AddEditMilestone() {
+            $ProjectID = intval($_POST["ProjectsID"]);
             $MilestoneID = intval($_POST["MilestoneID"]);
             $IsNew = $MilestoneID <= 0;
             
@@ -317,8 +318,15 @@
                 $ActualDeliveryDate = time();
             }
             
+            $CMilestones = new CProjectsMilestones();
+            
+            $Order = intval($_POST["Order"]);
+            if ($Order == -1) {
+                $Order = $CMilestones->GetNextMilestoneOrderForProject($ProjectID);
+            }
+            
             $Data = Array(
-				"ProjectsID"			=> intval($_POST["ProjectsID"]),
+				"ProjectsID"			=> $ProjectID,
 				"Name"					=> htmlspecialchars($_POST["Name"]),
 				"CustomerApproval"		=> intval($_POST["CustomerApproval"]),
 				"Summary"				=> htmlspecialchars($_POST["Summary"]),
@@ -328,13 +336,13 @@
 				"PlantAllocated"		=> htmlspecialchars($_POST["PlantAllocated"]),
 				"AssignedTo"			=> intval($_POST["AssignedTo"]),
 				"Status"				=> $Status,
+                "Order"                 => $Order,
 			);
             
             $Extra = Array(
                 "REMOTE_ADDR"           => $_SERVER["REMOTE_ADDR"],
             );
             
-            $CMilestones = new CProjectsMilestones();
             if (!$CMilestones->Save($MilestoneID, $Data, $Extra)) {
                 return Array(0, "Error ".($IsNew ? "adding" : "updating")." milestone.");
             }
@@ -1392,7 +1400,6 @@
 				if($List->OnLoad($ToDoListID) === false) return Array(0, "Error loading To Do List info");
 				
 				$ListMembers	= unserialize($List->Members);
-				$MembersArray	= Array();
 				foreach($ListMembers as $MemberID) {
 					$Member = new CToDos();
 					if($Member->OnLoad($MemberID) === false) continue;

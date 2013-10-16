@@ -93,6 +93,16 @@ class CProjectsMilestones extends CTable {
         return CTable::Update($this->Table, $MilestoneID, $Data);
     }
 
+    /**
+     * Gets the next Milestones order for a given project in the database.
+     * Database order is zero based. Current count(*) matches next order value.
+     * @param integer $ProjectID
+     * @return integer next order of milestones for given project
+     */
+    public function GetNextMilestoneOrderForProject($ProjectID) {
+        return CTable::NumRows($this->Table, "WHERE ProjectsID = $ProjectID");
+    }
+
 }
 
 ;

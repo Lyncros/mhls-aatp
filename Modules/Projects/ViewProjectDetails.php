@@ -372,8 +372,8 @@
 												</td>
 											</tr>
 											";
-											$Users = CUsers::GetAllAssignableToMilestone();
-											$Users = Array(0 => "Nobody") + $Users->RowsToAssociativeArrayWithMultipleColumns("LastName,FirstName");
+											$UsersTmp = CUsers::GetAllAssignableToMilestone();
+											$Users = Array(0 => "Nobody") + $UsersTmp->RowsToAssociativeArrayWithMultipleColumns("LastName,FirstName");
 											
 											echo CForm::AddTextbox("Name", "Name", "", "Please enter a Name");
 											echo CForm::AddYesNo("Customer Approval", "CustomerApproval", 0, "YesNo");
@@ -385,6 +385,7 @@
 											echo CForm::AddDropdown("Assigned To", "AssignedTo", $Users, "");	
 											echo CForm::AddDropdown("Status", "Status", CMilestones::GetStatusList(), "");
 											echo CForm::AddHidden("ProjectsID", $ProjectID);
+                                            echo CForm::AddHidden("Order", -1);
 										
 										echo "
 										</table>
@@ -427,8 +428,8 @@
 											
 												if(CSecurity::$User->CanAccess("Milestones", "Edit")) {
 													CForm::RandomPrefix();
-													$Users = CUsers::GetAllAssignableToMilestone();
-													$Users = Array(0 => "Nobody") + $Users->RowsToAssociativeArrayWithMultipleColumns("LastName,FirstName");
+													$UsersTmp = CUsers::GetAllAssignableToMilestone();
+													$Users = Array(0 => "Nobody") + $UsersTmp->RowsToAssociativeArrayWithMultipleColumns("LastName,FirstName");
 													
 													echo CForm::AddTextbox("Name", "Name", $Milestone->Name, "Please enter a Name");
 													echo CForm::AddYesNo("Customer Approval", "CustomerApproval", $Milestone->CustomerApproval, "YesNo");
@@ -441,6 +442,7 @@
 													echo CForm::AddYesNo("Complete", "Status", $Milestone->IsComplete(), "YesNo");
 													echo CForm::AddHidden("ProjectsID", $ProjectID);
 													echo CForm::AddHidden("MilestoneID", $Milestone->ID);
+                                                    echo CForm::AddHidden("Order", $Milestone->Order);
 												} else {
 													echo CForm::AddRow("Name", $Milestone->Name);
 													echo CForm::AddRow("Customer Approval", $Milestone->CustomerApproval);
