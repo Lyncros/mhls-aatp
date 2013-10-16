@@ -449,11 +449,11 @@ input[disabled],select[disabled] {
 .SidebarActive .SidebarIconProjects						{ background-image: url("./SidebarIconProjectsActive.png"); }
 
 .SidebarIconProjectCreatorHomePrivateOffer, .SidebarIconProjectsPrivateOffer { 
-    background-image:	url("./SidebarIconShopOnline.png"); 
+    background-image:	url("./SidebarIconPrivateOffer.png"); 
 }
 
 .SidebarIconProjectCreatorHomeShopOnline, .SidebarIconProjectsShopOnline { 
-	background-image:	url("./SidebarIconPrivateOffer.png"); 
+	background-image:	url("./SidebarIconShopOnline.png"); 
 }
 
 .SidebarSubicon {

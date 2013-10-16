@@ -60,16 +60,16 @@ class CSidebarMenu {
                 new CSidebarMenu("Add", "Add Project", "ProjectDetails", "Add"),
                 $ProjectMenu,
             ),
-            "MilestoneList" => Array(
-                new CSidebarMenu("MilestonesImAssignedTo", "Milestones I'm assigned to", "MilestonesImAssignedTo", "View")),
+            /*"MilestoneList" => Array(
+                new CSidebarMenu("MilestonesImAssignedTo", "Milestones I'm assigned to", "MilestonesImAssignedTo", "View")),*/
             "VendorsManagement" => Array(
                 new CSidebarMenu("Index", "Vendors Management Home", "VendorsManagement", "Access")),
             "ProjectsShopOnline" => Array(
                 new CSidebarMenu("ProjectsShopOnline", "Shop online")
             ),
-            "ProjectsPrivateOffer" => Array(
+            /*"ProjectsPrivateOffer" => Array(
                 new CSidebarMenu("ProjectsPrivateOffer", "Private Offer")
-            ),
+            ),*/
         );
     }
 
