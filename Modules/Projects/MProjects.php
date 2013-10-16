@@ -1357,16 +1357,17 @@
 			
 			// Create new milestones for the project
 			$MilestonesIds = unserialize($ProjectType['Milestones']);
+            $i = 0;
 			foreach($MilestonesIds as $MilestoneId)
 			{	
-				if(!$this->AddMilestone($ProjectID, CTable::SelectById("Milestones", $MilestoneId)))
+				if(!$this->AddMilestone($ProjectID, CTable::SelectById("Milestones", $MilestoneId), $i++))
 					$success = false;				
 			}
 			
 			return $success;
 		}
 		
-		private function AddMilestone($ProjectID, $Milestone)
+		private function AddMilestone($ProjectID, $Milestone, $Order)
 		{		
 			
 			$ProjectMilestone = array();
@@ -1379,6 +1380,7 @@
 			$ProjectMilestone["Created"]			= time();
 			$ProjectMilestone["CreatedUsersID"]		= CSecurity::GetUsersID();
 			$ProjectMilestone["CreatedIPAddress"]	= $_SERVER["REMOTE_ADDR"];
+            $ProjectMilestone["Order"]              = $Order;
 		
 			$NewMilestoneID = CTable::Add("ProjectsMilestones", $ProjectMilestone);
 			if($NewMilestoneID === false) return false;

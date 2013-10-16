@@ -121,7 +121,7 @@
 
 		function OnLoadMilestones() {
 			$Milestones = new CProjectsMilestones();
-			if($Milestones->OnLoadAll("WHERE `ProjectsID` = ".$this->ID." && `Deleted` = 0 ORDER BY `Created` ASC") !== false) {
+			if($Milestones->OnLoadAll("WHERE `ProjectsID` = ".$this->ID." && `Deleted` = 0 ORDER BY `Order` ASC") !== false) {
 				foreach($Milestones->Rows as $Row) {
 					$Milestone = new CProjectsMilestones();
 					if($Milestone->OnLoad($Row->ID) === false) continue;
