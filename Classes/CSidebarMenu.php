@@ -76,7 +76,7 @@ class CSidebarMenu {
     public static function BuildProjectsFormsSideMenu() {
         return Array(
             "ProjectCreatorHome" => Array(
-                new CSidebarMenu("PrivateOffer", "Private Offers"),
+                //new CSidebarMenu("PrivateOffer", "Private Offers"),
                 new CSidebarMenu("ShopOnline", "Shop Online"),
             )
         );
