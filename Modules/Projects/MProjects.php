@@ -324,7 +324,7 @@
             if ($Order == -1) {
                 $Order = $CMilestones->GetNextMilestoneOrderForProject($ProjectID);
             }
-            
+			
             $Data = Array(
 				"ProjectsID"			=> $ProjectID,
 				"Name"					=> htmlspecialchars($_POST["Name"]),
@@ -339,13 +339,20 @@
                 "Order"                 => $Order,
 			);
             
+			
             $Extra = Array(
                 "REMOTE_ADDR"           => $_SERVER["REMOTE_ADDR"],
             );
-            
-            if (!$CMilestones->Save($MilestoneID, $Data, $Extra)) {
+			
+			// If it's a new milestone from a default milestone
+			if (array_key_exists("DefaultMilestone", $_POST) && ((int)$_POST["DefaultMilestone"]) > 0)
+			{				
+				if (!$this->AddModifiedDefaultMilestone($Data, $_POST["DefaultMilestone"]))
+					return Array(0, "Error ".($IsNew ? "adding" : "updating")." milestone.");
+			} else if (!$CMilestones->Save($MilestoneID, $Data, $Extra)) {
                 return Array(0, "Error ".($IsNew ? "adding" : "updating")." milestone.");
             }
+			
 			
 			$Project = new CProjects();
 			$Project->OnLoad($Data["ProjectsID"]);
@@ -1294,6 +1301,16 @@
 									<div class='CompletionPercentage'>".number_format($MilestonePercentage * 100)."%</div>
 								</div>
 								<p style='padding-top:10px;'><b>Status:</b> ".$Project->GetFriendlyStatus()."</p>
+								<div onclick=\"$('#CreativeBudget".$Project->ID."').slideToggle();\">
+									<div style='font-weight:bold; font-size:12px;float:left;'>Creative Budget</div>
+									<div id=\"AddMilestone\" style='margin-top: 3px;margin-left: 3px;'></div>
+								</div>							
+								<div id='CreativeBudget".$Project->ID."' style='float:left; display:none;'>
+									<p><b>Total Budget:</b> ".$Project->RequestPlant."</p>								
+									<p><b>Plant Left:</b> ".$Project->PlantLeft."</p>
+									<p><b>Vendors:</b> ".$Project->GetVendors()."</p>
+									<p><b>Product Solutions:</b> ".$Project->GetProductSolutions()."</p>
+								</div>
 							</td>
 							<td style='padding-right:13px;'>
 								<input type='hidden' id='Project".$Project->ID."Header' value=\"<strong>".$Project->ProductNumber." // ".$Project->School."</strong><br><span style='font-size:11px; color:#0685c5; font-style:italic;'>".$Project->Title."</span>\">
@@ -1375,9 +1392,35 @@
 			return $success;
 		}
 		
+		private function AddModifiedDefaultMilestone($Milestone, $DefaultMilestoneID)
+		{
+			$ProjectMilestone = array();
+			$ProjectMilestone["ProjectsID"]			= $Milestone["ProjectsID"];
+			$ProjectMilestone["Name"]				= $Milestone["Name"];
+			$ProjectMilestone["CustomerApproval"]	= $Milestone["CustomerApproval"];
+			$ProjectMilestone["Summary"]			= $Milestone["Summary"];
+			$ProjectMilestone["EstimatedStartDate"]	= $Milestone["EstimatedStartDate"];
+			$ProjectMilestone["ExpectedDeliveryDate"] = $Milestone["ExpectedDeliveryDate"];
+			$ProjectMilestone["ActualDeliveryDate"]	= $Milestone["ActualDeliveryDate"];
+			$ProjectMilestone["PlantAllocated"]		= $Milestone["PlantAllocated"];
+			$ProjectMilestone["AssignedTo"]			= $Milestone["AssignedTo"];
+			$ProjectMilestone["Status"]				= $Milestone["Status"];
+			$ProjectMilestone["Order"]              = $Milestone["Order"];
+			$ProjectMilestone["Created"]			= time();
+			$ProjectMilestone["CreatedUsersID"]		= CSecurity::GetUsersID();
+			$ProjectMilestone["CreatedIPAddress"]	= $_SERVER["REMOTE_ADDR"];
+			
+			$NewMilestoneID = CTable::Add("ProjectsMilestones", $ProjectMilestone);
+			
+			if($NewMilestoneID === false) return false;
+			
+			$DefaultMilestone = CTable::SelectById("Milestones", (int) $DefaultMilestoneID);
+			
+			return $this->AddMilestoneToDosLists($NewMilestoneID, $DefaultMilestone["ToDosLists"]);
+		}
+		
 		private function AddMilestone($ProjectID, $Milestone, $Order)
 		{		
-			
 			$ProjectMilestone = array();
 			$ProjectMilestone["Name"] 				= $Milestone["Name"];
 			$ProjectMilestone["CustomerApproval"] 	= $Milestone["CustomerApproval"];
@@ -1393,7 +1436,12 @@
 			$NewMilestoneID = CTable::Add("ProjectsMilestones", $ProjectMilestone);
 			if($NewMilestoneID === false) return false;
 			
-			$ToDoLists = unserialize($Milestone["ToDosLists"]);
+			return $this->AddMilestoneToDosLists($NewMilestoneID, $Milestone["ToDosLists"]);
+		}
+		
+		private function AddMilestoneToDosLists($MilestoneId, $SToDosLists)
+		{
+			$ToDoLists = unserialize($SToDosLists);
 			
 			foreach($ToDoLists as $ToDoListID) {
 				$List = new CToDosLists();
@@ -1407,7 +1455,7 @@
 					if($Member->Active == 0) continue;
 					
 					$Data = Array(
-						"MilestoneID"			=> intval($NewMilestoneID),
+						"MilestoneID"			=> intval($MilestoneId),
 						"Name"					=> htmlspecialchars($Member->Name),
 						"Comment"				=> htmlspecialchars($Member->Comment),
 						"CommentRequired"		=> intval($Member->CommentRequired),

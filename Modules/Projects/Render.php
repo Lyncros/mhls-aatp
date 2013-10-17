@@ -60,7 +60,17 @@
 								<div class='CompletionBar' style='width:".$MilestoneBarWidth."px;'></div>
 								<div class='CompletionPercentage'>".number_format($MilestonePercentage * 100)."%</div>
 							</div>
-							<p style='padding-top:10px;'><b>Status:</b> ".$Project->GetFriendlyStatus()."</p>
+							<p style='padding-top:0px;'><b>Status:</b> ".$Project->GetFriendlyStatus()."</p>
+							<div onclick=\"$('#CreativeBudget".$Project->ID."').slideToggle();\">
+								<div style='font-weight:bold; font-size:12px;float:left;'>Creative Budget</div>
+								<div id=\"AddMilestone\" style='margin-top: 3px;margin-left: 3px;'></div>
+							</div>							
+							<div id='CreativeBudget".$Project->ID."' style='float:left; display:none;'>
+								<p><b>Total Budget:</b> ".$Project->RequestPlant."</p>								
+								<p><b>Plant Left:</b> ".$Project->PlantLeft."</p>
+								<p><b>Vendors:</b> ".$Project->GetVendors()."</p>
+								<p><b>Product Solutions:</b> ".$Project->GetProductSolutions()."</p>
+							</div>
 						</td>
 						<td style='padding-right:13px;'>
 							<input type='hidden' id='Project".$Project->ID."Header' value=\"<strong>".$Project->ProductNumber." // ".$Project->School."</strong><br><span style='font-size:11px; color:#0685c5; font-style:italic;'>".$Project->Title."</span>\">

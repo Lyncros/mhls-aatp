@@ -205,9 +205,8 @@
 								echo CForm::AddTextbox("Spec doc link", "SpecDocLink", $Project->SpecDocLink, "", "", "Advanced");
 								echo CForm::AddTextbox("Connect Request ID link", "ConnectRequestIDLink", $Project->ConnectRequestIDLink, "", "", "Advanced");
 								echo "<tr><td><div style='font-weight:bold; font-size:14px; margin-top:12px; margin-bottom:6px;'>Creative Budget</div></td><td></td></tr>";
-								echo CForm::AddTextbox("Requested Budget", "RequestPlant", $Project->RequestPlant, "", "", "Basic");
-								echo CForm::AddTextbox("Plant Paid", "PlantPaid", $Project->PlantPaid, "", "", "Basic");
-								echo CForm::AddTextbox("Plant Left", "PlantLeft", $Project->PlantLeft, "", "", "Basic", "", true);
+								echo CForm::AddTextbox("Total Budget", "RequestPlant", $Project->RequestPlant, "", "", "Basic");
+								echo CForm::AddTextbox("Plant Paid", "PlantPaid", $Project->PlantPaid, "", "", "Basic");								
 								
 								// Vendors
 								$VendorsArray = Array();
@@ -292,8 +291,7 @@
                             </td></tr>
                             <tr><td>
                                 <div id=\"CreativeBudget\" style=\"display:none;\">
-                                    <p><b>Requested Budget:</b> ".$Project->RequestPlant."</p>
-                                    <p><b>Plant Paid:</b> ".$Project->PlantPaid."</p>
+                                    <p><b>Total Budget:</b> ".$Project->RequestPlant."</p>                                    
                                     <p><b>Plant Left:</b> ".$Project->PlantLeft."</p>
                                     <p><b>Vendors:</b> ".$Project->GetVendors()."</p>
                                     <p><b>Product Solutions:</b> ".$Project->GetProductSolutions()."</p>
@@ -364,7 +362,7 @@
 											<tr>
 												<td valign='top' align='right' class='CForm_Name'><b onmouseout='CTooltip.Hide();' onmouseover='CTooltip.Show('');'>Default Milestone:</b>&nbsp;</td>
 												<td valign='top' class='CForm_Value'>
-												<select class='CForm_Dropdown' title='' id='DefaultMilestone' name='DefaultMilestone' onChange=\"MProjects.LoadDefaultMilestone('".CForm::GetPrefix()."', $(this).val());\">";
+												<select class='CForm_Dropdown' title='' id='". CForm::GetPrefix() ."DefaultMilestone' name='DefaultMilestone' onChange=\"MProjects.LoadDefaultMilestone('".CForm::GetPrefix()."', $(this).val());\">";
 												foreach($DefaultArray as $Key => $Value) {
 													echo "<option value='".$Key."'>".$Value."</option>";
 												}
