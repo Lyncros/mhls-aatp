@@ -586,7 +586,7 @@
 											<td width='100%' valign='top'>
 												<table class='CForm_Table TableFormGroup'>";
 												
-													CForm::RandomPrefix();
+													CForm::RandomPrefix();													
 													
 													$DefaultToDosLists = new CToDosLists();
 													$DefaultToDosLists->OnLoadAll("WHERE `Active` = 1 ORDER BY `Name` ASC");
@@ -612,8 +612,7 @@
 															<div id='MilestoneToDoListMembers'></div>
 														</td>
 													</tr>
-													";
-													
+													";													
 													echo CForm::AddHidden("MilestoneID", $Milestone->ID);
 													echo CForm::AddHidden("ProjectsID", $ProjectID);
 												
@@ -664,6 +663,11 @@
 													echo CForm::AddYesNo("Complete", "Complete", 0, "YesNo");
 													echo CForm::AddTextarea("Comment", "Comment", "");
 													echo CForm::AddYesNo("Comment Required", "CommentRequired", "", "YesNo");
+
+													$UsersTmp = CUsers::GetAllAssignableToMilestoneTodos();
+													$UsersAssignableToMilestoneToDos = Array(0 => "Nobody") + $UsersTmp->RowsToAssociativeArrayWithMultipleColumns("LastName,FirstName");
+
+													echo CForm::AddDropdown("Assigned To", "AssignedTo", $UsersAssignableToMilestoneToDos, "");	
 													echo CForm::AddHidden("MilestoneID", $Milestone->ID);
 													echo CForm::AddHidden("ProjectsID", $ProjectID);
 												
