@@ -42,16 +42,26 @@ class MProjectsShopOnline extends MProjectsBase {
         $CProject = new CProjectsShopOnline();
 
         if ($CProject->LoadMilestoneCompleteNotification($ProjectID, $MilestoneID)) {
-            
+
+            $Type = "Module";
+            $Name = "ProjectsShopOnline";
+            $SubName = "MilestoneCompleted";
             $EmailParams = Array(
                 "ISBN" => $CProject->ISBN10,
                 "ShopLink" => $CProject->VirtualECOMInstructionsShop,
                 "Milestone" => $CProject->Name,
                 "Summary" => $CProject->Summary,
             );
-            
-            return CNotifier::PushEmail($CProject->RequesterEmail, "Module", "ProjectsShopOnline", "MilestoneCompleted", $EmailParams)
-                    && CNotifier::PushEmailToUserID($CProject->UsersID, "Module", "ProjectsShopOnline", "MilestoneCompleted", $EmailParams);
+
+            $SentOK = TRUE;
+
+            $Users = new CUsers();
+            if ($Users->LoadAllOfGroup("DTS Manager")) {
+                $SentOK = CNotifier::PushEmailToUserIDs($Users->Rows->RowsToArray('ID'), $Type, $Name, $SubName, $EmailParams);
+            }
+
+            return $SentOK && CNotifier::PushEmail($CProject->RequesterEmail, $Type, $Name, $SubName, $EmailParams)
+                    && CNotifier::PushEmailToUserID($CProject->UsersID, $Type, $Name, $SubName, $EmailParams);
         }
     }
 
