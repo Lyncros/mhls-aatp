@@ -164,6 +164,7 @@
                         {{ RandomPrefix() }}
                         {{ AddHidden("MilestoneID", m.ID) | raw }}
                         {{ AddHidden("ProjectID", project.ID) | raw }}
+                        {{ AddHidden("Name", m.Name) | raw  }}
                         {{ AddYesNo("Complete", "Status", isComplete, "YesNo") | raw }}
                         <tr>
                             <td colspan="3" align="right">

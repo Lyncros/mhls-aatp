@@ -49,7 +49,7 @@ abstract class MProjectsBase extends CTemplateModule {
         $Status = "Active";
         if (intval($_POST["Status"]) == 1) {
             $Status = "Complete";
-            $SentEmail = TRUE;
+            $SentEmail = ($_POST["Name"] == "Email notification Shop");
         }
         
         //right now only save Status
