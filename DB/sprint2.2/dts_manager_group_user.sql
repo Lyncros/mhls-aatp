@@ -15,5 +15,5 @@ VALUES
 (0, @DTSManagerID, 1343325350, 1343325350, 0, 'User', 
 'jonathon_mullens', '', 'Jonathon', 'S', 'Mullens', '', '', '', '', 
 '', '', '', '', '', '', 'jonathon_mullens@mcgraw-hill.com', 0, 0, 
-'', 0, 0, 0);
+'', 0, 0, 1);
 
