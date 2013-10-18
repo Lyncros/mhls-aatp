@@ -47,7 +47,7 @@ class MProjectCreatorHome extends CUnauthorizedModule {
     }
     
     function IndexAction() {
-        return "PrivateOffer";
+        return "ShopOnline";
     }
 
     ///////////////////////////////////////////////
