@@ -47,10 +47,7 @@ class MProjectsShopOnline extends MProjectsBase {
             $Name = "ProjectsShopOnline";
             $SubName = "MilestoneCompleted";
             $EmailParams = Array(
-                "ISBN" => $CProject->ISBN10,
-                "ShopLink" => $CProject->VirtualECOMInstructionsShop,
-                "Milestone" => $CProject->Name,
-                "Summary" => $CProject->Summary,
+                "ShopLink" => "http://shop.mcgraw-hill.com/mhshop/productDetails?isbn=".$CProject->ISBN10,
             );
 
             $SentOK = TRUE;
