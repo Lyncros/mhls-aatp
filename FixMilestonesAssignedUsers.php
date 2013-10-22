@@ -30,7 +30,7 @@ echo "</td></tr></table>";
 
 $Milestones = new CProjectsMilestones();
 
-if ($Milestones->OnLoadAll("WHERE AssignedTo IS NOT NULL AND AssignedTo != 0")) {
+if ($Milestones->OnLoadAll("WHERE AssignedTo IS NOT NULL AND AssignedTo != 0 AND Deleted = 0 ")) {
     echo "<h2>" . count($Milestones->Rows) . " Milestones Fixed</h2>";
 
     echo "<table border=1>
